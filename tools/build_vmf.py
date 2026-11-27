@@ -152,6 +152,27 @@ def concourse(W, det, ents, top):
         W(box(edges[i], CY1, 0, edges[i + 1], -HY - T, top, TEX_WALL))
     for a, b in ops:
         W(box(a, CY1, ARC_H + 32, b, -HY - T, top, TEX_WALL))
+    # Session 22: travertine arcade on the concourse face of the east wall (HABS photos): three
+    # round-headed arches per bay, 25 ft 4 in wide, springing at the passage head; the middle one is
+    # the passage, the side ones blind. A 2 ft face layer with a cornice band at 50 ft.
+    d0, d1, atop = CY1 - 2 * FT, CY1, 50 * FT
+    r = 152
+    for i in range(3):
+        cx = (BAYS[i] + BAYS[i + 1]) // 2
+        lo, hi = (BAYS[i] if i else -HX), (BAYS[i + 1] if i < 2 else HX)
+        cxs = [cx - 420, cx, cx + 420]
+        edges = [lo] + [v for c in cxs for v in (c - r, c + r)] + [hi]
+        for k in range(0, len(edges), 2):
+            det(box(edges[k], d0, 0, edges[k + 1], d1, atop, TEX_WALL))
+        for c in cxs:
+            arc, band = halfdisc(c, ARC_H, r, 10), halfdisc(c, ARC_H, r + 18, 10)
+            for j in range(10):
+                (xa, za), (xb, zb) = arc[j + 1], arc[j]
+                det(yprism([(xa, za), (xb, zb), (xb, atop), (xa, atop)], d0, d1, TEX_WALL))
+                det(yprism([arc[j + 1], arc[j], band[j], band[j + 1]], d0 - 6, d0, TEX_TRIM))
+            for x in (c - r - 16, c + r - 2):
+                det(box(x, d0 - 12, ARC_H - 24, x + 18, d1, ARC_H, TEX_TRIM))
+    det(box(-HX, d0 - 18, atop, HX, d1, atop + 2 * FT, TEX_TRIM))
     # Glass groin vaults: one per waiting-room bay, spanning the full 200 ft depth.
     for i in range(3):
         groin(W, BAYS[i], BAYS[i + 1], CY0, CY1, C_SPRING, C_RISE, TEX_CGLASS)
@@ -162,7 +183,7 @@ def concourse(W, det, ents, top):
     for x in BAYS:
         for y in (CY0 + 2 * FT, CY0 + 70 * FT, CY1 - 70 * FT, CY1 - 2 * FT):
             xx = max(-HX + 2 * FT, min(HX - 2 * FT, x))
-            ents.append(ent("prop_static", (xx, y, 0), model="models/penn/lattice.mdl", solid="6"))
+            ents.append(ent("prop_static", (xx, y, 0), model="models/penn/lattice.mdl", solid="6", disableshadows="1"))
     # Session 20: steel truss ribs on each vault's groins and a transverse arch at the inner bay lines.
     # studiomdl turns SMD geometry 90 degrees about z, so both stand at yaw 90 (session 21: at yaw 0 the
     # arches ran along the hall and showed as a line down its centre).
