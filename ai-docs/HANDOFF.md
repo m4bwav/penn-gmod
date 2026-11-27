@@ -1,13 +1,13 @@
 # HANDOFF: gm_penn_station
 
 Status: in progress
-Updated: 2026-11-27 (session 37)
+Updated: 2026-11-27 (session 38)
 
 - Prompt: plans/2026-11-25-penn-gmod-60x-continue-prompt.md
-- Chain: session 37 of 60 (started 2026-11-26)
+- Chain: session 38 of 60 (started 2026-11-26)
 - Plan: plans/penn-gmod-plan.md. Era: 1910 station (decisions/2026-11-26-era-1910.md).
 - Garry's Mod: D:/SteamLibrary/steamapps/common/GarrysMod (vbsp, vvis, vrad, bspzip, gmad, gmpublish, studiomdl, vbspinfo in bin/).
-- Budget 2026-11-27 (session 37): 24,644/65,536 verts, 14,767 faces, BSP 42.1 MB. 138-146 fps capped on the streets. (0.4.0: gma 21.6 MB, 926-1,227 fps uncapped.)
+- Budget 2026-11-27 (session 38): 24,964/65,536 verts, 14,967 faces, BSP 43.1 MB. 139-147 fps capped on the streets. (0.4.0: gma 21.6 MB, 926-1,227 fps uncapped.)
 - Workshop ID: 3846546331 (public, 0.4.0). tools/package.sh defaults to it.
 - Driver: the user-level chain_loop (C:/Users/m4bwa/.chainwright/penn-prompt.md, stop check penn_stop.py, log penn-chain.log, 60 sessions / 24 h) runs this chain. Sessions it starts never start another driver.
 
@@ -61,8 +61,10 @@ Updated: 2026-11-27 (session 37)
 
 - Session 37: area 5 blockout 2, the 31st/33rd Street fronts (side_fronts() in build_vmf.py). The cross streets now run west to the concourse's west end (YW = CY0 - T, about 680 ft): ashlar side walls with pilasters every 36 ft, cornice and plinth; a 144 ft carriage-drive recess mid-block behind eight Doric columns with warm bounce lights; the arched gable with a glazed thermal window above it; corner pavilions run 90 ft back (EX_PAVD) with pediments facing the side streets. The roof is a 100 ft strip with a sky seal at KX. Cameras side_south, side_carriage, side_corner, side_north. shots/20261127-0515, -0517. Not released.
 
+- Session 38: area 5 detail 1. New MDLs eagle, clock_group (7 ft face in a stone frame, two reclining figures) and balustrade (36 ft runs). Clock group on the central pavilion attic at the cornice edge, eagles at the attic corners of the central and corner pavilions, balustrade along both side-wing tops, a raised panel and a small square window in every side-wall bay, lamp.mdl standards on the avenue and side-street kerbs, a weak fill row under the main cornice (no longer black). Camera front_attic. shots/20261127-0525, -0528. Not released.
+
 ## Next
-1. Area 5 detail: the eagles and clock group on the central pavilion attic (MDLs), balustrade along the side wing tops, small square windows and recessed panels on the side walls, kerb lamp standards; the colonnade cornice still reads dark from the street. Then exterior lighting and the 0.5.0 release (README, level map with the side streets, Workshop, tag).
+1. Area 5 lighting, then the 0.5.0 release (README, level map with the side streets, Workshop, tag). The shaded side walls on both cross streets compile very dark: add bounce/fill along them. The clock group reads small from the street (scale it about 1.5x); the reclining figures are blobs. Side-wall windows use penn/window_glass and look blue-white; a darker glass may read better.
 2. Flag for the next exterior pass: the real station measured about 780 ft along the side streets and 430 ft along Seventh Avenue. Session 36 made the avenue front 780 ft. The side fronts (about 680 ft) match the real length, but the avenue front is about 350 ft too long. Shortening it means moving the corner pavilions in (EX_FX) and needs a check that nothing inside crosses the new line. A sourced track plan would still confirm the 21-track layout.
 3. Optional leftovers: attic storey above the waiting-room side arches, coffered soffits on the cross arches.
 4. Wiki: the GitHub wiki needs its first page created by hand in the browser before it can be pushed (as with GCT); draft pages can go in docs/wiki/ meanwhile.

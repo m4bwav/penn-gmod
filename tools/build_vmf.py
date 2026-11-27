@@ -326,6 +326,19 @@ def colonnade(W, det, ents, f0):
         ents.append(ent("light", (k * 5 * 108, (f1 + cy) // 2, cz - 3 * FT), _light="250 228 195 40"))
         ents.append(ent("light", (k * 5 * 108, pe - FT, z0 + 6 * FT), _light="255 232 200 25"))
     ents.append(ent("env_cubemap", (0, sw1, z0 + 100)))
+    # Session 38 (area 5 detail): the clock group on the central pavilion attic, eagles at the attic
+    # corners of the central and corner pavilions (exterior refs), lamp standards along the kerb,
+    # and a weak fill under the main cornice, which faced away from the sun and read black.
+    ents.append(ent("prop_static", (0, f1 + 2, CTOP), angles="0 180 0", model="models/penn/clock_group.mdl", solid="0", disableshadows="1"))
+    eag = [(x, f1 - 3 * FT, CTOP) for x in (-PX + 4 * FT, PX - 4 * FT)]
+    for s in (-1, 1):
+        eag += [(s * (KX + 6 * FT), pe - 6 * FT, PT + 10 * FT), (s * (FX - 6 * FT), pe - 6 * FT, PT + 10 * FT)]
+    for q in eag:
+        ents.append(ent("prop_static", q, angles="0 180 0", model="models/penn/eagle.mdl", solid="0", disableshadows="1"))
+    for k in range(-3, 4):
+        ents.append(ent("prop_static", (k * 120 * FT + 60 * FT, sw1 - 2 * FT, z0 - 8), model="models/penn/lamp.mdl", solid="6"))
+    for k in range(-6, 7):
+        ents.append(ent("light", (k * 5 * 108, f1 + 6 * FT, FTOP - 8 * FT), _light="250 230 200 18"))
 
 
 def _dedup(poly):
@@ -394,6 +407,23 @@ def side_fronts(W, det, ents, f0, YW, KX, FTOP, SKYZ, cz):
         for y in range(-RY + 216, RY, 432):                 # warm bounce in the carriage drive
             ents.append(ent("light", (s * (FX - RD // 2), y, z0 + 20 * FT), _light="250 228 195 30"))
         ents.append(ent("env_cubemap", (s * (FX + 50 * FT), 0, z0 + 100)))
+        # Session 38: a raised panel and a small square window in every bay between the pilasters
+        # (ref SOUTH_FACADE_FROM_SOUTHEAST), the balustrade along the wing tops (balustrade.mdl,
+        # 36 ft runs), lamp standards on the kerb.
+        p0, p1 = X(FX, FX + 6)
+        g0, g1 = X(FX, FX + 4)
+        for y in range(YW + 22 * FT, PB - 34 * FT, 36 * FT):
+            if -RY - 36 * FT < y < RY:
+                continue
+            det(box(p0, y + 3 * FT, z0 + 22 * FT, p1, y + 29 * FT, FTOP - 12 * FT, TEX_TRIM))
+            det(box(g0, y + 12 * FT, z0 + 9 * FT, g1, y + 20 * FT, z0 + 17 * FT, TEX_GLASS))
+        for a, b in ((YW, -RY), (RY, PB)):
+            y = b - 2
+            while y - 432 >= a:
+                ents.append(ent("prop_static", (s * (FX - 12), y, FTOP), model="models/penn/balustrade.mdl", solid="0", disableshadows="1"))
+                y -= 432
+        for y in range(YW + 60 * FT, PB, 120 * FT):
+            ents.append(ent("prop_static", (s * (FX + 18 * FT), y, z0 - 8), model="models/penn/lamp.mdl", solid="6"))
 
 
 # Track level (area 4): session 28 blockout. One 30 ft island platform under each concourse stair,
