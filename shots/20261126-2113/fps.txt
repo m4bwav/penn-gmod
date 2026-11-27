@@ -1,0 +1,7 @@
+from_sw         974 fps
+from_nw         928 fps
+nave_north      907 fps
+vault_up        902 fps
+stair_east      906 fps
+west_wall       884 fps
+stair_down      930 fps

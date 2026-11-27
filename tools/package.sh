@@ -4,7 +4,7 @@
 # DRY=1 builds the .gma only.
 set -e
 G="${GMOD:-D:/SteamLibrary/steamapps/common/GarrysMod}"
-ID="${WORKSHOP_ID:-${WORKSHOP_ID:?set WORKSHOP_ID (first upload: gmpublish create)}}"
+ID="${WORKSHOP_ID:-3846546331}"
 cd "$(dirname "$0")/.."
 NOTE="${1:-Update}"
 [ $# -gt 0 ] && shift
