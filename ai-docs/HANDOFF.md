@@ -1,14 +1,14 @@
 # HANDOFF: gm_penn_station
 
 Status: in progress
-Updated: 2026-11-26 (session 6)
+Updated: 2026-11-26 (session 7)
 
 - Prompt: plans/2026-11-25-penn-gmod-60x-continue-prompt.md
-- Chain: session 6 of 60 (started 2026-11-26)
+- Chain: session 7 of 60 (started 2026-11-26)
 - Plan: plans/penn-gmod-plan.md. Era: 1910 station (decisions/2026-11-26-era-1910.md).
 - Garry's Mod: D:/SteamLibrary/steamapps/common/GarrysMod (vbsp, vvis, vrad, bspzip, gmad, gmpublish, studiomdl, vbspinfo in bin/).
-- Budget 2026-11-26 (session 6): 2,488/65,536 verts, 1,513 faces, BSP 7.6 MB. 770-860 fps uncapped.
-- Workshop ID: none yet (first upload at 0.1.0 with gmpublish create).
+- Budget 2026-11-26 (session 7): 2,488/65,536 verts, 1,513 faces, BSP 7.6 MB. 850-930 fps uncapped.
+- Workshop ID: 3846546331 (public, 0.1.0). tools/package.sh defaults to it.
 - Driver: the user-level chain_loop (C:/Users/m4bwa/.chainwright/penn-prompt.md, stop check penn_stop.py, log penn-chain.log, 60 sessions / 24 h) runs this chain. Sessions it starts never start another driver.
 
 ## Done
@@ -21,10 +21,12 @@ Updated: 2026-11-26 (session 6)
 
 - Session 6: lighting pass. Window glass and door glow are texture lights (src/lights.rad, passed to vrad with -lights); a no-falloff light_spot from each east lunette drops a warm sun pool on the floor; warm fill lowered; auto-exposure 0.6-1.6, bloom 0.25. -StaticPropLighting turned the column MDLs black, so it stays off. shots/20261126-2102.
 
+- Session 7: 0.1.0 released. Workshop 3846546331 public (title, description, 5 previews), README with Z-Image banner, level map (make_map.py rewritten for Penn's +x north axes), LICENSE, SECURITY.md, repo public, tag v0.1.0. FNaF overlay fixed: tools/lua/a_penn_nofnaf.lua sets VJ_FNAFSB_CACHED during shot runs. shots/20261126-2113.
+
 ## Next
-1. 0.1.0 release: first Workshop upload (gmpublish create), README, level map, licence audit before going public.
-2. Still missing from the photos (can follow 0.1.0): attic storey with clerestory windows above the entablature over the side arches, coffered soffits on the cross arches, a darker recess behind the arches (they read as niches, the real ones open into side passages), stair hall grand stair width.
-3. Shot overlay: "FNaF SB Models are Pre-Caching" still prints with +cl_drawhud 0; it is a local addon. Disable it in garrysmod/addons for shot runs (find it by name, move it out and back).
+1. Area 1 polish before the arcade (optional, short): attic storey with clerestory windows above the side arches, coffered soffits on the cross arches, darker recesses behind the arches (they open into side passages), physgun glow in shots (strip weapons in the shot Lua).
+2. Area 2: arcade and shopping corridor from Seventh Avenue plus the entrance colonnade: refs, blockout joined through the east stair door, detail, lighting, 0.2.0.
+3. Wiki: the GitHub wiki needs its first page created by hand in the browser before it can be pushed (as with GCT); draft pages can go in docs/wiki/ meanwhile.
 
 ## Waiting on Mark
 - Nothing. (Flag: era ruled 1910 by default.)
