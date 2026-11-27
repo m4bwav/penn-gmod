@@ -47,3 +47,4 @@
 - 2026-11-27 session 41: area 6 refs, three plates from the 1910 PRR booklet (archive.org pennsylvaniastat00penn; IA page images at /page/nN_w1600.jpg). Rooms open off the Loggia = our stair hall. No map change.
 
 - 2026-11-27 session 42: area 6 blockout (dining room north, lunch room south of the stair hall). Clean compile, 25,613 verts, shots/20261127-0550. The Cassatt niche limits the dining doorway to 6 ft.
+- 2026-11-27 session 43: area 6 props (dining_set, chandelier, pendant, lunch_counter MDLs). Props add no BSP verts beyond the 2 u mirror strip: 25,629 verts, BSP 45.2 MB, 136-146 fps capped. Chandelier/pendant origins 2 u under the ceiling (session 38 rule). Counter built along SMD y lies along world x at yaw 0, as expected. shots/20261127-0556.

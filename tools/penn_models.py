@@ -37,6 +37,11 @@ VMTS = {
     # Session 33: gold "PENNSYLVANIA" lettering after the 1910 DD1 photo (refs/photos/The_New_York_improvement_*14573147270).
     "letter_green": '"VertexLitGeneric"\n{\n\t"$basetexture" "models/penn/letter_green"\n\t"$surfaceprop" "metal"\n}\n',
     "letter_tuscan": '"VertexLitGeneric"\n{\n\t"$basetexture" "models/penn/letter_tuscan"\n\t"$surfaceprop" "metal"\n}\n',
+    # Session 43: restaurant props (white table linen, dark bentwood, pale marble counter tops).
+    "linen": '"VertexLitGeneric"\n{\n\t"$basetexture" "models/debug/debugwhite"\n\t"$color2" "[0.86 0.85 0.80]"\n\t"$surfaceprop" "cloth"\n}\n',
+    "wood": '"VertexLitGeneric"\n{\n\t"$basetexture" "models/debug/debugwhite"\n\t"$color2" "[0.16 0.08 0.04]"\n'
+            '\t"$phong" "1"\n\t"$phongboost" "1"\n\t"$phongexponent" "16"\n\t"$phongfresnelranges" "[0.3 0.6 1]"\n\t"$surfaceprop" "wood"\n}\n',
+    "marble": '"VertexLitGeneric"\n{\n\t"$basetexture" "penn/travertine"\n\t"$color2" "[1.5 1.5 1.45]"\n\t"$surfaceprop" "stone"\n}\n',
 }
 
 # Body colours in sRGB to match the $color2 tints above (debugwhite x color2), gold leaf for the letters.
@@ -478,10 +483,92 @@ def balustrade():
     return m
 
 
+def _chair(m, cx, cy, face):
+    """Bentwood cafe chair, seat 18 in up, facing angle `face` (radians, the way a seated diner looks)."""
+    fx, fy = math.cos(face), math.sin(face)
+    m.lathe("wood", [(0, 17), (8, 17), (8, 18.5), (0, 18.5)], cx, cy, 0, 12)
+    for k in range(4):
+        t = math.pi / 4 + k * math.pi / 2
+        m.tube("wood", (cx + 7 * math.cos(t), cy + 7 * math.sin(t), 17), (cx + 9 * math.cos(t), cy + 9 * math.sin(t), 0), 0.8, 0.7, 6)
+    bx, by = cx - 7 * fx, cy - 7 * fy                                          # back hoop behind the seat
+    px, py = -fy, fx
+    pts = [(bx + 6 * math.cos(a) * px, by + 6 * math.cos(a) * py, 18 + 16 * math.sin(a)) for a in [i * math.pi / 8 for i in range(9)]]
+    for a, b in zip(pts, pts[1:]):
+        m.tube("wood", a, b, 0.8, 0.8, 6)
+
+
+def dining_set():
+    """Session 43, after the 1910 booklet's restaurant plate: a 4 ft square table with a white cloth
+    falling 10 in, on a turned pedestal, and four bentwood chairs. Origin on the floor at the centre."""
+    m = Mesh()
+    _box(m, "linen", -26, -26, 29, 26, 26, 30)
+    for s in (-1, 1):
+        _box(m, "linen", -26, s * 26 - 0.5, 19, 26, s * 26 + 0.5, 29)
+        _box(m, "linen", s * 26 - 0.5, -26, 19, s * 26 + 0.5, 26, 29)
+    m.lathe("wood", [(0, 0), (12, 0), (12, 2), (4, 4), (3, 18), (0, 18)], 0, 0, 0, 12)
+    m.lathe("globe", [(0, 30), (1.5, 30), (1, 38), (0, 38)], 0, 0, 0, 8)      # a little vase
+    for k in range(4):
+        t = k * math.pi / 2
+        _chair(m, 34 * math.cos(t), 34 * math.sin(t), t + math.pi)
+    return m
+
+
+def chandelier():
+    """Session 43: brass chandelier for the dining room. Origin at the ceiling; a rod 6 ft down
+    to a bowl, two rings of six frosted globes about 9 ft down."""
+    m = Mesh()
+    m.lathe("bronze", [(0, 0), (10, 0), (10, -3), (2, -6), (0, -6)], 0, 0, 0, 12)
+    m.tube("bronze", (0, 0, -6), (0, 0, -6 * FT), 1.5, 1.5, 8)
+    z = -9 * FT
+    m.lathe("bronze", [(0, z - 14), (5, z - 12), (14, z - 2), (16, z + 2), (4, z + 8), (2, -6 * FT), (0, -6 * FT)], 0, 0, 0, 16)
+    for r, zz, off in ((34, z, 0), (20, z + 12, math.pi / 6)):
+        for k in range(6):
+            t = k * math.pi / 3 + off
+            ex, ey = r * math.cos(t), r * math.sin(t)
+            m.tube("bronze", (0, 0, zz - 2), (ex, ey, zz), 1.2, 1, 6)
+            m.lathe("bronze", [(0, zz - 1), (3, zz - 1), (4, zz + 2), (0, zz + 2)], ex, ey, 0, 8)
+            m.sphere("globe", ex, ey, zz + 7, 5, 8)
+    m.sphere("globe", 0, 0, z - 18, 6, 8)
+    return m
+
+
+def pendant():
+    """Session 43: lunch-room pendant lamp, origin at the ceiling: rod 6 ft down, bronze cap, a
+    frosted bell globe."""
+    m = Mesh()
+    m.lathe("bronze", [(0, 0), (6, 0), (6, -2), (0, -2)], 0, 0, 0, 10)
+    m.tube("bronze", (0, 0, -2), (0, 0, -6 * FT), 1, 1, 6)
+    z = -6 * FT
+    m.lathe("bronze", [(0, z), (3, z), (6, z - 4), (0, z - 4)], 0, 0, 0, 12)
+    m.lathe("globe", [(0, z - 4), (7, z - 4), (11, z - 12), (12, z - 16), (0, z - 18)], 0, 0, 0, 14)
+    return m
+
+
+def lunch_counter():
+    """Session 43, after the booklet's lunch room plate: a 40 ft marble-topped counter on a panelled
+    dark-wood front, a bronze foot rail, 16 fixed stools on the customer side, a back service bar.
+    Built along SMD y (world x at yaw 0, session 21), stools on SMD -x. Origin on the floor, middle."""
+    m = Mesh()
+    L = 20 * FT
+    _box(m, "wood", -14, -L, 0, 14, L, 40)                     # counter body
+    _box(m, "marble", -18, -L - 3, 40, 18, L + 3, 42)           # marble top, overhanging
+    for k in range(-19, 20, 2):                                 # raised panels on the stool side
+        _box(m, "wood", -15.5, k * FT - 10, 6, -14, k * FT + 10, 34)
+    _box(m, "bronze", -22, -L, 6, -20, L, 8)                    # foot rail
+    for y in (-L + 12, 0, L - 12):
+        m.tube("bronze", (-21, y, 7), (-14, y, 7), 0.8, 0.8, 6)
+    _box(m, "marble", 42, -L, 0, 66, L, 36)                     # back service bar, aisle between
+    for k in range(16):
+        y = -L + 15 + k * 30
+        m.lathe("bronze", [(0, 0), (8, 0), (8, 1.5), (2, 3), (1.5, 26), (0, 26)], -36, y, 0, 10)
+        m.lathe("wood", [(0, 26), (7, 26), (7.5, 28), (6, 30), (0, 30)], -36, y, 0, 12)
+    return m
+
+
 # Session 39: the clock group read small from the street; studiomdl scales it up.
 QC_SCALE = {"clock_group": 1.5}
 
-MODELS = {"train": train, "clock": clock, "conc_arch": conc_arch, "conc_diag": conc_diag, "lattice": lattice, "corinthian": corinthian, "lamp": lamp, "cassatt": cassatt, "doric": doric, "eagle": eagle, "clock_group": clock_group, "balustrade": balustrade}
+MODELS = {"train": train, "clock": clock, "conc_arch": conc_arch, "conc_diag": conc_diag, "lattice": lattice, "corinthian": corinthian, "lamp": lamp, "cassatt": cassatt, "doric": doric, "eagle": eagle, "clock_group": clock_group, "balustrade": balustrade, "dining_set": dining_set, "chandelier": chandelier, "pendant": pendant, "lunch_counter": lunch_counter}
 
 
 def build():
