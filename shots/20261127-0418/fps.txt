@@ -1,0 +1,5 @@
+conc_landing    146 fps
+plat_stairfoot  147 fps
+plat_long       147 fps
+plat_tracks     141 fps
+conc_clock      146 fps

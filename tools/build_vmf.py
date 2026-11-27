@@ -152,12 +152,9 @@ def concourse(W, det, ents, top):
         W(box(xs[k], sy0, -64, xs[k + 1], sy1, 0, TEX_FLOOR))
     for c in wells:
         x0, x1 = c - sw, c + sw
-        W(box(x0 - 32, sy0 - 32, sz - 32, x1 + 32, sy1 + 32, sz, TEX_FLOOR))
         for a, b in ((x0 - 32, x0), (x1, x1 + 32)):
             W(box(a, sy0 - 32, sz, b, sy1 + 32, -64, TEX_WALL))
-        W(box(x0, sy0 - 32, sz, x1, sy0, -64, TEX_WALL))
         W(box(x0, sy1, sz, x1, sy1 + 32, -64, TEX_WALL))
-        det(box(c - 40, sy0, sz, c + 40, sy0 + 2, sz + 8 * FT, TEX_DOOR))
         for k in range(30):
             det(box(x0, sy0 + 72 + 16 * k, sz, x1, sy1, sz + 8 * (k + 1), TEX_FLOOR))
         for ly, lz in ((sy0 + 40, sz + 96), (sy0 + 300, sz + 200)):
@@ -209,6 +206,7 @@ def concourse(W, det, ents, top):
         groin(W, BAYS[i], BAYS[i + 1], CY0, CY1, C_SPRING, C_RISE, TEX_CGLASS)
     # Fill between the vault crowns and the waiting room's west wall top.
     W(box(-HX - T, CY0 - T, ctop, HX + T, -HY - T, ctop + 64, NODRAW))
+    platforms(W, det, ents, wells, sw)
     # Steel lattice columns (lattice.mdl since session 19): at every bay line
     # on both long sides and two rows across the floor, each 3 ft square up to the springing.
     for x in BAYS:
@@ -279,6 +277,54 @@ def colonnade(W, det, ents, f0):
     ents.append(ent("env_cubemap", (0, sw1, z0 + 100)))
 
 
+# Track level (area 4): session 28 blockout. One 30 ft island platform under each concourse stair,
+# a single track between neighbours (Penn had 21 tracks on 11 platforms, one track per gap), 500 ft
+# of the platforms from the waiting room's west wall to the tunnel portals. Platform top = stair
+# landing (-240, 20 ft below the concourse), rail top 4 ft lower, ceiling = underside of the
+# concourse floor (-64). Rails are brush strips for now; the train comes in a later session.
+PY0 = CY0 - 300 * FT                                   # -6868: west wall with the tunnel portals
+P_TOP, P_RAIL, P_BED = -240, -288, -300
+P_W = 30 * FT
+
+
+def platforms(W, det, ents, wells, sw):
+    W(box(-HX - T, PY0 - T, P_BED - 32, HX + T, CY1 + T, P_BED, TEX_FLOOR))     # track bed
+    W(box(-HX - T, PY0 - T, -64, HX + T, CY0 - T, 0, TEX_FLOOR))                 # ceiling west of the concourse
+    for x0, x1 in ((-HX - T, -HX), (HX, HX + T)):                                # 31st / 33rd St walls
+        W(box(x0, PY0, P_BED, x1, CY1, -64, TEX_WALL))
+    W(box(-HX - T, CY1, P_BED, HX + T, CY1 + T, -64, TEX_WALL))                  # east end
+    # West wall: a 16 ft dark portal over every track, a black tunnel 40 ft deep behind it.
+    tracks = [(-HX + wells[0] - P_W // 2) // 2]
+    tracks += [(wells[i] + wells[i + 1]) // 2 for i in range(len(wells) - 1)]
+    tracks += [(HX + wells[-1] + P_W // 2) // 2]
+    # The outer tracks run 12 ft from the side walls: clamp their portals to the room, or the wall
+    # pieces between come out inside-out and the world bounds go infinite (session 28).
+    ops = [(max(-HX, t - 84), min(HX, t + 84)) for t in tracks]
+    edges = [-HX] + [v for o in ops for v in o] + [HX]
+    for i in range(0, len(edges), 2):
+        if edges[i + 1] > edges[i]:
+            W(box(edges[i], PY0 - T, P_BED, edges[i + 1], PY0, -64, TEX_WALL))
+    for a, b in ops:
+        W(box(a, PY0 - T, P_BED + 16 * FT + 12, b, PY0, -64, TEX_WALL))
+        W(box(a - 16, PY0 - T - 40 * FT, P_BED, a, PY0 - T, P_BED + 16 * FT + 12, "tools/toolsblack"))
+        W(box(b, PY0 - T - 40 * FT, P_BED, b + 16, PY0 - T, P_BED + 16 * FT + 12, "tools/toolsblack"))
+        W(box(a, PY0 - T - 40 * FT, P_BED + 16 * FT + 12, b, PY0 - T, -64, "tools/toolsblack"))
+        W(box(a, PY0 - T - 40 * FT - 16, P_BED, b, PY0 - T - 40 * FT, -64, "tools/toolsblack"))
+    for t in tracks:                                                             # rails, standard gauge
+        for g in (-28, 28):
+            det(box(t + g - 2, PY0 - T - 40 * FT, P_BED, t + g + 2, CY1, P_RAIL, TEX_STEEL))
+    for c in wells:
+        W(box(c - P_W // 2, PY0, P_BED, c + P_W // 2, CY1, P_TOP, TEX_FLOOR))
+        # Steel columns on the platform centre line every 40 ft, clear of the stair enclosure.
+        for y in range(PY0 + 30 * FT, CY1 - 10 * FT, 40 * FT):
+            if CY0 - 2 * FT < y < CY0 + 640:
+                continue
+            det(box(c - 9, y - 9, P_TOP, c + 9, y + 9, -64, TEX_STEEL))
+        for y in range(PY0 + 50 * FT, CY1, 60 * FT):
+            ents.append(ent("light", (c, y, -96), _light="255 214 160 90"))
+    ents.append(ent("env_cubemap", (wells[2], CY0 - 100 * FT, P_TOP + 72)))
+
+
 def build():
     world, ents = [], []
     W = world.append
@@ -288,7 +334,7 @@ def build():
     # Sealed nodraw hull around everything.
     X0, X1 = -HX - T - 256, HX + T + 256
     # Session 15: the hull now reaches past the Seventh Avenue block opposite (colonnade()).
-    Y0, Y1 = CY0 - T - 256, YB + T + VEST + T + 117 * FT + 32 + 256
+    Y0, Y1 = PY0 - T - 40 * FT - 16 - 256, YB + T + VEST + T + 117 * FT + 32 + 256
     Z0, Z1 = -384, top + 128                 # session 23: below the track stairs (landing at -240)
     for b in ((X0, Y0, Z0 - 64, X1, Y1, Z0), (X0, Y0, Z1, X1, Y1, Z1 + 64),
               (X0 - 64, Y0, Z0, X0, Y1, Z1), (X1, Y0, Z0, X1 + 64, Y1, Z1),
