@@ -1,0 +1,4 @@
+conc_south      147 fps
+conc_east       146 fps
+conc_stairs     146 fps
+wr_to_conc      146 fps

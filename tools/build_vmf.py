@@ -226,6 +226,11 @@ def concourse(W, det, ents, top):
     for i in range(3):
         cx = (BAYS[i] + BAYS[i + 1]) // 2
         ents.append(ent("light", (cx, (CY0 + CY1) // 2, C_SPRING), _light="215 225 240 40"))
+        # Session 26: daylight fill under the glass. The roof texlight alone left the floor and the
+        # lower walls grey; a 3 x 3 grid per bay at 28 ft lifts them with cool skylight.
+        for dx in (-380, 0, 380):
+            for fy in (0.2, 0.5, 0.8):
+                ents.append(ent("light", (cx + dx, int(CY0 + fy * (CY1 - CY0)), 28 * FT), _light="225 230 240 22"))
         ents.append(ent("env_cubemap", (cx, (CY0 + CY1) // 2, 200)))
 
 
