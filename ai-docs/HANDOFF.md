@@ -1,13 +1,13 @@
 # HANDOFF: gm_penn_station
 
 Status: in progress
-Updated: 2026-11-27 (session 41)
+Updated: 2026-11-27 (session 42)
 
 - Prompt: plans/2026-11-25-penn-gmod-60x-continue-prompt.md
-- Chain: session 41 of 60 (started 2026-11-26)
+- Chain: session 42 of 60 (started 2026-11-26)
 - Plan: plans/penn-gmod-plan.md. Era: 1910 station (decisions/2026-11-26-era-1910.md).
 - Garry's Mod: D:/SteamLibrary/steamapps/common/GarrysMod (vbsp, vvis, vrad, bspzip, gmad, gmpublish, studiomdl, vbspinfo in bin/).
-- Budget 2026-11-27 (session 40): 24,964/65,536 verts, 14,967 faces, BSP 43.1 MB. (0.5.0: gma 33.7 MB, 895-1,183 fps uncapped.)
+- Budget 2026-11-27 (session 42): 25,613/65,536 verts, 15,268 faces, BSP 43.9 MB. (0.5.0: gma 33.7 MB, 895-1,183 fps uncapped.)
 - Workshop ID: 3846546331 (public, 0.5.0). tools/package.sh defaults to it.
 - Driver: the user-level chain_loop (C:/Users/m4bwa/.chainwright/penn-prompt.md, stop check penn_stop.py, log penn-chain.log, 60 sessions / 24 h) runs this chain. Sessions it starts never start another driver.
 
@@ -67,9 +67,10 @@ Updated: 2026-11-27 (session 41)
 
 - Session 40: 0.5.0 released (area 5, exterior). README text and four exterior screenshots, level map labels 31st/33rd Street, Workshop description, gma (33.7 MB) and 4 previews uploaded (EResult 1), tag v0.5.0. shots/20261127-0539.
 - Session 41: area 6 refs. Three plates from the 1910 PRR booklet "Pennsylvania station in New York city" (archive.org pennsylvaniastat00penn, not in copyright): restaurant and dining room, the Loggia between them, lunch room and buffet (refs/SOURCES.md). The booklet says both rooms open off the Loggia (our stair hall), kitchens above. Notes and small flagged rulings (dining north, lunch south, ~100 x 60 ft) in notes/2026-11-27-dining-lunch-refs.md. No map change.
+- Session 42: area 6 blockout. dining_lunch() in build_vmf.py: dining room north of the stair hall (100 x 56 ft, 35 ft ceiling) through a 6 ft doorway west of the Cassatt niche (the niche leaves no room for a wider one; flagged), lunch room south (same plan, 28 ft ceiling) through a 20 ft opening; flat coffered ceilings on cross beams every 20 ft, dado and cornice, five tall daylight windows on the far long wall, chandelier lights on the centre line. The 1910 waiting-room plan is too coarse to show the rooms, so the north/south ruling stands. Cameras loggia_doors, dining_in, lunch_in. shots/20261127-0550. Not released.
 
 ## Next
-1. Area 6: blockout of the dining room and lunch room off the stair hall (Loggia) at the landing level, z 192; check the side and size against the 1910 waiting-room level plan in refs first. Then a nav mesh (tools/nav.sh), then Moynihan only if the budget allows.
+1. Area 6 detail: MDL props for the dining room (square tables, bentwood chairs, brass chandeliers) and the lunch room (long counters with stools, pendant lamps, mirrored back wall), panelled walls, compare.jpg against the PRR1910 plates. Then a nav mesh (tools/nav.sh), release 0.6.0, then Moynihan only if the budget allows.
 2. Exterior polish, optional: the clock group's reclining figures are blobs; the ext_glass windows still show the blue pane grid (a plain dark texture would read better).
 3. Flag: the avenue front is 780 ft, about 350 ft longer than the real 430 ft (side fronts about 680 ft match the real length). Shortening it means moving EX_FX in and checking nothing inside crosses the new line. A sourced track plan would still confirm the 21-track layout.
 4. Optional leftovers: attic storey above the waiting-room side arches, coffered soffits on the cross arches.

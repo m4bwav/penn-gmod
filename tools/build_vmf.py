@@ -439,6 +439,53 @@ def side_fronts(W, det, ents, f0, YW, KX, FTOP, SKYZ, cz):
 # concourse floor (-64). Rails are brush strips for now; the train comes in a later session.
 PY0 = CY0 - 300 * FT                                   # -6868: west wall with the tunnel portals
 P_TOP, P_RAIL, P_BED = -240, -288, -300
+# Area 6 (session 42): the dining room (north) and lunch room (south) off the stair hall (the
+# booklet's Loggia) at the landing level, about 100 x 56 ft each (notes/2026-11-27-dining-lunch-refs.md).
+DN_Y0, DN_Y1, DOOR_H = 1132, 1204, 12 * FT        # 6 ft doorway west of the Cassatt niche
+LU_Y0, LU_Y1 = 1176, 1416                         # 20 ft opening in the south wall
+R_X0, R_X1, R_Y0, R_Y1 = 304, 304 + 100 * FT, HY + T + 12, 1432
+
+
+def dining_lunch(W, det, ents):
+    """Blockout of the two restaurant rooms: floor, walls, a flat ceiling with deep cross beams and
+    coffer panels, a row of tall windows on the far long wall, chandelier lights down the centre line."""
+    z0 = LAND
+    for s, h, (d0, d1) in ((1, 35 * FT, (DN_Y0, DN_Y1)), (-1, 28 * FT, (LU_Y0, LU_Y1))):
+        zc = z0 + h
+        xa, xb = s * R_X0, s * R_X1
+        lo, hi = min(xa, xb), max(xa, xb)
+        wi0, wi1 = (240, 272) if s > 0 else (-272, -240)        # stair hall wall the door goes through
+        ji0, ji1 = (272, 304) if s > 0 else (-304, -272)        # inner wall band between hall and room
+        W(box(lo, R_Y0, z0 - 64, hi, R_Y1, z0, TEX_FLOOR))
+        W(box(ji0, d0, z0 - 64, ji1, d1, z0, TEX_FLOOR))         # threshold
+        W(box(lo - 32, R_Y0 - 32, zc, hi + 32, R_Y1 + 32, zc + 64, TEX_VAULT))
+        W(box(lo, R_Y0 - 32, z0 - 64, hi, R_Y0, zc, TEX_WALL))
+        W(box(lo, R_Y1, z0 - 64, hi, R_Y1 + 32, zc, TEX_WALL))
+        xo0, xo1 = (hi, hi + 32) if s > 0 else (lo - 32, lo)
+        W(box(xo0, R_Y0 - 32, z0 - 64, xo1, R_Y1 + 32, zc, TEX_WALL))
+        # Inner wall band: solid except the doorway (the dining side keeps the niche back in it).
+        W(box(ji0, R_Y0 - 32, z0 - 64, ji1, d0, zc, TEX_WALL))
+        W(box(ji0, d0, z0 + (DOOR_H if s > 0 else 16 * FT), ji1, d1, zc, TEX_WALL))
+        W(box(ji0, d1, z0 - 64, ji1, R_Y1 + 32, zc, TEX_WALL))
+        W(box(wi0, R_Y0 - 32, ARC_H + LAND + 32, wi1, R_Y1 + 32, zc + 64, TEX_WALL))   # over the hall wall
+        # Dado band and a cornice round the room.
+        for y0, y1 in ((R_Y0, R_Y0 + 6), (R_Y1 - 6, R_Y1)):
+            det(box(lo, y0, z0, hi, y1, z0 + 4 * FT, TEX_TRIM))
+            det(box(lo, y0 - (0 if y0 == R_Y0 else 12), zc - 2 * FT, hi, y1 + (12 if y0 == R_Y0 else 0), zc, TEX_TRIM))
+        # Deep cross beams every 20 ft divide the ceiling into big coffered panels.
+        for i in range(1, 5):
+            x = s * (R_X0 + i * 20 * FT)
+            det(box(x - 12, R_Y0, zc - 3 * FT, x + 12, R_Y1, zc, TEX_TRIM))
+        # Tall windows on the far long wall (y = R_Y1), one per beam bay: daylight glass.
+        wh = (18 if s > 0 else 12) * FT
+        for i in range(5):
+            cx = s * (R_X0 + i * 20 * FT + 10 * FT)
+            det(box(cx - 4 * FT, R_Y1 - 4, z0 + 6 * FT, cx + 4 * FT, R_Y1, z0 + 6 * FT + wh, TEX_GLASS))
+            # Chandelier (blockout: a light down the centre line).
+            ents.append(ent("light", (cx, (R_Y0 + R_Y1) // 2, zc - 10 * FT), _light="255 220 170 45"))
+        ents.append(ent("env_cubemap", (s * (R_X0 + 50 * FT), (R_Y0 + R_Y1) // 2, z0 + 6 * FT)))
+
+
 P_W = 30 * FT
 
 
@@ -569,13 +616,21 @@ def build():
     # Stair hall east of the opening: 16 steps up to a landing, sealed door at the arcade end.
     sy0, run, steps = HY, 32 * FT, 16
     sy1 = sy0 + T + 60 * FT
-    W(box(a - 32, sy0 + T, -64, a, sy1, ARC_H + LAND + 32, TEX_WALL))
+    # Session 42: the south wall opens 20 ft wide into the lunch room (dining_lunch()).
+    W(box(a - 32, sy0 + T, -64, a, LU_Y0, ARC_H + LAND + 32, TEX_WALL))
+    W(box(a - 32, LU_Y0, -64, a, LU_Y1, LAND, TEX_WALL))
+    W(box(a - 32, LU_Y0, LAND + 16 * FT, a, LU_Y1, ARC_H + LAND + 32, TEX_WALL))
+    W(box(a - 32, LU_Y1, -64, a, sy1, ARC_H + LAND + 32, TEX_WALL))
     # Session 14: the Cassatt niche in the north wall (+x) at the landing, a 10 ft round-headed
     # recess through the 32 u wall with Weinman's bronze of Alexander Cassatt on a pedestal, facing south.
     ny0, ny1, nz0, nr = 1240, 1360, LAND, 60
     nzs = nz0 + 18 * FT                       # springing of the niche head
     zt = ARC_H + LAND + 32
-    W(box(b, sy0 + T, -64, b + 32, ny0, zt, TEX_WALL))
+    # Session 42: a 6 ft doorway west of the niche into the dining room (dining_lunch()).
+    W(box(b, sy0 + T, -64, b + 32, DN_Y0, zt, TEX_WALL))
+    W(box(b, DN_Y0, -64, b + 32, DN_Y1, LAND, TEX_WALL))
+    W(box(b, DN_Y0, LAND + DOOR_H, b + 32, DN_Y1, zt, TEX_WALL))
+    W(box(b, DN_Y1, -64, b + 32, ny0, zt, TEX_WALL))
     W(box(b, ny1, -64, b + 32, sy1, zt, TEX_WALL))
     W(box(b, ny0, -64, b + 32, ny1, nz0, TEX_WALL))
     W(box(b, ny0, nzs + nr + 16, b + 32, ny1, zt, TEX_WALL))
@@ -597,6 +652,7 @@ def build():
         W(box(a, y, -64, b, y + run // steps, (i + 1) * LAND // steps, TEX_FLOOR))
     W(box(a, sy0 + T + run, -64, b, sy1, LAND, TEX_FLOOR))
     arcade(W, det, ents)
+    dining_lunch(W, det, ents)
 
     # Groin vaults over the three bays.
     for i in range(3):
