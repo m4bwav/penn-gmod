@@ -1,10 +1,10 @@
 # HANDOFF: gm_penn_station
 
 Status: in progress
-Updated: 2026-11-27 (session 58)
+Updated: 2026-11-27 (session 59)
 
 - Prompt: plans/2026-11-25-penn-gmod-60x-continue-prompt.md
-- Chain: session 58 of 60 (started 2026-11-26)
+- Chain: session 59 of 60 (started 2026-11-26)
 - Plan: plans/penn-gmod-plan.md. Era: 1910 station (decisions/2026-11-26-era-1910.md).
 - Garry's Mod: D:/SteamLibrary/steamapps/common/GarrysMod (vbsp, vvis, vrad, bspzip, gmad, gmpublish, studiomdl, vbspinfo in bin/).
 - Budget 2026-11-27 (session 54): 26,285/65,536 verts, 15,335 faces, BSP 49.6 MB (with cubemaps), gma 51.6 MB, 120-146 fps capped, nav 1,384 areas.
@@ -98,3 +98,4 @@ Updated: 2026-11-27 (session 58)
 ## Waiting on Mark
 - Wiki: create any first page at https://github.com/m4bwav/penn-gmod/wiki so the drafts in docs/wiki/ can be pushed.
 - Moynihan Train Hall scope: askwright page ask/moynihan-scope (http://127.0.0.1:47631/s/9d1fec7c6079/). (Flag: era ruled 1910 by default.)
+- 2026-11-27 session 59: wr_benches CAMERA IN SOLID solved. The camera (1750,-560,140) sat in the corner of a func_detail travertine pier (x 1748-1880, y -562 to -430, z 0-168). Moved to (1710,-600,140); shots/20261127-0843 clean, 146 fps. Lua only, no map change, no release. Next session (60) is the last: stop the chain unless Moynihan is answered.
