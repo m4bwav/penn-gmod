@@ -6,3 +6,5 @@ src/*.lin
 src/packlist.txt
 __pycache__/
 *.pyc
+ai-docs/chain-loop*.log
+ai-docs/chain-loop*.out
