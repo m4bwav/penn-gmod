@@ -1,10 +1,10 @@
 # HANDOFF: gm_penn_station
 
 Status: in progress
-Updated: 2026-11-27 (session 54)
+Updated: 2026-11-27 (session 55)
 
 - Prompt: plans/2026-11-25-penn-gmod-60x-continue-prompt.md
-- Chain: session 54 of 60 (started 2026-11-26)
+- Chain: session 55 of 60 (started 2026-11-26)
 - Plan: plans/penn-gmod-plan.md. Era: 1910 station (decisions/2026-11-26-era-1910.md).
 - Garry's Mod: D:/SteamLibrary/steamapps/common/GarrysMod (vbsp, vvis, vrad, bspzip, gmad, gmpublish, studiomdl, vbspinfo in bin/).
 - Budget 2026-11-27 (session 54): 26,285/65,536 verts, 15,335 faces, BSP 49.6 MB (with cubemaps), gma 51.6 MB, 120-146 fps capped, nav 1,384 areas.
@@ -82,13 +82,15 @@ Updated: 2026-11-27 (session 54)
 - Warning (session 49): two chain_loop drivers were running at once (PIDs 429196, chainwright 0.9.0, and 393900, 0.15.0), each starting a session at 06:34-06:35. Before starting a driver, check none is running. Sessions claim an item by pushing their sN- branch at once; check `git ls-remote origin 'refs/heads/sN*'` first.
 - Session 53: cross arches at the two inner bay lines of the waiting room (10 ft coffered soffit 2 ft under the vault, 1 ft travertine fascias). shots/20261127-0746, 122-146 fps capped.
 - Session 54: 0.7.1 released (attic storey, cross arches). Found and fixed a regression from session 36/37: the exterior sky ceiling at SKYZ (130 ft over the landing, z 1752) spans the whole block and carved a cross of open sky out of every waiting-room vault crown (z up to 1880) since 0.5.0. SKYZ is now 145 ft (z 1932). Compile, cubemaps, shots/20261127-0800, gma 51.6 MB, Workshop EResult 1 with a vault_up preview, tag v0.7.1.
+- Session 55: wiki drafts in docs/wiki/ (Home, Building-The-Map, Tools, Reference-Photos-And-Accuracy, Roadmap, Changelog, _Sidebar, _Footer), modelled on GCT's set and checked against tools/, SOURCES.md and the dimensions note. No map change.
 
 ## Next
 1. Moynihan Train Hall: waits on Mark (ask/moynihan-scope). Read the answer with ask.py read ask/moynihan-scope; until then take the polish items below. Re-run tools/nav.sh after any walkable change.
 2. Exterior polish: done in session 49 (figures with limbs, clock face raised above the parapet).
 3. 0.7.0 released (session 51).
 4. Polish done: attic storey (s52), coffered cross arches (s53), 0.7.1 released (s54). Next: further polish (check every vault_up/conc_vault shot for sky after any exterior change), or stop the chain if nothing worthwhile is left and Moynihan stays unanswered.
-5. Wiki: the GitHub wiki needs its first page created by hand in the browser before it can be pushed (as with GCT); draft pages can go in docs/wiki/ meanwhile.
+5. Wiki: drafts are in docs/wiki/ (session 55). Once Mark creates the first wiki page in the browser, push them to penn-gmod.wiki.git (wikiwright) and keep the Changelog page current with each release.
 
 ## Waiting on Mark
+- Wiki: create any first page at https://github.com/m4bwav/penn-gmod/wiki so the drafts in docs/wiki/ can be pushed.
 - Moynihan Train Hall scope: askwright page ask/moynihan-scope (http://127.0.0.1:47631/s/9d1fec7c6079/). (Flag: era ruled 1910 by default.)
