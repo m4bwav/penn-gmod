@@ -206,7 +206,43 @@ def lattice():
     return m
 
 
-MODELS = {"lattice": lattice, "corinthian": corinthian, "lamp": lamp, "cassatt": cassatt, "doric": doric}
+CONC_HX, CONC_HY = 3772 // 6, 100 * FT   # concourse bay half-width (build_vmf.py BAYS) and half-depth
+CONC_SPRING, CONC_RISE = 45 * FT, 55 * FT  # build_vmf.py C_SPRING, C_RISE
+
+
+def _truss(m, curve, depth=20, n=24):
+    """Steel truss rib under a vault: an outer chord 4 u below the glass, an inner chord `depth`
+    lower, zigzag lacing between them. curve(t, inset) -> point for t in 0..pi."""
+    outer = [curve(math.pi * i / n, 4) for i in range(n + 1)]
+    inner = [curve(math.pi * i / n, 4 + depth) for i in range(n + 1)]
+    for ch in (outer, inner):
+        for p, q in zip(ch, ch[1:]):
+            _bar(m, "steel", p, q, 6)
+    for i in range(n):
+        a, b = (outer[i], inner[i + 1]) if i % 2 == 0 else (inner[i], outer[i + 1])
+        _bar(m, "steel", a, b, 3)
+
+
+def conc_arch():
+    """Session 20: transverse arch across the concourse at an inner bay line, following the glass
+    vaults' profile across y (spring 45 ft, rise 55 ft over the 200 ft depth). Origin: floor, mid-depth."""
+    m = Mesh()
+    hy, zs, rise = CONC_HY, CONC_SPRING, CONC_RISE
+    _truss(m, lambda t, k: (0, (hy - k) * math.cos(t), zs + (rise - k) * math.sin(t)), depth=30)
+    return m
+
+
+def conc_diag():
+    """Session 20: the two diagonal ribs on one glass groin vault's groins (corner to corner over
+    the crown). Origin: floor at the bay centre."""
+    m = Mesh()
+    hx, hy, zs, rise = CONC_HX, CONC_HY, CONC_SPRING, CONC_RISE
+    for sx in (1, -1):
+        _truss(m, lambda t, k, sx=sx: (sx * hx * math.cos(t), hy * math.cos(t), zs + rise * math.sin(t) - k))
+    return m
+
+
+MODELS = {"conc_arch": conc_arch, "conc_diag": conc_diag, "lattice": lattice, "corinthian": corinthian, "lamp": lamp, "cassatt": cassatt, "doric": doric}
 
 
 def build():

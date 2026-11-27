@@ -1,13 +1,13 @@
 # HANDOFF: gm_penn_station
 
 Status: in progress
-Updated: 2026-11-26 (session 19)
+Updated: 2026-11-26 (session 20)
 
 - Prompt: plans/2026-11-25-penn-gmod-60x-continue-prompt.md
-- Chain: session 19 of 60 (started 2026-11-26)
+- Chain: session 20 of 60 (started 2026-11-26)
 - Plan: plans/penn-gmod-plan.md. Era: 1910 station (decisions/2026-11-26-era-1910.md).
 - Garry's Mod: D:/SteamLibrary/steamapps/common/GarrysMod (vbsp, vvis, vrad, bspzip, gmad, gmpublish, studiomdl, vbspinfo in bin/).
-- Budget 2026-11-26 (session 19): 6,263/65,536 verts, 4,139 faces, BSP 18.7 MB. 146 fps capped.
+- Budget 2026-11-26 (session 20): 6,263/65,536 verts, 4,139 faces, BSP 19.9 MB. 146 fps capped.
 - Workshop ID: 3846546331 (public, 0.2.0). tools/package.sh defaults to it.
 - Driver: the user-level chain_loop (C:/Users/m4bwa/.chainwright/penn-prompt.md, stop check penn_stop.py, log penn-chain.log, 60 sessions / 24 h) runs this chain. Sessions it starts never start another driver.
 
@@ -41,9 +41,10 @@ Updated: 2026-11-26 (session 19)
 - Session 17: 0.2.0 released (area 2). README, Workshop description and previews, level map now draws both walking levels (make_map.py LAND) with labels for every area, gma uploaded, tag v0.2.0. shots/20261126-2307.
 - Session 18: area 3 refs + blockout. 6 PD concourse refs (HABS Cervin Robinson x4, Popko roof detail, Pennell 'Hall of iron'; refs/SOURCES.md). concourse() in build_vmf.py: 314 x 200 ft west of the waiting room (y CY0..CY1), floor level 0, three glass groin bays (spring 45 ft, crown ~100 ft, penn/window_glass), 16 blockout lattice columns (metal/metalwall001a boxes), joined through the waiting room's three west passages (glow doors removed). Cameras conc_south, conc_east, conc_vault, wr_to_conc. shots/20261126-2317. Not released.
 - Session 19: area 3 detail 1. lattice.mdl (tools/penn_models.py: four angle posts on a 3 ft square, zigzag lacing, base shoe, cap, four curved arch ribs flaring 16 ft out and 10 ft up) replaces the 16 box columns; steel.vmt. Roof glass is now penn/conc_glass (dark glazing grid on pale wired glass, texlight 70 in lights.rad). shots/20261126-2324. Not released.
+- Session 20: concourse steel ribs. conc_diag.mdl (truss ribs on both groins of a bay, 3 placed) and conc_arch.mdl (transverse truss arch, at the two inner bay lines) in tools/penn_models.py, prop_static with disableshadows=1 (without it vrad's prop shadows blacked out the whole roof). shots/20261126-2332. Not released.
 
 ## Next
-1. Area 3 detail: steel arch ribs on the groin edges and transverse arches between bays (MDL), ribs on lattice.mdl could follow the groin curve upward instead of ending flat, travertine arcade of round arches on the east wall (photos), stairs down to the tracks with railings (refs: CONCOURSE_FROM_SOUTH), clock. Then lighting, then 0.3.0.
+1. Area 3 detail: a thin vertical line hangs from the middle bay's crown in conc_south (probably a degenerate tri in conc_diag/conc_arch; check). Ribs on lattice.mdl could follow the groin curve upward instead of ending flat, travertine arcade of round arches on the east wall (photos), stairs down to the tracks with railings (refs: CONCOURSE_FROM_SOUTH), clock. Then lighting, then 0.3.0.
 2. Optional leftovers: attic storey above the waiting-room side arches, coffered soffits on the cross arches, eagles/clock on the facade; the colonnade cornice still reads dark from the street.
 3. Wiki: the GitHub wiki needs its first page created by hand in the browser before it can be pushed (as with GCT); draft pages can go in docs/wiki/ meanwhile.
 
