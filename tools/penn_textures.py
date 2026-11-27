@@ -150,3 +150,16 @@ for k in range(0, N, c4):
 save(img, "sidewalk", "concrete")
 img = np.array([70, 70, 72], float) * (1 + fbm(N, 6) * 0.18 + (rng.random((N, N)) - .5) * 0.12)[..., None]
 save(img, "asphalt", "concrete")
+
+# Session 19, train concourse roof: pale wired glass in a dark steel glazing grid (8 x 4 panes per
+# tile, heavier bars every second row), after the HABS concourse photos. Low texlight in lights.rad.
+CG = np.array([196, 204, 206], float)
+img = CG * (1 + fbm(N, 5) * 0.06)[..., None]
+img *= np.linspace(1.04, 0.94, N)[:, None, None]
+ST = np.array([38, 40, 42], float)
+for k in range(0, N, N // 8):
+    img[:, k:k + 6] = ST
+for k in range(0, N, N // 4):
+    w = 12 if (k // (N // 4)) % 2 == 0 else 6
+    img[k:k + w] = ST
+save(img, "conc_glass", "glass")

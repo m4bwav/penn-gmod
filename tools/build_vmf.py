@@ -41,6 +41,7 @@ CY1 = -HY - T - 10 * FT                                # -868: east edge, end of
 CY0 = CY1 - 200 * FT                                   # -3268: west edge
 C_SPRING, C_RISE = 45 * FT, 55 * FT                    # glass vaults spring at 45 ft, crown about 100 ft
 TEX_STEEL = "metal/metalwall001a"
+TEX_CGLASS = "penn/conc_glass"                         # session 19: gridded roof glass, 32 ft per tile
 
 TEX_FLOOR = "penn/floor_travertine"
 TEX_WALL = "penn/travertine_ashlar"
@@ -48,7 +49,7 @@ TEX_VAULT = "penn/vault_coffer"
 TEX_TRIM = "penn/travertine"
 TEX_COL = "penn/travertine"
 # Texture scale: 512 px tiles. Ashlar 16 ft (4 ft courses), coffers 12 ft 10 in, floor slabs 10 ft 8 in.
-vmf_lib.SCALE.update({TEX_WALL: 0.375, TEX_TRIM: 0.375, TEX_VAULT: 0.6, TEX_FLOOR: 0.5})
+vmf_lib.SCALE.update({TEX_WALL: 0.375, TEX_TRIM: 0.375, TEX_VAULT: 0.6, TEX_FLOOR: 0.5, "penn/conc_glass": 0.75})
 TEX_GLASS = "penn/window_glass"
 TEX_DOOR = "penn/window_glow"
 NODRAW = "tools/toolsnodraw"
@@ -153,15 +154,15 @@ def concourse(W, det, ents, top):
         W(box(a, CY1, ARC_H + 32, b, -HY - T, top, TEX_WALL))
     # Glass groin vaults: one per waiting-room bay, spanning the full 200 ft depth.
     for i in range(3):
-        groin(W, BAYS[i], BAYS[i + 1], CY0, CY1, C_SPRING, C_RISE, TEX_GLASS)
+        groin(W, BAYS[i], BAYS[i + 1], CY0, CY1, C_SPRING, C_RISE, TEX_CGLASS)
     # Fill between the vault crowns and the waiting room's west wall top.
     W(box(-HX - T, CY0 - T, ctop, HX + T, -HY - T, ctop + 64, NODRAW))
-    # Steel lattice columns (blockout boxes; the detail pass makes them MDL): at every bay line
+    # Steel lattice columns (lattice.mdl since session 19): at every bay line
     # on both long sides and two rows across the floor, each 3 ft square up to the springing.
     for x in BAYS:
         for y in (CY0 + 2 * FT, CY0 + 70 * FT, CY1 - 70 * FT, CY1 - 2 * FT):
             xx = max(-HX + 2 * FT, min(HX - 2 * FT, x))
-            det(box(xx - 18, y - 18, 0, xx + 18, y + 18, C_SPRING, TEX_STEEL))
+            ents.append(ent("prop_static", (xx, y, 0), model="models/penn/lattice.mdl", solid="6"))
     for i in range(3):
         cx = (BAYS[i] + BAYS[i + 1]) // 2
         ents.append(ent("light", (cx, (CY0 + CY1) // 2, C_SPRING), _light="215 225 240 40"))
