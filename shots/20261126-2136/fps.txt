@@ -1,0 +1,3 @@
+arcade_west    1018 fps
+arcade_vault   1060 fps
+arcade_stairarch  909 fps

@@ -13,3 +13,4 @@
 - 2026-11-26 session 10: arcade detail 1 (shopfront texture, pilasters, impost cornice). Commons search found no PD arcade photo; Pennell's etching (DPLA) is the only arcade ref and shows the stair-hall arch end. vmf_lib.FACEUV lets one material carry a per-axis scale and shift: used to fit one shopfront per bay. vbspinfo 3,506 verts, 2,147 faces, BSP 9.6 MB; 950-1,010 fps.
 - 2026-11-26 Shared GMod lock: tools/gmod_lock.sh, used by compile/shots/nav/package; shots and nav kill only their own gmod.exe. Added because penn-modern-gmod shares the GMod install.
 - 2026-11-26 session 11: stair-hall arch end of the arcade (architrave, keystone, glazed mullioned west lunette). vbspinfo 3,698 verts, 2,235 faces, BSP 8.6 MB; 1,096-1,112 fps.
+- 2026-11-26 session 12: vmf_lib.groin(crown=tex) textures the middle two strips per triangle; arcade webs now plain travertine, coffers in a cross along the ridges. vbspinfo unchanged 3,698 verts; 909-1,060 fps. shots/20261126-2136.
