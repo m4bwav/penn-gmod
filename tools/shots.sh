@@ -8,6 +8,7 @@ D="$G/garrysmod/data"
 echo 4000 > "$G/steam_appid.txt"
 cp tools/lua/penn_shots.lua "$G/garrysmod/lua/autorun/client/penn_shots.lua"
 cp tools/lua/a_penn_nofnaf.lua "$G/garrysmod/lua/autorun/a_penn_nofnaf.lua"
+mkdir -p "$G/garrysmod/lua/autorun/server"; cp tools/lua/penn_shots_sv.lua "$G/garrysmod/lua/autorun/server/penn_shots_sv.lua"
 EXTRA=""; [ -n "$UNCAP" ] && EXTRA="+fps_max 0 +mat_vsync 0" ; EXTRA="$EXTRA $GARGS"   # GARGS: extra launch args, e.g. "+sv_cheats 1 +mat_fullbright 1"
 mkdir -p "$D"; rm -rf "$D/penn_shots"; echo "${CAMS:-go}" > "$D/penn_shots_go.txt"
 "$G/gmod.exe" -windowed -w 1600 -h 900 -novid -nojoy -condebug +sv_cheats 1 +vj_fnaf_cache 0 +r_drawviewmodel 0 $EXTRA +map gm_penn_station &
@@ -15,7 +16,7 @@ for n in $(seq 1 ${WAIT:-180}); do [ -f "$D/penn_shots/done.txt" ] && break; sle
 sleep 5
 # Every gmod.exe by PID (Lua quit is blocked in this GMod build; qw pid matched a helper process, not the game).
 for PID in $(tasklist //FI "IMAGENAME eq gmod.exe" //FO CSV //NH | cut -d'"' -f4); do taskkill //PID "$PID" //F >/dev/null 2>&1; done
-rm -f "$G/garrysmod/lua/autorun/a_penn_nofnaf.lua" "$G/garrysmod/lua/autorun/client/penn_shots.lua" "$D/penn_shots_go.txt"
+rm -f "$G/garrysmod/lua/autorun/server/penn_shots_sv.lua" "$G/garrysmod/lua/autorun/a_penn_nofnaf.lua" "$G/garrysmod/lua/autorun/client/penn_shots.lua" "$D/penn_shots_go.txt"
 stamp=$(date +%Y%m%d-%H%M); mkdir -p "shots/$stamp"
 cp "$D"/penn_shots/*.jpg "$D"/penn_shots/fps.txt "shots/$stamp/" 2>/dev/null; ls "shots/$stamp"
 cat "shots/$stamp/fps.txt" 2>/dev/null

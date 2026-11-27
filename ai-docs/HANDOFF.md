@@ -1,13 +1,13 @@
 # HANDOFF: gm_penn_station
 
 Status: in progress
-Updated: 2026-11-26 (session 7)
+Updated: 2026-11-26 (session 8)
 
 - Prompt: plans/2026-11-25-penn-gmod-60x-continue-prompt.md
-- Chain: session 7 of 60 (started 2026-11-26)
+- Chain: session 8 of 60 (started 2026-11-26)
 - Plan: plans/penn-gmod-plan.md. Era: 1910 station (decisions/2026-11-26-era-1910.md).
 - Garry's Mod: D:/SteamLibrary/steamapps/common/GarrysMod (vbsp, vvis, vrad, bspzip, gmad, gmpublish, studiomdl, vbspinfo in bin/).
-- Budget 2026-11-26 (session 7): 2,488/65,536 verts, 1,513 faces, BSP 7.6 MB. 850-930 fps uncapped.
+- Budget 2026-11-26 (session 8): 2,653/65,536 verts, 1,637 faces, BSP 7.7 MB. 750-1,000 fps uncapped.
 - Workshop ID: 3846546331 (public, 0.1.0). tools/package.sh defaults to it.
 - Driver: the user-level chain_loop (C:/Users/m4bwa/.chainwright/penn-prompt.md, stop check penn_stop.py, log penn-chain.log, 60 sessions / 24 h) runs this chain. Sessions it starts never start another driver.
 
@@ -23,8 +23,10 @@ Updated: 2026-11-26 (session 7)
 
 - Session 7: 0.1.0 released. Workshop 3846546331 public (title, description, 5 previews), README with Z-Image banner, level map (make_map.py rewritten for Penn's +x north axes), LICENSE, SECURITY.md, repo public, tag v0.1.0. FNaF overlay fixed: tools/lua/a_penn_nofnaf.lua sets VJ_FNAFSB_CACHED during shot runs. shots/20261126-2113.
 
+- Session 8: area 1 polish. 4 ft niches behind every side arch up to the crown (NICHE in build_vmf.py; the wall sits back and filler brushes bring the face forward), so the arches read as openings. Shots no longer show the physgun: tools/lua/penn_shots_sv.lua (PlayerLoadout returns true) is installed by shots.sh for shot runs only; hiding the viewmodel was not enough. shots/20261126-2121, -2122. Not released; ships with 0.2.0.
+
 ## Next
-1. Area 1 polish before the arcade (optional, short): attic storey with clerestory windows above the side arches, coffered soffits on the cross arches, darker recesses behind the arches (they open into side passages), physgun glow in shots (strip weapons in the shot Lua).
+1. Left over from the polish list (optional): attic storey above the side arches, coffered soffits on the cross arches. The west doors still show flat sky-blue glow; the concourse will replace them.
 2. Area 2: arcade and shopping corridor from Seventh Avenue plus the entrance colonnade: refs, blockout joined through the east stair door, detail, lighting, 0.2.0.
 3. Wiki: the GitHub wiki needs its first page created by hand in the browser before it can be pushed (as with GCT); draft pages can go in docs/wiki/ meanwhile.
 
