@@ -1,0 +1,3 @@
+arcade_west    1071 fps
+arcade_east    1051 fps
+arcade_lamp    1077 fps

@@ -23,6 +23,9 @@ COL_R = 42               # shaft radius at the base (7 ft diameter)
 
 VMTS = {
     "travertine": '"VertexLitGeneric"\n{\n\t"$basetexture" "penn/travertine"\n\t"$surfaceprop" "stone"\n}\n',
+    "bronze": '"VertexLitGeneric"\n{\n\t"$basetexture" "models/debug/debugwhite"\n\t"$color2" "[0.32 0.22 0.11]"\n'
+              '\t"$phong" "1"\n\t"$phongboost" "2"\n\t"$phongexponent" "20"\n\t"$phongfresnelranges" "[0.4 0.8 1]"\n\t"$surfaceprop" "metal"\n}\n',
+    "globe": '"UnlitGeneric"\n{\n\t"$basetexture" "models/debug/debugwhite"\n\t"$color2" "[1 0.9 0.72]"\n\t"$surfaceprop" "glass"\n}\n',
 }
 
 
@@ -82,7 +85,29 @@ def corinthian():
     return m
 
 
-MODELS = {"corinthian": corinthian}
+LAMP_GLOBE_Z = 15 * FT    # globe centres above the floor; build_vmf.py puts a light there
+
+
+def lamp():
+    """Arcade lamp standard (session 13, after Pennell's etching): a bronze candelabrum, stepped
+    base, fluted post, four arms and a top finial, each ending in a frosted globe. Origin on the floor."""
+    m = Mesh()
+    m.lathe("bronze", [(0, 0), (20, 0), (20, 4), (16, 6), (16, 12), (12, 14), (9, 18), (6, 24), (0, 24)], 0, 0, 0, 16)
+    fluted(m, "bronze", 5, 4, 24, 13 * FT, flutes=8, depth=1.2, rings=2)
+    top = 13 * FT
+    m.lathe("bronze", [(0, top), (8, top), (8, top + 3), (5, top + 6), (5, top + 12), (0, top + 12)], 0, 0, 0, 16)
+    g = LAMP_GLOBE_Z
+    for k in range(4):
+        t = math.pi / 4 + k * math.pi / 2
+        ex, ey = 30 * math.cos(t), 30 * math.sin(t)
+        m.tube("bronze", (0, 0, top + 6), (ex, ey, g - 10), 2, 1.5, 6)
+        m.lathe("bronze", [(0, g - 13), (4, g - 13), (5, g - 8), (0, g - 8)], ex, ey, 0, 10)
+        m.sphere("globe", ex, ey, g, 8, 8)
+    m.sphere("globe", 0, 0, top + 22, 9, 8)
+    return m
+
+
+MODELS = {"corinthian": corinthian, "lamp": lamp}
 
 
 def build():
