@@ -195,12 +195,14 @@ def lattice():
             z += step
             k += 1
     m.lathe("steel", [(0, h - 24), (22, h - 24), (22, h - 12), (28, h - 8), (28, h), (0, h)], 0, 0, 0, 4)
-    # Flared arch ribs: quarter curves from the cap rising 10 ft while reaching 16 ft out.
+    # Flared arch ribs (session 25): the first 60 degrees of an elliptical curve, so each rib leaves
+    # the cap vertically and is still climbing (about 45 degrees) where it meets the vault, 12 ft out
+    # and 21 ft up, instead of ending flat.
     for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
         pts = []
-        for j in range(7):
-            t = j / 6 * math.pi / 2
-            r, z = 16 * FT * (1 - math.cos(t)), h - 12 + 10 * FT * math.sin(t)
+        for j in range(9):
+            t = j / 8 * math.pi / 3
+            r, z = 24 * FT * (1 - math.cos(t)), h - 12 + 24 * FT * math.sin(t)
             pts.append((dx * (c + r), dy * (c + r), z))
         for p, q in zip(pts, pts[1:]):
             _bar(m, "steel", p, q, 8)
