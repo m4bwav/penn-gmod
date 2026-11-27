@@ -81,9 +81,11 @@ Updated: 2026-11-27 (session 49)
 ## Next
 1. Moynihan Train Hall: waits on Mark (ask/moynihan-scope). Read the answer with ask.py read ask/moynihan-scope; until then take the polish items below. Re-run tools/nav.sh after any walkable change.
 2. Exterior polish: done in session 49 (figures with limbs, clock face raised above the parapet).
-3. Flag: the avenue front is 780 ft, about 350 ft longer than the real 430 ft (side fronts about 680 ft match the real length). Shortening it means moving EX_FX in and checking nothing inside crosses the new line. A sourced track plan would still confirm the 21-track layout.
+3. PR #57 (avenue front cut to the real 430 ft) compiled but is unverified: rebuild its branch, cubemaps, shoot front_*/side_*, then merge or close.
+3b. Flag: the avenue front is 780 ft, about 350 ft longer than the real 430 ft (side fronts about 680 ft match the real length). Shortening it means moving EX_FX in and checking nothing inside crosses the new line. A sourced track plan would still confirm the 21-track layout.
 4. Optional leftovers: attic storey above the waiting-room side arches, coffered soffits on the cross arches.
 5. Wiki: the GitHub wiki needs its first page created by hand in the browser before it can be pushed (as with GCT); draft pages can go in docs/wiki/ meanwhile.
 
 ## Waiting on Mark
+- Two chain_loop drivers run this chain: PID 429196 (chainwright 0.9.0, max 12 sessions) and PID 393900 (0.15.0, max 60). Stop one (`taskkill /PID <pid>`); the second's sessions stop themselves when they see a sibling, but each still costs a start.
 - Moynihan Train Hall scope: askwright page ask/moynihan-scope (http://127.0.0.1:47631/s/9d1fec7c6079/). (Flag: era ruled 1910 by default.)
