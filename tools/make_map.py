@@ -11,6 +11,7 @@ from PIL import Image, ImageDraw, ImageFont
 VMF = Path(__file__).resolve().parent.parent / "src" / "gm_penn_station.vmf"
 OUT = Path(sys.argv[1] if len(sys.argv) > 1 else "docs/level-map.png")
 FT = 12
+LAND = 16 * FT   # arcade and street level
 txt = VMF.read_text()
 solids = []
 for blk in re.split(r"(?m)^\s*solid$", txt)[1:]:
@@ -39,8 +40,9 @@ for pts, tex in solids:
     zs = [p[2] for p in pts]; lo, hi = min(zs), max(zs)
     xy = hull([(p[0], p[1]) for p in pts])
     if hi - lo > 2000 or len(xy) < 3: continue
-    if lo <= 4*FT <= hi: floor.append(xy)
-    elif lo <= 30*FT <= hi: faint.append(xy)
+    # two walking levels: the waiting room floor (z 0) and the arcade/street landing (z 16 ft)
+    if any(lo <= z + 4*FT <= hi for z in (0, LAND)): floor.append(xy)
+    elif any(lo <= z + 30*FT <= hi for z in (0, LAND)): faint.append(xy)
 allx = [x for h in floor for x, _ in h]; ally = [y for h in floor for _, y in h]
 x0, x1, y0, y1 = min(allx), max(allx), min(ally), max(ally)
 W = 1600; s = (W - 120) / (y1 - y0)
@@ -55,10 +57,10 @@ for h in faint: d.polygon([P(*q) for q in h], fill=(222, 210, 186))
 for h in floor: d.polygon([P(*q) for q in h], fill=(120, 96, 64))
 for x, y in spawn:
     cx, cy = P(x, y); d.ellipse((cx-10, cy-10, cx+10, cy+10), fill=(200, 40, 40)); d.text((cx+14, cy-12), "spawn", fill=(200, 40, 40), font=f)
-for lbl, x, y in (("Main waiting room", 0, 0), ("Stair up to the arcade (east)", 0, 1000),
-                  ("Openings to the concourse (west, sealed)", 0, -560)):
+for lbl, x, y in (("Waiting room", 1300, 0), ("Stair", 0, 1000), ("Arcade", 0, 2800),
+                  ("Concourse openings (sealed)", -1500, 0), ("Colonnade, Seventh Ave", -900, 4700)):
     cx, cy = P(x, y); w = d.textlength(lbl, font=f); d.rectangle((cx-w/2-6, cy-16, cx+w/2+6, cy+14), fill=(255, 255, 255)); d.text((cx-w/2, cy-13), lbl, fill=(30, 30, 30), font=f)
 d.text((60, 30), "gm_penn_station: rough plan", fill=(40, 30, 20), font=fb)
-d.text((60, 78), f"dark = walls and columns at chest height, light = at 30 ft   |   grid 50 ft   |   {round((y1-y0)/FT)} x {round((x1-x0)/FT)} ft   |   N up", fill=(80, 70, 60), font=f)
+d.text((60, 78), f"dark = walls and columns at chest height, light = at 30 ft, both levels   |   grid 50 ft   |   {round((y1-y0)/FT)} x {round((x1-x0)/FT)} ft   |   N up", fill=(80, 70, 60), font=f)
 d.text((60, H-45), "Generated from src/gm_penn_station.vmf by tools/make_map.py", fill=(120, 110, 100), font=f)
 OUT.parent.mkdir(parents=True, exist_ok=True); img.save(OUT); print("wrote", OUT, len(floor), "brushes")

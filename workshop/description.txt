@@ -1,12 +1,12 @@
 [h1]Pennsylvania Station, 1910[/h1]
-The lost Pennsylvania Station in New York, as McKim, Mead & White built it in 1910 and as it stood until 1963, at true scale. This first release is the main waiting room: three groin-vaulted bays 150 ft high, coffered vaults, giant Corinthian columns, thermal windows with morning sun on the floor, and the grand stair up to the arcade.
+The lost Pennsylvania Station in New York, as McKim, Mead & White built it in 1910 and as it stood until 1963, at true scale. Walk in from Seventh Avenue through the Doric colonnade, down the 225 ft shopping arcade with its bronze shopfronts and lamp standards, past the Cassatt statue and down the grand stair into the main waiting room: three groin-vaulted bays 150 ft high, coffered vaults, giant Corinthian columns and thermal windows with morning sun on the floor.
 
-The arcade, the steel-and-glass train concourse, the platforms and the Seventh Avenue colonnade will follow in updates.
+The steel-and-glass train concourse and the platforms will follow in updates.
 
 [h2]Details[/h2]
 [list]
 [*]Map name: gm_penn_station
-[*]Two spawns: the waiting room floor and the top of the arcade stair (see the level map in the screenshots)
+[*]Two spawns: the Seventh Avenue end of the arcade and the waiting room floor (see the level map in the screenshots)
 [*]Runs at hundreds of frames per second on a mid-range PC
 [*]Needs nothing else installed
 [/list]
