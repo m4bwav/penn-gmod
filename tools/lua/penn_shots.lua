@@ -25,6 +25,8 @@ local CAMS = {
   { "plat_stairfoot", Vector(-300, -3400, -170), Angle(5, 75, 0) },
   { "plat_long", Vector(-300, -4200, -175), Angle(2, -90, 0) },
   { "plat_tracks", Vector(-628, -5200, -150), Angle(12, 180, 0) },
+  { "train_nose", Vector(-260, -5150, -170), Angle(4, 70, 0) },
+  { "train_side", Vector(-220, -4300, -172), Angle(3, 55, 0) },
   { "conc_clock", Vector(0, -1900, 200), Angle(-25, 90, 0) },
   { "wr_to_conc", Vector(0, 300, 72), Angle(-4, -90, 0) },
   { "arcade_west", Vector(0, 4000, 264), Angle(-4, -90, 0) },

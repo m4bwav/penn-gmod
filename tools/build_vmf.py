@@ -313,6 +313,9 @@ def platforms(W, det, ents, wells, sw):
     for t in tracks:                                                             # rails, standard gauge
         for g in (-28, 28):
             det(box(t + g - 2, PY0 - T - 40 * FT, P_BED, t + g + 2, CY1, P_RAIL, TEX_STEEL))
+    # Session 29: a train (three coaches and a DD1 electric) on the middle track, engine west.
+    ents.append(ent("prop_static", (tracks[3], CY1 - 20 * FT, P_RAIL), angles="0 180 0",
+                    model="models/penn/train.mdl", solid="6", disableshadows="1"))
     for c in wells:
         W(box(c - P_W // 2, PY0, P_BED, c + P_W // 2, CY1, P_TOP, TEX_FLOOR))
         # Steel columns on the platform centre line every 40 ft, clear of the stair enclosure.
