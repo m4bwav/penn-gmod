@@ -1,10 +1,10 @@
 # HANDOFF: gm_penn_station
 
 Status: in progress
-Updated: 2026-11-27 (session 48)
+Updated: 2026-11-27 (session 49)
 
 - Prompt: plans/2026-11-25-penn-gmod-60x-continue-prompt.md
-- Chain: session 48 of 60 (started 2026-11-26)
+- Chain: session 49 of 60 (started 2026-11-26)
 - Plan: plans/penn-gmod-plan.md. Era: 1910 station (decisions/2026-11-26-era-1910.md).
 - Garry's Mod: D:/SteamLibrary/steamapps/common/GarrysMod (vbsp, vvis, vrad, bspzip, gmad, gmpublish, studiomdl, vbspinfo in bin/).
 - Budget 2026-11-27 (session 46): 26,778/65,536 verts, 15,879 faces, BSP 50.7 MB (with cubemaps). (0.6.0: gma 45.8 MB, 875-1,271 fps uncapped.)
@@ -75,10 +75,12 @@ Updated: 2026-11-27 (session 48)
 - Session 47: 0.6.0 released (area 6, dining and lunch rooms). Nav mesh by tools/nav.sh (1,431 areas, ~5 min; src/gm_penn_station.nav is committed and package.sh ships it). Level map labels both rooms, README and Workshop text, gma 45.8 MB, 3 previews (EResult 1), tag v0.6.0. The worktree has no BSP: package.sh needs src/gm_penn_station.bsp copied from garrysmod/maps (the cubemapped one) first. shots/20261127-0624.
 
 - Session 48: Moynihan Train Hall put to Mark on an askwright page (ask/moynihan-scope, http://127.0.0.1:47631/s/9d1fec7c6079/; guess: build it in the penn-modern-gmod map instead). Exterior windows: new plain dark-slate penn/ext_glass texture (tools/penn_textures.py) replaces the blue pane grid. Full compile + cubemaps, 26,778/65,536 verts, BSP 51.8 MB, 146 fps capped. shots/20261127-0633 (sheet.jpg). Not released.
+- Session 49: clock group polish. The reclining figures are now jointed (_reclining() in tools/penn_models.py: drapery, hips, one leg out and one drawn up, torso propped on the near elbow, far arm across, neck, head). The clock face sat below the attic parapet's sight line from the avenue; the frame block, face, hands, cornice and pediment rose 4 ft (H = 48), and the face had pointed at the station since session 38: the prop is now yaw 0 (SMD +x = world +y). 26,778/65,536 verts, BSP 52.0 MB, 146-147 fps capped. shots/20261127-0645 (compare_clock.jpg, figures before/after), shots/20261127-0712 (face visible). Not released.
+- Warning (session 49): two chain_loop drivers were running at once (PIDs 429196, chainwright 0.9.0, and 393900, 0.15.0), each starting a session at 06:34-06:35. Before starting a driver, check none is running. Sessions claim an item by pushing their sN- branch at once; check `git ls-remote origin 'refs/heads/sN*'` first.
 
 ## Next
 1. Moynihan Train Hall: waits on Mark (ask/moynihan-scope). Read the answer with ask.py read ask/moynihan-scope; until then take the polish items below. Re-run tools/nav.sh after any walkable change.
-2. Exterior polish, optional: the clock group's reclining figures are blobs.
+2. Exterior polish: done in session 49 (figures with limbs, clock face raised above the parapet).
 3. Flag: the avenue front is 780 ft, about 350 ft longer than the real 430 ft (side fronts about 680 ft match the real length). Shortening it means moving EX_FX in and checking nothing inside crosses the new line. A sourced track plan would still confirm the 21-track layout.
 4. Optional leftovers: attic storey above the waiting-room side arches, coffered soffits on the cross arches.
 5. Wiki: the GitHub wiki needs its first page created by hand in the browser before it can be pushed (as with GCT); draft pages can go in docs/wiki/ meanwhile.

@@ -136496,7 +136496,7 @@ entity
 {
 	"id" "13507"
 	"classname" "prop_static"
-	"angles" "0 180 0"
+	"angles" "0 0 0"
 	"model" "models/penn/clock_group.mdl"
 	"solid" "0"
 	"disableshadows" "1"
