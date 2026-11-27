@@ -113,10 +113,10 @@ def arcade(W, det, ents):
         W(box(x0, YB, z0 - 64, x1, YB + T, ARC_H + LAND, TEX_WALL))
     v1 = YB + T + VEST
     W(box(a, YB, z0 - 64, b, v1, z0, TEX_FLOOR))
-    W(box(a - 32, YB + T, z0 - 64, a, v1 + 32, ARC_H + LAND + 32, TEX_WALL))
-    W(box(b, YB + T, z0 - 64, b + 32, v1 + 32, ARC_H + LAND + 32, TEX_WALL))
+    W(box(a - 32, YB + T, z0 - 64, a, v1, ARC_H + LAND + 32, TEX_WALL))
+    W(box(b, YB + T, z0 - 64, b + 32, v1, ARC_H + LAND + 32, TEX_WALL))
     W(box(a, YB + T, ARC_H + LAND, b, v1, ARC_H + LAND + 32, TEX_TRIM))
-    W(box(a, v1, z0, b, v1 + 32, ARC_H + LAND, TEX_DOOR))
+    colonnade(W, det, ents, v1)
     # Session 13 (Pennell's etching): bronze lamp standards in front of the pilasters at the four
     # inner bay lines, each with a small warm light at its globes (penn_models.LAMP_GLOBE_Z = 15 ft).
     for i in range(1, 5):
@@ -130,6 +130,46 @@ def arcade(W, det, ents):
     ents.append(ent("env_cubemap", (0, (YA + YB) // 2, LAND + 200)))
 
 
+def colonnade(W, det, ents, f0):
+    """Session 15: the Seventh Avenue entrance. The facade wall (y f0..f0+T) has the 40 ft
+    arcade opening; in front stands a Doric colonnade (doric.mdl, 35 ft) carrying a portico roof,
+    entablature and attic, then the sidewalk, the avenue and a stand-in block opposite, under sky."""
+    a, b, z0 = -ARC_W // 2, ARC_W // 2, LAND
+    f1 = f0 + T
+    FX, SKYZ, FTOP = 120 * FT, LAND + 130 * FT, LAND + 75 * FT
+    cy = f1 + 18 * FT                                   # column centre line
+    pe = cy + 4 * FT                                    # portico edge
+    sw1, st1, far = pe + 20 * FT, pe + 80 * FT, pe + 95 * FT
+    W(box(-FX, f0, z0 - 64, a, f1, FTOP, TEX_WALL))
+    W(box(b, f0, z0 - 64, FX, f1, FTOP, TEX_WALL))
+    W(box(a, f0, ARC_H + LAND, b, f1, FTOP, TEX_WALL))
+    # Ground: travertine portico, granite sidewalks, asphalt avenue a curb lower.
+    W(box(-FX, f1, z0 - 64, FX, pe, z0, TEX_FLOOR))
+    W(box(-FX, pe, z0 - 64, FX, sw1, z0 - 8, "penn/sidewalk"))
+    W(box(-FX, sw1, z0 - 64, FX, st1, z0 - 16, "penn/asphalt"))
+    W(box(-FX, st1, z0 - 64, FX, far, z0 - 8, "penn/sidewalk"))
+    # Enclosure: block opposite, side walls, sky over everything and behind the facade top.
+    W(box(-FX, far, z0 - 64, FX, far + 32, SKYZ, TEX_WALL))
+    for x0, x1 in ((-FX - 32, -FX), (FX, FX + 32)):
+        W(box(x0, f0 - 32, z0 - 64, x1, far + 32, SKYZ, TEX_WALL))
+    W(box(-FX, f0 - 32, FTOP, FX, f0, SKYZ, "tools/toolsskybox"))
+    W(box(-FX - 32, f0 - 32, SKYZ, FX + 32, far + 32, SKYZ + 32, "tools/toolsskybox"))
+    # Portico: roof slab on the columns, projecting cornice, attic; a cornice band on the facade.
+    cz = z0 + 35 * FT
+    PX = 11 * 108 + 5 * FT
+    sol = [box(-PX, f1, cz, PX, pe, cz + 7 * FT, TEX_TRIM),
+           box(-PX - 16, pe, cz + 5 * FT, PX + 16, pe + 18, cz + 7 * FT, TEX_TRIM),
+           box(-PX, f1, cz + 7 * FT, PX, pe - 6, cz + 14 * FT, TEX_WALL),
+           box(-PX - 8, pe - 6, cz + 14 * FT, PX + 8, pe + 4, cz + 15 * FT, TEX_TRIM),
+           box(-FX, f1, FTOP - 3 * FT, FX, f1 + 18, FTOP, TEX_TRIM)]
+    det("".join(sol))
+    for k in range(12):
+        ents.append(ent("prop_static", ((2 * k - 11) * 108, cy, z0), model="models/penn/doric.mdl", solid="6"))
+    ents.append(ent("light_environment", (0, cy, cz - 64), pitch="-40", angles="0 75 0",
+                    _light="255 238 214 280", _ambient="150 170 205 110"))
+    ents.append(ent("env_cubemap", (0, sw1, z0 + 100)))
+
+
 def build():
     world, ents = [], []
     W = world.append
@@ -138,7 +178,8 @@ def build():
     top = SPRING + RISE + 16 + 64
     # Sealed nodraw hull around everything.
     X0, X1 = -HX - T - 256, HX + T + 256
-    Y0, Y1 = -HY - T - 10 * FT - 256, YB + T + VEST + 256
+    # Session 15: the hull now reaches past the Seventh Avenue block opposite (colonnade()).
+    Y0, Y1 = -HY - T - 10 * FT - 256, YB + T + VEST + T + 117 * FT + 32 + 256
     Z0, Z1 = -128, top + 128
     for b in ((X0, Y0, Z0 - 64, X1, Y1, Z0), (X0, Y0, Z1, X1, Y1, Z1 + 64),
               (X0 - 64, Y0, Z0, X0, Y1, Z1), (X1, Y0, Z0, X1 + 64, Y1, Z1),

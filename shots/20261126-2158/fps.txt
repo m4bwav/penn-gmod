@@ -1,0 +1,5 @@
+from_sw        1031 fps
+arcade_east     998 fps
+colonnade_street  977 fps
+colonnade_portico 1106 fps
+arcade_to_street 1073 fps

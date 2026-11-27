@@ -1,0 +1,5 @@
+from_sw         990 fps
+arcade_east    1019 fps
+colonnade_street  991 fps  CAMERA IN SOLID
+colonnade_portico 1187 fps
+arcade_to_street 1026 fps

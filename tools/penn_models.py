@@ -122,7 +122,33 @@ def cassatt():
     return m
 
 
-MODELS = {"corinthian": corinthian, "lamp": lamp, "cassatt": cassatt}
+DORIC_H = 35 * FT        # Seventh Avenue colonnade: 35 ft x 4 ft 6 in (dimensions note)
+
+
+def doric():
+    """Roman Doric column of the Seventh Avenue colonnade (session 15): no base, 20 shallow
+    flutes with entasis, necking ring, echinus and a square abacus. Origin on the stylobate."""
+    m = Mesh()
+    r0, rt, cap = 27, 23, 3 * FT
+    top = DORIC_H - cap
+    fluted(m, "travertine", r0, rt, 0, top - 8, flutes=20, depth=3, rings=5)
+    m.lathe("travertine", [(rt, top - 8), (rt + 2, top - 6), (rt + 2, top - 2), (rt, top), (0, top)], 0, 0, 0, 24)
+    m.lathe("travertine", [(rt, top), (rt, top + 8), (rt + 3, top + 10), (rt + 9, top + 18), (rt + 10, top + 22),
+                           (0, top + 22)], 0, 0, 0, 24)
+    a, z0, z1 = rt + 12, top + 22, DORIC_H
+    up, dn = (0, 0, 1), (0, 0, -1)
+    c = [(-a, -a), (a, -a), (a, a), (-a, a)]
+    m.quad("travertine", *[((x, y, z1), up, (x / 128.0, y / 128.0)) for x, y in c])
+    m.quad("travertine", *[((x, y, z0), dn, (x / 128.0, y / 128.0)) for x, y in reversed(c)])
+    for i in range(4):
+        (x0, y0), (x1, y1) = c[i], c[(i + 1) % 4]
+        nn = ((y1 - y0) / (2 * a), (x0 - x1) / (2 * a), 0)
+        m.quad("travertine", ((x0, y0, z0), nn, (0, 0)), ((x1, y1, z0), nn, (1, 0)),
+               ((x1, y1, z1), nn, (1, 0.1)), ((x0, y0, z1), nn, (0, 0.1)))
+    return m
+
+
+MODELS = {"corinthian": corinthian, "lamp": lamp, "cassatt": cassatt, "doric": doric}
 
 
 def build():
