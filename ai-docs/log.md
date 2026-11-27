@@ -52,3 +52,4 @@
 - 2026-11-27 session 45: area 6 detail 3 (plaster walls, square-coffer ceiling texture, round-headed windows). 26,778 verts, BSP 50.7 MB, 139-146 fps capped, shots/20261127-0608.
 - 2026-11-27 session 46: cubemaps built in GMod (tools/cubemaps.sh, -buildcubemaps, ~2 min, 13 LDR+HDR); mirrors reflect. Plaster cooled. 26,778 verts, BSP 50.7 MB, 146 fps capped, shots/20261127-0615.
 - 2026-11-27 session 47: 0.6.0 release (area 6). Nav mesh 1,431 areas (tools/nav.sh, 5 min), committed in src/. gma 45.8 MB, 875-1,271 fps uncapped (shots/20261127-0624). A fresh worktree has no BSP; copy the cubemapped one from garrysmod/maps before package.sh.
+- 2026-11-27 session 48 (interactive): Moynihan scope askwright page ask/moynihan-scope; ext_glass now a plain dark-slate texture. 26,778 verts, BSP 51.8 MB, 146 fps capped, shots/20261127-0633. No driver was running at start; started chain_loop for sessions 49+.

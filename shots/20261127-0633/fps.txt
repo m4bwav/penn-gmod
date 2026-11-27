@@ -1,0 +1,4 @@
+front_south     139 fps
+side_south      146 fps
+side_carriage   146 fps
+side_corner     146 fps

@@ -1,0 +1,48 @@
+{
+  "askwright": 1,
+  "id": "moynihan-scope",
+  "title": "Penn Station map: build Moynihan Train Hall?",
+  "context": "",
+  "asked_by": "penn-gmod chain",
+  "product": "Claude Code",
+  "session": "penn-gmod session 48",
+  "working_dir": "D:\\m4bwa\\Claude\\Projects\\Ai\\penn-gmod",
+  "media_roots": [],
+  "questions": [
+    {
+      "id": "moynihan",
+      "kind": "choice",
+      "title": "Moynihan Train Hall in the 1910 map",
+      "question": "Should the 1910 Penn Station map also get Moynihan Train Hall (opened 2021)?",
+      "why": "It decides what the last 12 chain sessions build. Moynihan is a different era, so it is a scope change.",
+      "background": "gm_penn_station 0.6.0 has all six planned 1910 areas: waiting room, arcade, concourse, platforms with trains, exterior, dining and lunch rooms. The plan listed Moynihan Train Hall as an extra if the budget allows. Budget used: 26,778 of 65,536 vertices, 45.8 of 150 MB. A separate chain (penn-modern-gmod) is already building the present-day station, which is where Moynihan fits best.",
+      "options": [
+        {
+          "id": "skip",
+          "label": "No: polish the 1910 station instead",
+          "consequence": "Remaining sessions fix the clock figures, window glass, the too-long avenue front, waiting-room attic, wiki."
+        },
+        {
+          "id": "modern",
+          "label": "No here, but add it to the penn-modern-gmod map",
+          "consequence": "A note goes to that chain's plan."
+        },
+        {
+          "id": "build",
+          "label": "Yes: build it in this map as a separate wing",
+          "consequence": "About 8 sessions; mixes 1910 and 2021 in one map."
+        }
+      ],
+      "guess": {
+        "option": "modern",
+        "why": "The present-day chain is the natural home; mixing eras in one map breaks the 1910 look.",
+        "confidence": "medium"
+      },
+      "created": "2026-11-27T06:28:08-06:00",
+      "updated": "2026-11-27T06:28:08-06:00"
+    }
+  ],
+  "created": "2026-11-27T06:28:08-06:00",
+  "updated": "2026-11-27T06:28:08-06:00",
+  "project": "Penn Station GMod"
+}
