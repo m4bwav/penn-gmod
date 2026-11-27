@@ -107,7 +107,22 @@ def lamp():
     return m
 
 
-MODELS = {"corinthian": corinthian, "lamp": lamp}
+def cassatt():
+    """Weinman's bronze of Alexander Cassatt (session 14), simplified to a standing figure about
+    9 ft tall in a long frock coat: plinth, coat as a lathe, arms as tubes, head. Origin on the floor
+    of its niche pedestal top."""
+    m = Mesh()
+    m.lathe("bronze", [(0, 0), (16, 0), (16, 4), (0, 4)], 0, 0, 0, 12)
+    # Coat hem flaring out at the knees, waist, chest, shoulders, collar.
+    m.lathe("bronze", [(0, 4), (11, 4), (12, 40), (10, 60), (9, 72), (11, 88), (12, 94), (7, 99), (4, 102), (0, 102)], 0, 0, 0, 14)
+    m.sphere("bronze", 0, 0, 108, 6, 10)
+    m.tube("bronze", (0, -11, 92), (2, -13, 58), 3, 2.5, 8)       # right arm hanging
+    m.tube("bronze", (0, 11, 92), (5, 9, 66), 3, 2.5, 8)          # left arm bent forward
+    m.tube("bronze", (5, 9, 66), (10, 4, 62), 2.5, 2, 8)
+    return m
+
+
+MODELS = {"corinthian": corinthian, "lamp": lamp, "cassatt": cassatt}
 
 
 def build():

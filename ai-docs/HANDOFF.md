@@ -1,13 +1,13 @@
 # HANDOFF: gm_penn_station
 
 Status: in progress
-Updated: 2026-11-26 (session 13)
+Updated: 2026-11-26 (session 14)
 
 - Prompt: plans/2026-11-25-penn-gmod-60x-continue-prompt.md
-- Chain: session 13 of 60 (started 2026-11-26)
+- Chain: session 14 of 60 (started 2026-11-26)
 - Plan: plans/penn-gmod-plan.md. Era: 1910 station (decisions/2026-11-26-era-1910.md).
 - Garry's Mod: D:/SteamLibrary/steamapps/common/GarrysMod (vbsp, vvis, vrad, bspzip, gmad, gmpublish, studiomdl, vbspinfo in bin/).
-- Budget 2026-11-26 (session 13): 3,698/65,536 verts, 2,235 faces, BSP 8.8 MB. 1,051-1,077 fps uncapped (arcade).
+- Budget 2026-11-26 (session 14): 3,771/65,536 verts, 2,271 faces, BSP 8.9 MB. Shots ran at the 146 fps cap.
 - Workshop ID: 3846546331 (public, 0.1.0). tools/package.sh defaults to it.
 - Driver: the user-level chain_loop (C:/Users/m4bwa/.chainwright/penn-prompt.md, stop check penn_stop.py, log penn-chain.log, 60 sessions / 24 h) runs this chain. Sessions it starts never start another driver.
 
@@ -35,9 +35,11 @@ Updated: 2026-11-26 (session 13)
 
 - Session 13: arcade lamp standards. lamp MDL in tools/penn_models.py (bronze candelabrum, fluted post, four arms + finial, five unlit frosted globes; bronze/globe VMTs on debugwhite with $color2), 8 placed 5 ft in front of the pilasters at the inner bay lines, each with a small warm light at the globes. Camera arcade_lamp. shots/20261126-2140. Not released.
 
+- Session 14: the Cassatt niche on the stair hall's north wall at the landing: 10 ft round-headed recess with imposts, travertine pedestal, cassatt.mdl (simplified 9 ft bronze standing figure in tools/penn_models.py) facing south, a small warm light. Camera cassatt_niche. shots/20261126-2145. Not released.
+
 ## Next
 1. Left over from the polish list (optional): attic storey above the side arches, coffered soffits on the cross arches. The west doors still show flat sky-blue glow; the concourse will replace them.
-2. Area 2 detail 2: the Cassatt niche on the stair hall's north wall; then the entrance colonnade, lighting, 0.2.0. No PD photo of the shops themselves found on Commons; the etching is the only arcade ref.
+2. Area 2: the entrance colonnade at the Seventh Avenue end, then arcade lighting, then 0.2.0. No PD photo of the shops themselves found on Commons; the etching is the only arcade ref.
 3. Wiki: the GitHub wiki needs its first page created by hand in the browser before it can be pushed (as with GCT); draft pages can go in docs/wiki/ meanwhile.
 
 ## Waiting on Mark
