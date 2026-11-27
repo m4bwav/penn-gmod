@@ -192,7 +192,26 @@ def build():
     sy0, run, steps = HY, 32 * FT, 16
     sy1 = sy0 + T + 60 * FT
     W(box(a - 32, sy0 + T, -64, a, sy1, ARC_H + LAND + 32, TEX_WALL))
-    W(box(b, sy0 + T, -64, b + 32, sy1, ARC_H + LAND + 32, TEX_WALL))
+    # Session 14: the Cassatt niche in the north wall (+x) at the landing, a 10 ft round-headed
+    # recess through the 32 u wall with Weinman's bronze of Alexander Cassatt on a pedestal, facing south.
+    ny0, ny1, nz0, nr = 1240, 1360, LAND, 60
+    nzs = nz0 + 18 * FT                       # springing of the niche head
+    zt = ARC_H + LAND + 32
+    W(box(b, sy0 + T, -64, b + 32, ny0, zt, TEX_WALL))
+    W(box(b, ny1, -64, b + 32, sy1, zt, TEX_WALL))
+    W(box(b, ny0, -64, b + 32, ny1, nz0, TEX_WALL))
+    W(box(b, ny0, nzs + nr + 16, b + 32, ny1, zt, TEX_WALL))
+    arc = halfdisc((ny0 + ny1) // 2, nzs, nr, 8)
+    for i in range(8):
+        (ya, za), (yb, zb) = arc[i + 1], arc[i]
+        W(xprism([(ya, za), (yb, zb), (yb, nzs + nr + 16), (ya, nzs + nr + 16)], b, b + 32, TEX_WALL))
+    W(box(b + 32, ny0 - 32, -64, b + 64, ny1 + 32, zt, TEX_WALL))          # back of the recess
+    det(box(b - 30, ny0 + 12, nz0, b + 32, ny1 - 12, nz0 + 3 * FT, TEX_TRIM))     # pedestal
+    det(box(b - 8, ny0 - 18, nzs - 16, b, ny0, nzs, TEX_TRIM))                    # imposts
+    det(box(b - 8, ny1, nzs - 16, b, ny1 + 18, nzs, TEX_TRIM))
+    ents.append(ent("prop_static", (b, (ny0 + ny1) // 2, nz0 + 3 * FT), angles="0 180 0",
+                    model="models/penn/cassatt.mdl", solid="6"))
+    ents.append(ent("light", (b - 6 * FT, (ny0 + ny1) // 2, nz0 + 14 * FT), _light="250 225 190 12"))
     W(box(a, sy0 + T, ARC_H + LAND, b, sy1, ARC_H + LAND + 32, TEX_TRIM))
     W(box(a, sy0, -64, b, sy0 + T, 0, TEX_FLOOR))
     for i in range(steps):

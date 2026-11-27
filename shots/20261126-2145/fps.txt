@@ -1,0 +1,13 @@
+from_sw         147 fps
+from_nw         146 fps
+nave_north      146 fps
+vault_up        146 fps
+stair_east      146 fps
+west_wall       146 fps
+stair_down      146 fps
+arcade_west     146 fps
+arcade_east     146 fps
+arcade_vault    146 fps
+arcade_stairarch  146 fps
+arcade_lamp     146 fps
+cassatt_niche   146 fps
