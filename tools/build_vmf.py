@@ -164,11 +164,13 @@ def concourse(W, det, ents, top):
             xx = max(-HX + 2 * FT, min(HX - 2 * FT, x))
             ents.append(ent("prop_static", (xx, y, 0), model="models/penn/lattice.mdl", solid="6"))
     # Session 20: steel truss ribs on each vault's groins and a transverse arch at the inner bay lines.
+    # studiomdl turns SMD geometry 90 degrees about z, so both stand at yaw 90 (session 21: at yaw 0 the
+    # arches ran along the hall and showed as a line down its centre).
     yc = (CY0 + CY1) // 2
     for i in range(3):
-        ents.append(ent("prop_static", ((BAYS[i] + BAYS[i + 1]) // 2, yc, 0), model="models/penn/conc_diag.mdl", solid="0", disableshadows="1"))
+        ents.append(ent("prop_static", ((BAYS[i] + BAYS[i + 1]) // 2, yc, 0), angles="0 90 0", model="models/penn/conc_diag.mdl", solid="0", disableshadows="1"))
     for x in BAYS[1:3]:
-        ents.append(ent("prop_static", (x, yc, 0), model="models/penn/conc_arch.mdl", solid="0", disableshadows="1"))
+        ents.append(ent("prop_static", (x, yc, 0), angles="0 90 0", model="models/penn/conc_arch.mdl", solid="0", disableshadows="1"))
     for i in range(3):
         cx = (BAYS[i] + BAYS[i + 1]) // 2
         ents.append(ent("light", (cx, (CY0 + CY1) // 2, C_SPRING), _light="215 225 240 40"))
