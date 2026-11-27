@@ -1,0 +1,6 @@
+"UnlitGeneric"
+{
+	"$basetexture" "models/debug/debugwhite"
+	"$color2" "[1 0.9 0.72]"
+	"$surfaceprop" "glass"
+}

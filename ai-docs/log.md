@@ -14,3 +14,4 @@
 - 2026-11-26 Shared GMod lock: tools/gmod_lock.sh, used by compile/shots/nav/package; shots and nav kill only their own gmod.exe. Added because penn-modern-gmod shares the GMod install.
 - 2026-11-26 session 11: stair-hall arch end of the arcade (architrave, keystone, glazed mullioned west lunette). vbspinfo 3,698 verts, 2,235 faces, BSP 8.6 MB; 1,096-1,112 fps.
 - 2026-11-26 session 12: vmf_lib.groin(crown=tex) textures the middle two strips per triangle; arcade webs now plain travertine, coffers in a cross along the ridges. vbspinfo unchanged 3,698 verts; 909-1,060 fps. shots/20261126-2136.
+- 2026-11-26 session 13: arcade lamp standards (lamp.mdl, 8 props + 8 small lights). Verts unchanged at 3,698 (props are models); BSP 8.8 MB; 1,051-1,077 fps. Bronze and globe VMTs reuse models/debug/debugwhite tinted by $color2, so no new texture files. The penn-modern chain held gmod.lock at start; compile.sh waited on it without trouble.

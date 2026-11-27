@@ -117,6 +117,13 @@ def arcade(W, det, ents):
     W(box(b, YB + T, z0 - 64, b + 32, v1 + 32, ARC_H + LAND + 32, TEX_WALL))
     W(box(a, YB + T, ARC_H + LAND, b, v1, ARC_H + LAND + 32, TEX_TRIM))
     W(box(a, v1, z0, b, v1 + 32, ARC_H + LAND, TEX_DOOR))
+    # Session 13 (Pennell's etching): bronze lamp standards in front of the pilasters at the four
+    # inner bay lines, each with a small warm light at its globes (penn_models.LAMP_GLOBE_Z = 15 ft).
+    for i in range(1, 5):
+        for s in (-1, 1):
+            p = (s * (AHX - 5 * FT), YA + i * ABAY)
+            ents.append(ent("prop_static", (p[0], p[1], z0), model="models/penn/lamp.mdl", solid="6"))
+            ents.append(ent("light", (p[0], p[1], z0 + 15 * FT + 24), _light="255 214 160 8"))
     for i in range(5):
         ents.append(ent("light", (0, YA + i * ABAY + ABAY // 2, A_SPRING), _light="250 225 190 30"))
     ents.append(ent("light", (0, YB + T + VEST // 2, LAND + 20 * FT), _light="250 225 190 15"))
