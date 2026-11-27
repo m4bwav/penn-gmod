@@ -35,6 +35,9 @@ A_SPRING = LAND + 32 * FT                              # 576: vaults spring 32 f
 YA = HY + T + 60 * FT                                  # 1468: west end of the arcade, top of the stair hall
 YB = YA + AL                                           # 4168: Seventh Avenue end
 VEST = 40 * FT                                         # entrance vestibule east of the arcade
+# Exterior (area 5, session 36): the Seventh Avenue front is 780 ft long, 31st to 33rd Street,
+# with 100 ft corner pavilions; the cross streets (60 ft with sidewalks) run past both ends.
+EX_FX, EX_PAV, EX_XS = 390 * FT, 100 * FT, 100 * FT
 # Train concourse (area 3): about 314 x 200 ft west of the waiting room, at the same floor level,
 # under three glass groin vaults on steel lattice columns (HABS photos, refs/SOURCES.md).
 CY1 = -HY - T - 10 * FT                                # -868: east edge, end of the west passages
@@ -234,45 +237,79 @@ def concourse(W, det, ents, top):
 
 
 def colonnade(W, det, ents, f0):
-    """Session 15: the Seventh Avenue entrance. The facade wall (y f0..f0+T) has the 40 ft
-    arcade opening; in front stands a Doric colonnade (doric.mdl, 35 ft) carrying a portico roof,
-    entablature and attic, then the sidewalk, the avenue and a stand-in block opposite, under sky."""
+    """Session 15: the Seventh Avenue entrance. Session 36 (area 5 blockout, notes/2026-11-27-exterior-refs.md):
+    the front now runs the full block, 780 ft from 31st to 33rd Street (x = -FX..FX). A Doric colonnade
+    (doric.mdl, 35 ft) stands along the whole front between two corner pavilions; the central pavilion
+    over the arcade entrance rises 20 ft higher with its attic. Then the sidewalk, the avenue and a
+    stand-in block opposite, the two cross streets at the ends, under sky."""
     a, b, z0 = -ARC_W // 2, ARC_W // 2, LAND
     f1 = f0 + T
-    FX, SKYZ, FTOP = 120 * FT, LAND + 130 * FT, LAND + 75 * FT
+    FX, SKYZ, FTOP = EX_FX, LAND + 130 * FT, LAND + 75 * FT
     cy = f1 + 18 * FT                                   # column centre line
     pe = cy + 4 * FT                                    # portico edge
     sw1, st1, far = pe + 20 * FT, pe + 80 * FT, pe + 95 * FT
+    PX = 11 * 108 + 5 * FT                              # central pavilion half width (1248)
+    KX = FX - EX_PAV                                    # inner edge of the corner pavilions
+    CTOP = FTOP + 20 * FT                               # central pavilion wall top
     W(box(-FX, f0, z0 - 64, a, f1, FTOP, TEX_WALL))
     W(box(b, f0, z0 - 64, FX, f1, FTOP, TEX_WALL))
     W(box(a, f0, ARC_H + LAND, b, f1, FTOP, TEX_WALL))
-    # Ground: travertine portico, granite sidewalks, asphalt avenue a curb lower.
+    det(box(-PX, f0, FTOP, PX, f1, CTOP, TEX_WALL))
+    # Ground: travertine portico, granite sidewalks, asphalt avenue a curb lower; the cross streets
+    # (31st and 33rd) run off at both ends of the block past the corner pavilions.
+    EX = FX + EX_XS
     W(box(-FX, f1, z0 - 64, FX, pe, z0, TEX_FLOOR))
-    W(box(-FX, pe, z0 - 64, FX, sw1, z0 - 8, "penn/sidewalk"))
-    W(box(-FX, sw1, z0 - 64, FX, st1, z0 - 16, "penn/asphalt"))
-    W(box(-FX, st1, z0 - 64, FX, far, z0 - 8, "penn/sidewalk"))
-    # Enclosure: block opposite, side walls, sky over everything and behind the facade top.
-    W(box(-FX, far, z0 - 64, FX, far + 32, SKYZ, TEX_WALL))
-    for x0, x1 in ((-FX - 32, -FX), (FX, FX + 32)):
+    for x0, x1 in ((-EX, -FX), (FX, EX)):
+        W(box(x0, f0, z0 - 64, x1, pe, z0 - 8, "penn/sidewalk"))
+    W(box(-EX, pe, z0 - 64, EX, sw1, z0 - 8, "penn/sidewalk"))
+    W(box(-EX, sw1, z0 - 64, EX, st1, z0 - 16, "penn/asphalt"))
+    W(box(-EX, st1, z0 - 64, EX, far, z0 - 8, "penn/sidewalk"))
+    # Enclosure: block opposite, stand-in blocks across the cross streets, sky over everything.
+    W(box(-EX, far, z0 - 64, EX, far + 32, SKYZ, TEX_WALL))
+    for x0, x1 in ((-EX - 32, -EX), (EX, EX + 32)):
         W(box(x0, f0 - 32, z0 - 64, x1, far + 32, SKYZ, TEX_WALL))
+    for x0, x1 in ((-EX, -FX), (FX, EX)):               # cross streets end in a low wall for now, sky above:
+        W(box(x0, f0 - 32, z0 - 64, x1, f0, z0 + 30 * FT, TEX_WALL))     # a tall one shaded the pavilions
+        W(box(x0, f0 - 32, z0 + 30 * FT, x1, f0, SKYZ, "tools/toolsskybox"))
     W(box(-FX, f0 - 32, FTOP, FX, f0, SKYZ, "tools/toolsskybox"))
-    W(box(-FX - 32, f0 - 32, SKYZ, FX + 32, far + 32, SKYZ + 32, "tools/toolsskybox"))
-    # Portico: roof slab on the columns, projecting cornice, attic; a cornice band on the facade.
+    W(box(-EX - 32, f0 - 32, SKYZ, EX + 32, far + 32, SKYZ + 32, "tools/toolsskybox"))
+    # Corner pavilions: solid ashlar blocks 100 ft wide standing forward to the portico edge and
+    # 10 ft above the main cornice, a cornice band and a plain attic (pediments face the cross
+    # streets and come with the side fronts).
+    PT = FTOP + 10 * FT
+    for s in (-1, 1):
+        x0, x1 = sorted((s * KX, s * FX))
+        W(box(x0, f1, z0 - 64, x1, pe, PT, TEX_WALL))
+        det(box(x0 - 16, f0, PT, x1 + 16, pe + 18, PT + 2 * FT, TEX_TRIM))
+        det(box(x0 + 2 * FT, f0, PT + 2 * FT, x1 - 2 * FT, pe - 2 * FT, PT + 10 * FT, TEX_WALL))
+        det(box(x0, f0, FTOP, x1, f1, PT, TEX_WALL))
+        # Pilaster strips at the pavilion corners and a tall blind window panel in the middle.
+        for u in (x0, x1 - 4 * FT):
+            det(box(u, pe, z0, u + 4 * FT, pe + 12, PT, TEX_TRIM))
+        m = (x0 + x1) // 2
+        det(box(m - 10 * FT, pe - 4, z0 + 8 * FT, m + 10 * FT, pe, z0 + 50 * FT, TEX_TRIM))   # blind window, recessed
+        det(box(m - 11 * FT, pe, z0 + 8 * FT, m - 10 * FT, pe + 8, z0 + 50 * FT, TEX_TRIM))
+        det(box(m + 10 * FT, pe, z0 + 8 * FT, m + 11 * FT, pe + 8, z0 + 50 * FT, TEX_TRIM))
+        det(box(m - 12 * FT, pe, z0 + 50 * FT, m + 12 * FT, pe + 18, z0 + 53 * FT, TEX_TRIM))
+    # Portico: roof slab on the columns, projecting cornice the full length between the pavilions;
+    # the attic only over the central pavilion; a cornice band along the top of the facade.
     cz = z0 + 35 * FT
-    PX = 11 * 108 + 5 * FT
-    sol = [box(-PX, f1, cz, PX, pe, cz + 7 * FT, TEX_TRIM),
-           box(-PX - 16, pe, cz + 5 * FT, PX + 16, pe + 18, cz + 7 * FT, TEX_TRIM),
+    sol = [box(-KX, f1, cz, KX, pe, cz + 7 * FT, TEX_TRIM),
+           box(-KX, pe, cz + 5 * FT, KX, pe + 18, cz + 7 * FT, TEX_TRIM),
            box(-PX, f1, cz + 7 * FT, PX, pe - 6, cz + 14 * FT, TEX_WALL),
            box(-PX - 8, pe - 6, cz + 14 * FT, PX + 8, pe + 4, cz + 15 * FT, TEX_TRIM),
-           box(-FX, f1, FTOP - 3 * FT, FX, f1 + 18, FTOP, TEX_TRIM)]
+           box(-KX, f1, FTOP - 3 * FT, KX, f1 + 18, FTOP, TEX_TRIM),
+           box(-PX - 16, f1, CTOP - 3 * FT, PX + 16, f1 + 24, CTOP, TEX_TRIM)]
     det("".join(sol))
-    for k in range(12):
-        ents.append(ent("prop_static", ((2 * k - 11) * 108, cy, z0), model="models/penn/doric.mdl", solid="6"))
+    # Low stepped base under the colonnade: two 8 in steps up from the sidewalk.
+    det(box(-KX, pe, z0 - 8, KX, pe + 16, z0, TEX_TRIM))
+    for k in range(-((KX - 108) // 216) - 1, (KX - 108) // 216 + 1):
+        ents.append(ent("prop_static", ((2 * k + 1) * 108, cy, z0), model="models/penn/doric.mdl", solid="6"))
     # Session 16: Seventh Avenue faces east (+y), so the morning sun travels west (yaw 250) onto
     # the facade; warm bounce lights under the portico soffit and inside the colonnade.
-    ents.append(ent("light_environment", (0, cy, cz - 64), pitch="-35", angles="0 250 0",
+    ents.append(ent("light_environment", (0, cy, cz - 64), pitch="-55", angles="0 250 0",
                     _light="255 236 205 320", _ambient="150 170 205 140"))
-    for k in range(-2, 3):
+    for k in range(-6, 7):
         ents.append(ent("light", (k * 5 * 108, (f1 + cy) // 2, cz - 3 * FT), _light="250 228 195 40"))
         ents.append(ent("light", (k * 5 * 108, pe - FT, z0 + 6 * FT), _light="255 232 200 25"))
     ents.append(ent("env_cubemap", (0, sw1, z0 + 100)))
@@ -360,7 +397,7 @@ def build():
 
     top = SPRING + RISE + 16 + 64
     # Sealed nodraw hull around everything.
-    X0, X1 = -HX - T - 256, HX + T + 256
+    X0, X1 = -EX_FX - EX_XS - 32 - 256, EX_FX + EX_XS + 32 + 256     # session 36: full Seventh Ave front
     # Session 15: the hull now reaches past the Seventh Avenue block opposite (colonnade()).
     Y0, Y1 = PY0 - T - 40 * FT - 16 - 256, YB + T + VEST + T + 117 * FT + 32 + 256
     Z0, Z1 = -384, top + 128                 # session 23: below the track stairs (landing at -240)

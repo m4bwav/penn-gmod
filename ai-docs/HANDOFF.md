@@ -1,13 +1,13 @@
 # HANDOFF: gm_penn_station
 
 Status: in progress
-Updated: 2026-11-27 (session 35)
+Updated: 2026-11-27 (session 36)
 
 - Prompt: plans/2026-11-25-penn-gmod-60x-continue-prompt.md
-- Chain: session 35 of 60 (started 2026-11-26)
+- Chain: session 36 of 60 (started 2026-11-26)
 - Plan: plans/penn-gmod-plan.md. Era: 1910 station (decisions/2026-11-26-era-1910.md).
 - Garry's Mod: D:/SteamLibrary/steamapps/common/GarrysMod (vbsp, vvis, vrad, bspzip, gmad, gmpublish, studiomdl, vbspinfo in bin/).
-- Budget 2026-11-27 (session 34): 19,265/65,536 verts, 10,926 faces, BSP 30.4 MB, gma 21.6 MB. 926-1,227 fps uncapped.
+- Budget 2026-11-27 (session 36): 20,801/65,536 verts, 12,052 faces, BSP 34.0 MB. 138-146 fps capped on the street. (0.4.0: gma 21.6 MB, 926-1,227 fps uncapped.)
 - Workshop ID: 3846546331 (public, 0.4.0). tools/package.sh defaults to it.
 - Driver: the user-level chain_loop (C:/Users/m4bwa/.chainwright/penn-prompt.md, stop check penn_stop.py, log penn-chain.log, 60 sessions / 24 h) runs this chain. Sessions it starts never start another driver.
 
@@ -57,9 +57,10 @@ Updated: 2026-11-27 (session 35)
 - Session 33: gold PENNSYLVANIA lettering on the DD1 cabs (Brunswick green) and the coach letter boards (Tuscan red), after the 1910 booklet's DD1 photo. tools/penn_models.py renders it with DejaVu Serif Bold (free licence) into models/penn/letter_green/_tuscan VTFs. The two booklet plates are a DD1 photo and the facade clock/eagles, not a track plan, so the platform layout stays as built. shots/20261127-0448. Not released.
 - Session 34: 0.4.0 released (area 4). README text and four platform/train screenshots, level map draws the platform level (make_map.py PLAT) and labels it, Workshop description, gma (21.6 MB) and 4 previews uploaded (EResult 1), tag v0.4.0. shots/20261127-0452.
 - Session 35: area 5 refs. Seven PD exterior refs (HABS east/south/west-end facades, Detroit postcard, two 1910 booklet plates) in refs/SOURCES.md; what they show is in notes/2026-11-27-exterior-refs.md. Ruling (flagged): the 33rd Street front mirrors 31st Street. No map change. (The driver's pass 35 wrongly thought another session was running and did nothing; a session started by chain_loop is a child of that python process, check the parent chain before deciding.)
+- Session 36: area 5 blockout 1, the Seventh Avenue front. colonnade() now spans the full 780 ft block (EX_FX = 390 ft each side of the axis): 32 Doric columns on a low step between two 100 ft corner pavilions (ashlar, cornice, attic, corner pilaster strips, a recessed blind window), the central pavilion 20 ft higher than the wings, the 31st/33rd Street crossings at both ends (100 ft stubs ending in a 30 ft wall with sky above), hull widened. Sun raised from 35 to 55 degrees: at 35 the 130 ft stand-in block opposite shaded the whole front. Cameras front_south, front_north, front_centre. shots/20261127-0508 (committed). Not released.
 
 ## Next
-1. Area 5 (exterior) blockout from notes/2026-11-27-exterior-refs.md: full-length Seventh Avenue colonnade with the raised central pavilion and attic, corner pavilions with pediments, the 31st/33rd Street fronts (ashlar wall, carriage-drive colonnade, the waiting room's arched gable above the roof). A sourced track plan (HABS or a 1910 PRR plan) would still confirm the 21-track layout. Railings (3.4k verts of brush posts) could become one MDL if the budget tightens.
+1. Area 5 blockout 2: the 31st/33rd Street fronts down the cross streets (open the stub walls at y = f0 and run the streets west along the station), with the corner pavilions' pediments facing them, (ashlar wall, carriage-drive colonnade, the waiting room's arched gable above the roof). A sourced track plan (HABS or a 1910 PRR plan) would still confirm the 21-track layout. Railings (3.4k verts of brush posts) could become one MDL if the budget tightens.
 2. Optional leftovers: attic storey above the waiting-room side arches, coffered soffits on the cross arches, eagles/clock on the facade; the colonnade cornice still reads dark from the street.
 3. Wiki: the GitHub wiki needs its first page created by hand in the browser before it can be pushed (as with GCT); draft pages can go in docs/wiki/ meanwhile.
 
