@@ -6,6 +6,7 @@ set -e
 G="${GMOD:-D:/SteamLibrary/steamapps/common/GarrysMod}"
 ID="${WORKSHOP_ID:-3846546331}"
 cd "$(dirname "$0")/.."
+. tools/gmod_lock.sh; gmod_lock_take   # shared GMod lock, released on exit
 NOTE="${1:-Update}"
 [ $# -gt 0 ] && shift
 rm -rf build/addon && mkdir -p build/addon/maps
