@@ -1,13 +1,13 @@
 # HANDOFF: gm_penn_station
 
 Status: in progress
-Updated: 2026-11-27 (session 24)
+Updated: 2026-11-27 (session 25)
 
 - Prompt: plans/2026-11-25-penn-gmod-60x-continue-prompt.md
-- Chain: session 24 of 60 (started 2026-11-26)
+- Chain: session 25 of 60 (started 2026-11-26)
 - Plan: plans/penn-gmod-plan.md. Era: 1910 station (decisions/2026-11-26-era-1910.md).
 - Garry's Mod: D:/SteamLibrary/steamapps/common/GarrysMod (vbsp, vvis, vrad, bspzip, gmad, gmpublish, studiomdl, vbspinfo in bin/).
-- Budget 2026-11-27 (session 24): 10,654/65,536 verts, 6,275 faces, BSP 21.7 MB. 125-147 fps capped.
+- Budget 2026-11-27 (session 25): 10,654/65,536 verts, 6,275 faces, BSP 21.7 MB. 125-147 fps capped.
 - Workshop ID: 3846546331 (public, 0.2.0). tools/package.sh defaults to it.
 - Driver: the user-level chain_loop (C:/Users/m4bwa/.chainwright/penn-prompt.md, stop check penn_stop.py, log penn-chain.log, 60 sessions / 24 h) runs this chain. Sessions it starts never start another driver.
 
@@ -46,9 +46,10 @@ Updated: 2026-11-27 (session 24)
 - Session 22: travertine arcade on the concourse east wall: three round-headed arches per bay (the middle is the passage, the side ones blind), archivolts, imposts, a cornice band at 50 ft. The lattice columns now have disableshadows=1 too: their black triangles on the walls are gone. Shots (20261127-0008) were lost with the worktree. Not released.
 - Session 23: six stairs down to the tracks in the concourse floor's west part (10 ft wide, 30 steps to a landing 20 ft down, a glowing door at the foot until area 4), steel railings on three sides, two warm lights per flight. The map's outer shell floor moved from -128 to -384: the pits poked through it and their landings were solid. Cameras conc_stairs, conc_stairwell, conc_landing. shots/20261127-0028 (committed). Not released.
 - Session 24: concourse clock. clock.mdl (tools/penn_models.py: 10 ft face, unlit cream clockface VMT, moulded bronze rim, hour bars, hands at 10:10) on the east wall above the middle passage, just over the 50 ft cornice. Ruling (flagged): placed from general period practice, not a sourced photo; move it if a ref shows the real clock. Camera conc_clock. shots/20261127-0035 (committed). Not released.
+- Session 25: lattice.mdl ribs now take the first 60 degrees of an elliptical curve (24 ft radius) so they leave the cap vertically and are still climbing at about 45 degrees where they stop, 12 ft out and 21 ft up, like the branching columns in the HABS photos. shots/20261127-0043 (committed). Not released.
 
 ## Next
-1. Area 3 detail: ribs on lattice.mdl could follow the groin curve upward instead of ending flat; railings are 3.4k verts of brush posts and could become one MDL if the budget tightens. Then lighting, then 0.3.0.
+1. Area 3 detail: railings are 3.4k verts of brush posts and could become one MDL if the budget tightens. Then lighting, then 0.3.0.
 2. Optional leftovers: attic storey above the waiting-room side arches, coffered soffits on the cross arches, eagles/clock on the facade; the colonnade cornice still reads dark from the street.
 3. Wiki: the GitHub wiki needs its first page created by hand in the browser before it can be pushed (as with GCT); draft pages can go in docs/wiki/ meanwhile.
 
