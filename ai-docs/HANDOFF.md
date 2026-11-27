@@ -9,7 +9,7 @@ Updated: 2026-11-26 (session 3)
 - Garry's Mod: D:/SteamLibrary/steamapps/common/GarrysMod (vbsp, vvis, vrad, bspzip, gmad, gmpublish, studiomdl, vbspinfo in bin/).
 - Budget 2026-11-26 (session 3): 1,537/65,536 verts, 975 faces, BSP 3.6 MB.
 - Workshop ID: none yet (first upload at 0.1.0 with gmpublish create).
-- Driver: chain_loop.py started 2026-11-26 after session 3 (--max-sessions 57 --max-hours 24 --limit-wait 1800 --max-waits 12, stop check tools/chain_stop.py), log ai-docs/chain-loop.log. Never start a second one.
+- Driver: the user-level chain_loop (C:/Users/m4bwa/.chainwright/penn-prompt.md, stop check penn_stop.py, log penn-chain.log, 60 sessions / 24 h) runs this chain. Sessions it starts never start another driver.
 
 ## Done
 - Session 1: repo, ai-docs, plan, era ruling, GCT tooling copied and renamed.
