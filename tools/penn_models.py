@@ -34,7 +34,41 @@ VMTS = {
     "brunswick": '"VertexLitGeneric"\n{\n\t"$basetexture" "models/debug/debugwhite"\n\t"$color2" "[0.06 0.10 0.07]"\n'
                  '\t"$phong" "1"\n\t"$phongboost" "1"\n\t"$phongexponent" "12"\n\t"$phongfresnelranges" "[0.3 0.6 1]"\n\t"$surfaceprop" "metal"\n}\n',
     "carwin": '"UnlitGeneric"\n{\n\t"$basetexture" "models/debug/debugwhite"\n\t"$color2" "[0.42 0.34 0.22]"\n\t"$surfaceprop" "glass"\n}\n',
+    # Session 33: gold "PENNSYLVANIA" lettering after the 1910 DD1 photo (refs/photos/The_New_York_improvement_*14573147270).
+    "letter_green": '"VertexLitGeneric"\n{\n\t"$basetexture" "models/penn/letter_green"\n\t"$surfaceprop" "metal"\n}\n',
+    "letter_tuscan": '"VertexLitGeneric"\n{\n\t"$basetexture" "models/penn/letter_tuscan"\n\t"$surfaceprop" "metal"\n}\n',
 }
+
+# Body colours in sRGB to match the $color2 tints above (debugwhite x color2), gold leaf for the letters.
+LETTERS = {"letter_green": (15, 26, 18), "letter_tuscan": (77, 26, 18)}
+
+
+def lettering_textures():
+    """Gold serif PENNSYLVANIA on the body colour, 1024 x 128, as VTF in src/materials/models/penn.
+    Font: DejaVu Serif Bold from matplotlib (Bitstream Vera licence, free to embed)."""
+    import matplotlib
+    from PIL import Image, ImageDraw, ImageFont
+    from srctools import vtf
+    font = ImageFont.truetype(str(Path(matplotlib.__file__).parent / "mpl-data/fonts/ttf/DejaVuSerif-Bold.ttf"), 84)
+    for name, bg in LETTERS.items():
+        img = Image.new("RGB", (1024, 128), bg)
+        d = ImageDraw.Draw(img)
+        d.text((512, 64), "PENNSYLVANIA", font=font, fill=(196, 160, 82), anchor="mm")
+        tex = vtf.VTF(1024, 128, fmt=vtf.ImageFormats.DXT1)
+        tex.get().copy_from(img.convert("RGBA").tobytes(), vtf.ImageFormats.RGBA8888)
+        tex.compute_mipmaps()
+        with open(MAT / f"{name}.vtf", "wb") as f:
+            tex.save(f)
+
+
+def _letters(m, mat, xa, xb, za, zb, hw):
+    """A lettering plate 0.5 u proud of both body sides (|y| = hw), readable from outside."""
+    y = hw + 0.5
+    P = lambda x, yy, z, n, u, v: ((x, yy, z), n, (u, v))
+    m.quad(mat, P(xb, y, za, (0, 1, 0), 0, 0), P(xa, y, za, (0, 1, 0), 1, 0),
+           P(xa, y, zb, (0, 1, 0), 1, 1), P(xb, y, zb, (0, 1, 0), 0, 1))
+    m.quad(mat, P(xa, -y, za, (0, -1, 0), 0, 0), P(xb, -y, za, (0, -1, 0), 1, 0),
+           P(xb, -y, zb, (0, -1, 0), 1, 1), P(xa, -y, zb, (0, -1, 0), 0, 1))
 
 
 def fluted(m, mat, r0, r1, z0, z1, flutes=24, depth=4, rings=6):
@@ -337,6 +371,8 @@ def coach(m, x0, ln=80 * FT):
             _box(m, "steel", xd - 14, y, zf + 4, xd + 14, y + 2, zb - 10)
     for xe in (x0 - 6, x1):                                                   # diaphragms
         _box(m, "steel", xe, -30, zf, xe + 6, 30, zb - 6)
+    xm = (x0 + x1) / 2                                                        # on the letter board
+    _letters(m, "letter_tuscan", xm - 8 * FT, xm + 8 * FT, zf + 72, zf + 96, hw)
 
 
 def dd1(m, x0):
@@ -357,6 +393,7 @@ def dd1(m, x0):
         cab0, cab1 = sorted((inner, inner - s * 13 * FT))
         _box(m, "brunswick", cab0, -54, 42, cab1, 54, 42 + 10 * FT)              # box cab
         _box(m, "brunswick", cab0 - 2, -58, 42 + 10 * FT, cab1 + 2, 58, 42 + 10 * FT + 8)
+        _letters(m, "letter_green", cab0 + 6, cab1 - 6, 42 + 2 * FT, 42 + 2 * FT + 18, 54)
         for y in (-55, 52):                                                      # cab side windows
             _box(m, "carwin", cab0 + 18, y, 42 + 6 * FT, cab0 + 40, y + 3, 42 + 8 * FT)
             _box(m, "carwin", cab1 - 40, y, 42 + 6 * FT, cab1 - 18, y + 3, 42 + 8 * FT)
@@ -389,6 +426,9 @@ def build():
     for name, text in VMTS.items():
         (MAT / f"{name}.vmt").write_text(text, encoding="ascii", newline="\n")
         shutil.copy(MAT / f"{name}.vmt", gmat)
+    lettering_textures()
+    for f in MAT.glob("letter_*.vtf"):
+        shutil.copy(f, gmat)
     out = ROOT / "src" / "models" / "penn"
     out.mkdir(parents=True, exist_ok=True)
     for name, fn in MODELS.items():
