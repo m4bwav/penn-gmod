@@ -1,0 +1,6 @@
+- [Home](Home)
+- [Building the map](Building-The-Map)
+- [Tools](Tools)
+- [Reference photos and accuracy](Reference-Photos-And-Accuracy)
+- [Roadmap](Roadmap)
+- [Changelog](Changelog)
