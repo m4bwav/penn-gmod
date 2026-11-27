@@ -50,3 +50,4 @@
 - 2026-11-27 session 43: area 6 props (dining_set, chandelier, pendant, lunch_counter MDLs). Props add no BSP verts beyond the 2 u mirror strip: 25,629 verts, BSP 45.2 MB, 136-146 fps capped. Chandelier/pendant origins 2 u under the ceiling (session 38 rule). Counter built along SMD y lies along world x at yaw 0, as expected. shots/20261127-0556.
 - 2026-11-27 session 44: area 6 wainscot, pilasters, mirror material. 25,840 verts, BSP 48.4 MB, 138-147 fps capped, shots/20261127-0602 with compare_dining.jpg. Windows had to move up: the 8 ft wainscot covered their bottom 2 ft.
 - 2026-11-27 session 45: area 6 detail 3 (plaster walls, square-coffer ceiling texture, round-headed windows). 26,778 verts, BSP 50.7 MB, 139-146 fps capped, shots/20261127-0608.
+- 2026-11-27 session 46: cubemaps built in GMod (tools/cubemaps.sh, -buildcubemaps, ~2 min, 13 LDR+HDR); mirrors reflect. Plaster cooled. 26,778 verts, BSP 50.7 MB, 146 fps capped, shots/20261127-0615.

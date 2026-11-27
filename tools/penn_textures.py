@@ -198,7 +198,7 @@ save(img, "mirror", "glass")
 # deep ceiling of square coffers. Cream plaster for the restaurant walls; one coffer per tile
 # (10 x 10 ft, FACEUV in build_vmf.py): a light grid of ribs, three stepped mouldings going in,
 # the recess shaded darker toward its far edges and a small rosette in the middle.
-PLASTER = np.array([196, 186, 162], float)
+PLASTER = np.array([200, 194, 178], float)   # session 46: cooler, read yellow under the warm lights
 img = PLASTER * (1 + fbm(N, 6) * 0.04)[..., None]
 save(img, "plaster", "plaster")
 img = PLASTER * (1 + fbm(N, 6) * 0.04)[..., None]
