@@ -16,6 +16,9 @@ local CAMS = {
   { "stair_east", Vector(0, -400, 72), Angle(-8, 90, 0) },
   { "west_wall",  Vector(0, 450, 72), Angle(-10, -90, 0) },
   { "stair_down", Vector(0, 1300, 220), Angle(10, -90, 0) },
+  { "arcade_west", Vector(0, 4000, 264), Angle(-4, -90, 0) },
+  { "arcade_east", Vector(0, 1600, 264), Angle(-4, 90, 0) },
+  { "arcade_vault", Vector(0, 2800, 264), Angle(-60, 90, 0) },
 }
 if want ~= "go" then
   local keep, set = {}, {}

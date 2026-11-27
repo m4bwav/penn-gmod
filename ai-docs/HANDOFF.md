@@ -1,13 +1,13 @@
 # HANDOFF: gm_penn_station
 
 Status: in progress
-Updated: 2026-11-26 (session 8)
+Updated: 2026-11-26 (session 9)
 
 - Prompt: plans/2026-11-25-penn-gmod-60x-continue-prompt.md
-- Chain: session 8 of 60 (started 2026-11-26)
+- Chain: session 9 of 60 (started 2026-11-26)
 - Plan: plans/penn-gmod-plan.md. Era: 1910 station (decisions/2026-11-26-era-1910.md).
 - Garry's Mod: D:/SteamLibrary/steamapps/common/GarrysMod (vbsp, vvis, vrad, bspzip, gmad, gmpublish, studiomdl, vbspinfo in bin/).
-- Budget 2026-11-26 (session 8): 2,653/65,536 verts, 1,637 faces, BSP 7.7 MB. 750-1,000 fps uncapped.
+- Budget 2026-11-26 (session 9): 3,347/65,536 verts, 2,079 faces, BSP 8.4 MB. 915-1,230 fps uncapped.
 - Workshop ID: 3846546331 (public, 0.1.0). tools/package.sh defaults to it.
 - Driver: the user-level chain_loop (C:/Users/m4bwa/.chainwright/penn-prompt.md, stop check penn_stop.py, log penn-chain.log, 60 sessions / 24 h) runs this chain. Sessions it starts never start another driver.
 
@@ -25,9 +25,11 @@ Updated: 2026-11-26 (session 8)
 
 - Session 8: area 1 polish. 4 ft niches behind every side arch up to the crown (NICHE in build_vmf.py; the wall sits back and filler brushes bring the face forward), so the arches read as openings. Shots no longer show the physgun: tools/lua/penn_shots_sv.lua (PlayerLoadout returns true) is installed by shots.sh for shot runs only; hiding the viewmodel was not enough. shots/20261126-2121, -2122. Not released; ships with 0.2.0.
 
+- Session 9: area 2 blockout. arcade() in build_vmf.py: 45 x 225 ft at the landing level (z 192), y 1468-4168, five 45 ft groin bays (coffer texture), a 30 x 18 ft shopfront recess per bay on both sides (glow panels for now), 40 ft opening at the east end into a 40 ft vestibule with glowing street doors. The stair hall now opens straight into the arcade; the player starts at the Seventh Avenue end facing west. Cameras arcade_west/_east/_vault. shots/20261126-2126. Not released.
+
 ## Next
 1. Left over from the polish list (optional): attic storey above the side arches, coffered soffits on the cross arches. The west doors still show flat sky-blue glow; the concourse will replace them.
-2. Area 2: arcade and shopping corridor from Seventh Avenue plus the entrance colonnade: refs, blockout joined through the east stair door, detail, lighting, 0.2.0.
+2. Area 2 detail: find a PD photo of the arcade (HABS set has one) for compare.py; shopfront glazing and signage textures, pilasters between bays, vault webs in plain travertine with coffers only in the crowns, the Cassatt niche on the stair hall's north wall; then the entrance colonnade, lighting, 0.2.0.
 3. Wiki: the GitHub wiki needs its first page created by hand in the browser before it can be pushed (as with GCT); draft pages can go in docs/wiki/ meanwhile.
 
 ## Waiting on Mark
