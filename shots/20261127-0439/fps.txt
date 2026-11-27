@@ -1,0 +1,4 @@
+plat_stairfoot  146 fps
+plat_long       146 fps
+plat_tracks     133 fps
+train_side      147 fps

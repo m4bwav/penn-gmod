@@ -337,8 +337,18 @@ def platforms(W, det, ents, wells, sw):
         for y in range(PY0 + 30 * FT, CY1 - 10 * FT, 40 * FT):
             if not CY0 - 2 * FT < y < CY0 + 640:
                 det(box(c - P_W // 2 - 120, y - 8, -88, c + P_W // 2 + 120, y + 8, -64, TEX_STEEL))
-        for y in range(PY0 + 50 * FT, CY1, 60 * FT):
-            ents.append(ent("light", (c, y, -96), _light="255 214 160 90"))
+        # Session 31: a hanging lamp midway between columns: a steel rod from the beam level and a
+        # glowing frosted shade (texture light), with a warm point light just below it.
+        for y in range(PY0 + 50 * FT, CY1 - 10 * FT, 40 * FT):
+            if CY0 - 2 * FT < y < CY0 + 640:
+                continue
+            det(box(c - 2, y - 2, -136, c + 2, y + 2, -64, TEX_STEEL))
+            det(box(c - 10, y - 10, -148, c + 10, y + 10, -136, TEX_DOOR))
+            ents.append(ent("light", (c, y, -156), _light="255 214 160 60"))
+        # Fill over the tracks either side so the ceiling and train roofs are not black.
+        for s in (-1, 1):
+            for y in range(PY0 + 70 * FT, CY1, 80 * FT):
+                ents.append(ent("light", (c + s * (P_W // 2 + 90), y, -100), _light="235 220 195 20"))
     ents.append(ent("env_cubemap", (wells[2], CY0 - 100 * FT, P_TOP + 72)))
 
 
