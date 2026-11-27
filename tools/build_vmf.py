@@ -28,6 +28,13 @@ ARC_W, ARC_H, LAND = 40 * FT, 30 * FT, 16 * FT  # stair opening to the arcade, l
 ARCH_W, ARCH_SPRING = 30 * FT, 45 * FT    # round-headed arches in each long-wall bay, crown 60 ft
 FACE = 4 * FT                             # arcade face layer standing proud of the long walls
 NICHE, NICHE_H = 4 * FT, ARCH_SPRING + ARCH_W // 2   # recess behind the side arches, up to the crown
+# Arcade (area 2): 45 ft x 225 ft at street level, east of the stair hall, five 45 ft groin bays
+# lined with shops, Seventh Avenue at its east end.
+AHX, AL, ABAY = 45 * FT // 2, 225 * FT, 45 * FT       # 270, 2700, 540
+A_SPRING = LAND + 32 * FT                              # 576: vaults spring 32 ft above the arcade floor
+YA = HY + T + 60 * FT                                  # 1468: west end of the arcade, top of the stair hall
+YB = YA + AL                                           # 4168: Seventh Avenue end
+VEST = 40 * FT                                         # entrance vestibule east of the arcade
 
 TEX_FLOOR = "penn/floor_travertine"
 TEX_WALL = "penn/travertine_ashlar"
@@ -41,6 +48,49 @@ TEX_DOOR = "penn/window_glow"
 NODRAW = "tools/toolsnodraw"
 
 
+def arcade(W, det, ents):
+    """Area 2 blockout: the shopping arcade from the stair hall (y = YA) to Seventh Avenue (y = YB),
+    floor at LAND, five groin bays, a shopfront in each bay on both sides, a vestibule at the east end."""
+    z0, ztop = LAND, A_SPRING + AHX + 16 + 64
+    W(box(-AHX - T, YA, z0 - 64, AHX + T, YB, z0, TEX_FLOOR))
+    # West end wall over and beside the 40 ft stair hall opening (hall walls stop at YA).
+    a, b = -ARC_W // 2, ARC_W // 2
+    W(box(-AHX - T, YA - 32, ARC_H + LAND, AHX + T, YA, ztop, TEX_WALL))
+    for x0, x1 in ((-AHX - T, a - 32), (b + 32, AHX + T)):
+        W(box(x0, YA - 32, z0 - 64, x1, YA, ARC_H + LAND, TEX_WALL))
+    # Side walls: per bay a shopfront 30 ft wide, 18 ft high, recessed the wall depth to a lit window.
+    SW, SH = 30 * FT, 18 * FT
+    for s in (-1, 1):
+        x0, x1 = sorted((s * AHX, s * (AHX + T)))
+        edges = [YA]
+        for i in range(5):
+            c = YA + i * ABAY + ABAY // 2
+            edges += [c - SW // 2, c + SW // 2]
+            W(box(x0, c - SW // 2, z0 + SH, x1, c + SW // 2, ztop, TEX_WALL))
+            g0, g1 = sorted((s * (AHX + T), s * (AHX + T + 16)))
+            W(box(g0, c - SW // 2, z0 - 64, g1, c + SW // 2, z0 + SH, TEX_DOOR))
+            W(box(x0, c - SW // 2, z0 + SH - 16, x1, c + SW // 2, z0 + SH, TEX_TRIM))
+        edges.append(YB)
+        for i in range(0, len(edges), 2):
+            W(box(x0, edges[i], z0 - 64, x1, edges[i + 1], ztop, TEX_WALL))
+    for i in range(5):
+        groin(W, -AHX, AHX, YA + i * ABAY, YA + (i + 1) * ABAY, A_SPRING, AHX, TEX_VAULT)
+    # East end: a 40 ft x 30 ft opening into the entrance vestibule; the street doors glow for now.
+    W(box(-AHX - T, YB, ARC_H + LAND, AHX + T, YB + T, ztop, TEX_WALL))
+    for x0, x1 in ((-AHX - T, a), (b, AHX + T)):
+        W(box(x0, YB, z0 - 64, x1, YB + T, ARC_H + LAND, TEX_WALL))
+    v1 = YB + T + VEST
+    W(box(a, YB, z0 - 64, b, v1, z0, TEX_FLOOR))
+    W(box(a - 32, YB + T, z0 - 64, a, v1 + 32, ARC_H + LAND + 32, TEX_WALL))
+    W(box(b, YB + T, z0 - 64, b + 32, v1 + 32, ARC_H + LAND + 32, TEX_WALL))
+    W(box(a, YB + T, ARC_H + LAND, b, v1, ARC_H + LAND + 32, TEX_TRIM))
+    W(box(a, v1, z0, b, v1 + 32, ARC_H + LAND, TEX_DOOR))
+    for i in range(5):
+        ents.append(ent("light", (0, YA + i * ABAY + ABAY // 2, A_SPRING), _light="250 225 190 30"))
+    ents.append(ent("light", (0, YB + T + VEST // 2, LAND + 20 * FT), _light="250 225 190 15"))
+    ents.append(ent("env_cubemap", (0, (YA + YB) // 2, LAND + 200)))
+
+
 def build():
     world, ents = [], []
     W = world.append
@@ -49,7 +99,7 @@ def build():
     top = SPRING + RISE + 16 + 64
     # Sealed nodraw hull around everything.
     X0, X1 = -HX - T - 256, HX + T + 256
-    Y0, Y1 = -HY - T - 10 * FT - 256, HY + T + 1536
+    Y0, Y1 = -HY - T - 10 * FT - 256, YB + T + VEST + 256
     Z0, Z1 = -128, top + 128
     for b in ((X0, Y0, Z0 - 64, X1, Y1, Z0), (X0, Y0, Z1, X1, Y1, Z1 + 64),
               (X0 - 64, Y0, Z0, X0, Y1, Z1), (X1, Y0, Z0, X1 + 64, Y1, Z1),
@@ -102,15 +152,15 @@ def build():
     # Stair hall east of the opening: 16 steps up to a landing, sealed door at the arcade end.
     sy0, run, steps = HY, 32 * FT, 16
     sy1 = sy0 + T + 60 * FT
-    W(box(a - 32, sy0 + T, -64, a, sy1 + 32, ARC_H + LAND + 32, TEX_WALL))
-    W(box(b, sy0 + T, -64, b + 32, sy1 + 32, ARC_H + LAND + 32, TEX_WALL))
+    W(box(a - 32, sy0 + T, -64, a, sy1, ARC_H + LAND + 32, TEX_WALL))
+    W(box(b, sy0 + T, -64, b + 32, sy1, ARC_H + LAND + 32, TEX_WALL))
     W(box(a, sy0 + T, ARC_H + LAND, b, sy1, ARC_H + LAND + 32, TEX_TRIM))
     W(box(a, sy0, -64, b, sy0 + T, 0, TEX_FLOOR))
     for i in range(steps):
         y = sy0 + T + i * run // steps
         W(box(a, y, -64, b, y + run // steps, (i + 1) * LAND // steps, TEX_FLOOR))
     W(box(a, sy0 + T + run, -64, b, sy1, LAND, TEX_FLOOR))
-    W(box(a, sy1, LAND, b, sy1 + 32, ARC_H + LAND, TEX_DOOR))
+    arcade(W, det, ents)
 
     # Groin vaults over the three bays.
     for i in range(3):
@@ -220,7 +270,7 @@ def build():
             '"OnMapSpawn" "tonemap,SetBloomScale,0.25,0,-1"']
     block = "\tconnections" + NL + "\t{" + NL + "".join("\t\t" + c + NL for c in conn) + "\t}" + NL + "}" + NL
     ents.append(ent("logic_auto", (0, 0, 96), spawnflags="1")[:-2] + block)
-    ents.append(ent("info_player_start", (0, HY + T + 50 * FT, LAND + 8), angles="0 270 0"))
+    ents.append(ent("info_player_start", (0, YB - 10 * FT, LAND + 8), angles="0 270 0"))
     ents.append(ent("info_player_start", (0, -300, 8), angles="0 0 0"))
     for x in (0, BAYS[1] - 600, BAYS[2] + 600):
         ents.append(ent("env_cubemap", (x, 0, 200)))
