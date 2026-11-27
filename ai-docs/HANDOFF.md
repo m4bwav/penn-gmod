@@ -1,10 +1,10 @@
 # HANDOFF: gm_penn_station
 
 Status: in progress
-Updated: 2026-11-27 (session 40)
+Updated: 2026-11-27 (session 41)
 
 - Prompt: plans/2026-11-25-penn-gmod-60x-continue-prompt.md
-- Chain: session 40 of 60 (started 2026-11-26)
+- Chain: session 41 of 60 (started 2026-11-26)
 - Plan: plans/penn-gmod-plan.md. Era: 1910 station (decisions/2026-11-26-era-1910.md).
 - Garry's Mod: D:/SteamLibrary/steamapps/common/GarrysMod (vbsp, vvis, vrad, bspzip, gmad, gmpublish, studiomdl, vbspinfo in bin/).
 - Budget 2026-11-27 (session 40): 24,964/65,536 verts, 14,967 faces, BSP 43.1 MB. (0.5.0: gma 33.7 MB, 895-1,183 fps uncapped.)
@@ -66,9 +66,10 @@ Updated: 2026-11-27 (session 40)
 - Session 39: area 5 lighting. Two rows of soft fills 40 ft out from each side wall (warm at 15 ft, cool at 45 ft, every 72 ft): the shaded 31st/33rd Street walls now read lit. Side-wall windows use a new penn/ext_glass (LightmappedGeneric, dark $color, faint env_cubemap, no texlight) instead of the glowing window_glass. clock_group built at $scale 1.5 (QC_SCALE in tools/penn_models.py). shots/20261127-0534. Not released.
 
 - Session 40: 0.5.0 released (area 5, exterior). README text and four exterior screenshots, level map labels 31st/33rd Street, Workshop description, gma (33.7 MB) and 4 previews uploaded (EResult 1), tag v0.5.0. shots/20261127-0539.
+- Session 41: area 6 refs. Three plates from the 1910 PRR booklet "Pennsylvania station in New York city" (archive.org pennsylvaniastat00penn, not in copyright): restaurant and dining room, the Loggia between them, lunch room and buffet (refs/SOURCES.md). The booklet says both rooms open off the Loggia (our stair hall), kitchens above. Notes and small flagged rulings (dining north, lunch south, ~100 x 60 ft) in notes/2026-11-27-dining-lunch-refs.md. No map change.
 
 ## Next
-1. Area 6 extras (plan order): dining room and lunch room off the waiting room, then a nav mesh (tools/nav.sh), then Moynihan Train Hall only if the budget allows. Start with refs for the dining/lunch rooms.
+1. Area 6: blockout of the dining room and lunch room off the stair hall (Loggia) at the landing level, z 192; check the side and size against the 1910 waiting-room level plan in refs first. Then a nav mesh (tools/nav.sh), then Moynihan only if the budget allows.
 2. Exterior polish, optional: the clock group's reclining figures are blobs; the ext_glass windows still show the blue pane grid (a plain dark texture would read better).
 3. Flag: the avenue front is 780 ft, about 350 ft longer than the real 430 ft (side fronts about 680 ft match the real length). Shortening it means moving EX_FX in and checking nothing inside crosses the new line. A sourced track plan would still confirm the 21-track layout.
 4. Optional leftovers: attic storey above the waiting-room side arches, coffered soffits on the cross arches.
