@@ -585,10 +585,29 @@ def lunch_counter():
     return m
 
 
+def bench():
+    """Session 56: a 30 ft double-sided oak waiting-room bench, seats 17 in up either side of a
+    central back 3 ft high, panelled end arms, plinth feet. Long along SMD x; origin on the floor at the centre."""
+    m = Mesh()
+    L = 180
+    _box(m, "wood", -L + 6, -4, 0, L - 6, 4, 36)                           # central back
+    _box(m, "wood", -L + 6, -6, 34, L - 6, 6, 37)                          # back cap rail
+    for s in (-1, 1):
+        _box(m, "wood", -L + 6, s * 4 if s > 0 else -22, 15, L - 6, 22 if s > 0 else -4, 17)   # seats
+        _box(m, "wood", -L + 6, s * 18 - 1, 2, L - 6, s * 18 + 1, 15)     # seat apron
+    for x in (-L, L - 6) + tuple(range(-L + 96, L - 90, 90)):
+        e = x in (-L, L - 6)
+        _box(m, "wood", x, -24, 0, x + 6, 24, 26 if e else 15)             # end arms, intermediate supports
+        if e:
+            _box(m, "wood", x - 1, -25, 26, x + 7, 25, 28)                 # arm cap
+    _box(m, "wood", -L, -14, 0, L, 14, 2)                                  # plinth
+    return m
+
+
 # Session 39: the clock group read small from the street; studiomdl scales it up.
 QC_SCALE = {"clock_group": 1.5}
 
-MODELS = {"train": train, "clock": clock, "conc_arch": conc_arch, "conc_diag": conc_diag, "lattice": lattice, "corinthian": corinthian, "lamp": lamp, "cassatt": cassatt, "doric": doric, "eagle": eagle, "clock_group": clock_group, "balustrade": balustrade, "dining_set": dining_set, "chandelier": chandelier, "pendant": pendant, "lunch_counter": lunch_counter}
+MODELS = {"train": train, "clock": clock, "conc_arch": conc_arch, "conc_diag": conc_diag, "lattice": lattice, "corinthian": corinthian, "lamp": lamp, "cassatt": cassatt, "doric": doric, "eagle": eagle, "clock_group": clock_group, "balustrade": balustrade, "dining_set": dining_set, "chandelier": chandelier, "pendant": pendant, "lunch_counter": lunch_counter, "bench": bench}
 
 
 def build():

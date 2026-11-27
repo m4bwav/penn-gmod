@@ -816,6 +816,15 @@ def build():
             y0, y1 = proud(s, FACE, 6)
             det(box(cx - 8 * FT, y0, ARCH_SPRING + ARCH_W // 2 + 3 * FT, cx + 8 * FT, y1, ENT_Z0 - 2 * FT, TEX_TRIM))
 
+    # Session 56: rows of 30 ft double-sided oak benches in the two end bays, long along x, so the
+    # middle bay stays clear between the arcade stair and the concourse passages (flagged ruling:
+    # layout from general period practice, not a sourced plan).
+    for sx in (-1, 1):
+        for bx in (1000, 1440):
+            for by in (-280, -100, 100, 280):
+                ents.append(ent("prop_static", (sx * bx, by, 0), angles="0 90 0", model="models/penn/bench.mdl",
+                                solid="6", disableshadows="1"))
+
     # Giant Corinthian columns (blockout: pedestal, 12-sided shaft, capital block) at the
     # bay piers and the room corners. The detail pass replaces them with MDL models.
     cols = [(x, s * (HY - 13 * FT)) for x in (BAYS[1], BAYS[2]) for s in (-1, 1)]
