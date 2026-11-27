@@ -1,0 +1,5 @@
+from_sw        1056 fps
+dining_in      1244 fps
+lunch_in        875 fps
+dining_tables  1271 fps
+lunch_counter  1217 fps
