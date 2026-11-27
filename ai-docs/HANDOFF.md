@@ -1,14 +1,14 @@
 # HANDOFF: gm_penn_station
 
 Status: in progress
-Updated: 2026-11-27 (session 39)
+Updated: 2026-11-27 (session 40)
 
 - Prompt: plans/2026-11-25-penn-gmod-60x-continue-prompt.md
-- Chain: session 39 of 60 (started 2026-11-26)
+- Chain: session 40 of 60 (started 2026-11-26)
 - Plan: plans/penn-gmod-plan.md. Era: 1910 station (decisions/2026-11-26-era-1910.md).
 - Garry's Mod: D:/SteamLibrary/steamapps/common/GarrysMod (vbsp, vvis, vrad, bspzip, gmad, gmpublish, studiomdl, vbspinfo in bin/).
-- Budget 2026-11-27 (session 39): 24,964/65,536 verts, 14,967 faces, BSP 43.1 MB. 139-147 fps capped on the streets. (0.4.0: gma 21.6 MB, 926-1,227 fps uncapped.)
-- Workshop ID: 3846546331 (public, 0.4.0). tools/package.sh defaults to it.
+- Budget 2026-11-27 (session 40): 24,964/65,536 verts, 14,967 faces, BSP 43.1 MB. (0.5.0: gma 33.7 MB, 895-1,183 fps uncapped.)
+- Workshop ID: 3846546331 (public, 0.5.0). tools/package.sh defaults to it.
 - Driver: the user-level chain_loop (C:/Users/m4bwa/.chainwright/penn-prompt.md, stop check penn_stop.py, log penn-chain.log, 60 sessions / 24 h) runs this chain. Sessions it starts never start another driver.
 
 ## Done
@@ -65,11 +65,14 @@ Updated: 2026-11-27 (session 39)
 
 - Session 39: area 5 lighting. Two rows of soft fills 40 ft out from each side wall (warm at 15 ft, cool at 45 ft, every 72 ft): the shaded 31st/33rd Street walls now read lit. Side-wall windows use a new penn/ext_glass (LightmappedGeneric, dark $color, faint env_cubemap, no texlight) instead of the glowing window_glass. clock_group built at $scale 1.5 (QC_SCALE in tools/penn_models.py). shots/20261127-0534. Not released.
 
+- Session 40: 0.5.0 released (area 5, exterior). README text and four exterior screenshots, level map labels 31st/33rd Street, Workshop description, gma (33.7 MB) and 4 previews uploaded (EResult 1), tag v0.5.0. shots/20261127-0539.
+
 ## Next
-1. The 0.5.0 release (area 5): README text and exterior screenshots, level map with the side streets, Workshop description, gma and previews, tag. Optional before it: the clock group's reclining figures are still blobs; the ext_glass windows still show the blue pane grid (a plain dark texture would read better).
-2. Flag for the next exterior pass: the real station measured about 780 ft along the side streets and 430 ft along Seventh Avenue. Session 36 made the avenue front 780 ft. The side fronts (about 680 ft) match the real length, but the avenue front is about 350 ft too long. Shortening it means moving the corner pavilions in (EX_FX) and needs a check that nothing inside crosses the new line. A sourced track plan would still confirm the 21-track layout.
-3. Optional leftovers: attic storey above the waiting-room side arches, coffered soffits on the cross arches.
-4. Wiki: the GitHub wiki needs its first page created by hand in the browser before it can be pushed (as with GCT); draft pages can go in docs/wiki/ meanwhile.
+1. Area 6 extras (plan order): dining room and lunch room off the waiting room, then a nav mesh (tools/nav.sh), then Moynihan Train Hall only if the budget allows. Start with refs for the dining/lunch rooms.
+2. Exterior polish, optional: the clock group's reclining figures are blobs; the ext_glass windows still show the blue pane grid (a plain dark texture would read better).
+3. Flag: the avenue front is 780 ft, about 350 ft longer than the real 430 ft (side fronts about 680 ft match the real length). Shortening it means moving EX_FX in and checking nothing inside crosses the new line. A sourced track plan would still confirm the 21-track layout.
+4. Optional leftovers: attic storey above the waiting-room side arches, coffered soffits on the cross arches.
+5. Wiki: the GitHub wiki needs its first page created by hand in the browser before it can be pushed (as with GCT); draft pages can go in docs/wiki/ meanwhile.
 
 ## Waiting on Mark
 - Nothing. (Flag: era ruled 1910 by default.)
