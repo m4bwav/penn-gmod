@@ -51,3 +51,4 @@
 - 2026-11-27 session 44: area 6 wainscot, pilasters, mirror material. 25,840 verts, BSP 48.4 MB, 138-147 fps capped, shots/20261127-0602 with compare_dining.jpg. Windows had to move up: the 8 ft wainscot covered their bottom 2 ft.
 - 2026-11-27 session 45: area 6 detail 3 (plaster walls, square-coffer ceiling texture, round-headed windows). 26,778 verts, BSP 50.7 MB, 139-146 fps capped, shots/20261127-0608.
 - 2026-11-27 session 46: cubemaps built in GMod (tools/cubemaps.sh, -buildcubemaps, ~2 min, 13 LDR+HDR); mirrors reflect. Plaster cooled. 26,778 verts, BSP 50.7 MB, 146 fps capped, shots/20261127-0615.
+- 2026-11-27 session 47: 0.6.0 release (area 6). Nav mesh 1,431 areas (tools/nav.sh, 5 min), committed in src/. gma 45.8 MB, 875-1,271 fps uncapped (shots/20261127-0624). A fresh worktree has no BSP; copy the cubemapped one from garrysmod/maps before package.sh.

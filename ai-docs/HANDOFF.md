@@ -1,14 +1,14 @@
 # HANDOFF: gm_penn_station
 
 Status: in progress
-Updated: 2026-11-27 (session 46)
+Updated: 2026-11-27 (session 47)
 
 - Prompt: plans/2026-11-25-penn-gmod-60x-continue-prompt.md
-- Chain: session 46 of 60 (started 2026-11-26)
+- Chain: session 47 of 60 (started 2026-11-26)
 - Plan: plans/penn-gmod-plan.md. Era: 1910 station (decisions/2026-11-26-era-1910.md).
 - Garry's Mod: D:/SteamLibrary/steamapps/common/GarrysMod (vbsp, vvis, vrad, bspzip, gmad, gmpublish, studiomdl, vbspinfo in bin/).
-- Budget 2026-11-27 (session 46): 26,778/65,536 verts, 15,879 faces, BSP 50.7 MB (with cubemaps). (0.5.0: gma 33.7 MB, 895-1,183 fps uncapped.)
-- Workshop ID: 3846546331 (public, 0.5.0). tools/package.sh defaults to it.
+- Budget 2026-11-27 (session 46): 26,778/65,536 verts, 15,879 faces, BSP 50.7 MB (with cubemaps). (0.6.0: gma 45.8 MB, 875-1,271 fps uncapped.)
+- Workshop ID: 3846546331 (public, 0.6.0). tools/package.sh defaults to it.
 - Driver: the user-level chain_loop (C:/Users/m4bwa/.chainwright/penn-prompt.md, stop check penn_stop.py, log penn-chain.log, 60 sessions / 24 h) runs this chain. Sessions it starts never start another driver.
 
 ## Done
@@ -72,9 +72,10 @@ Updated: 2026-11-27 (session 46)
 - Session 44: area 6 detail 2. New textures in tools/penn_textures.py: wood_panel (8 x 8 ft tile, two raised panels; FACEUV in build_vmf.py aligns its top rail to LAND + 8 ft), wood_plain, mirror (grey base, env_cubemap). Both rooms: 8 ft oak wainscot with a cap rail on the long walls and the outer end wall, oak pilasters at every beam line up to the cornice, windows raised to start above the wainscot; the lunch room's mirror band is now one mirror per bay in penn/mirror. compare.py has a "dining" pair set (compare_dining.jpg). shots/20261127-0602. Not released.
 - Session 46: reflections. tools/cubemaps.sh (holds the GMod lock) launches GMod with -buildcubemaps after compile.sh, waits for the BSP in garrysmod/maps to be rewritten, kills only its own gmod.exe and copies the BSP back to src/: 13 cubemaps, LDR + HDR, about 2 min. The lunch-room mirrors now reflect the room. Plaster cooled to 200/194/178. Run cubemaps.sh after every compile before shots or packaging. shots/20261127-0615 (sheet.jpg). Not released.
 - Session 45: area 6 detail 3. New textures penn/plaster (cream walls) and penn/ceiling_coffer (one deep square coffer per 10 ft tile, FACEUV aligned to R_X0/R_Y0) replace the ashlar walls and round-coffer ceiling in both rooms; every window has a round head (r 4 ft, four 1 ft glass steps) with a stepped oak architrave. shots/20261127-0608 (sheet.jpg). Not released.
+- Session 47: 0.6.0 released (area 6, dining and lunch rooms). Nav mesh by tools/nav.sh (1,431 areas, ~5 min; src/gm_penn_station.nav is committed and package.sh ships it). Level map labels both rooms, README and Workshop text, gma 45.8 MB, 3 previews (EResult 1), tag v0.6.0. The worktree has no BSP: package.sh needs src/gm_penn_station.bsp copied from garrysmod/maps (the cubemapped one) first. shots/20261127-0624.
 
 ## Next
-1. Area 6: nav mesh (tools/nav.sh), release 0.6.0, then Moynihan only if the budget allows.
+1. Moynihan Train Hall (present-day, area 6 extra) only if the budget allows: 26,778/65,536 verts, gma 45.8/150 MB. It is a different era, so treat it as a scope question (askwright page) before building; otherwise take the polish items below. Re-run tools/nav.sh after any walkable change.
 2. Exterior polish, optional: the clock group's reclining figures are blobs; the ext_glass windows still show the blue pane grid (a plain dark texture would read better).
 3. Flag: the avenue front is 780 ft, about 350 ft longer than the real 430 ft (side fronts about 680 ft match the real length). Shortening it means moving EX_FX in and checking nothing inside crosses the new line. A sourced track plan would still confirm the 21-track layout.
 4. Optional leftovers: attic storey above the waiting-room side arches, coffered soffits on the cross arches.
