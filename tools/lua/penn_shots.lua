@@ -22,6 +22,7 @@ local CAMS = {
   { "conc_stairs", Vector(-628, -2450, 110), Angle(22, -115, 0) },
   { "conc_stairwell", Vector(-300, -2700, 40), Angle(18, -90, 0) },
   { "conc_landing", Vector(-300, -3160, -170), Angle(5, -90, 0) },
+  { "conc_clock", Vector(0, -1900, 200), Angle(-25, 90, 0) },
   { "wr_to_conc", Vector(0, 300, 72), Angle(-4, -90, 0) },
   { "arcade_west", Vector(0, 4000, 264), Angle(-4, -90, 0) },
   { "arcade_east", Vector(0, 1600, 264), Angle(-4, 90, 0) },
