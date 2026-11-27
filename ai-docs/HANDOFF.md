@@ -1,10 +1,10 @@
 # HANDOFF: gm_penn_station
 
-Status: in progress
-Updated: 2026-11-27 (session 59)
+Status: finished (60-session chain complete; Moynihan and wiki wait on Mark)
+Updated: 2026-11-27 (session 60)
 
 - Prompt: plans/2026-11-25-penn-gmod-60x-continue-prompt.md
-- Chain: session 59 of 60 (started 2026-11-26)
+- Chain: session 60 of 60 (started 2026-11-26)
 - Plan: plans/penn-gmod-plan.md. Era: 1910 station (decisions/2026-11-26-era-1910.md).
 - Garry's Mod: D:/SteamLibrary/steamapps/common/GarrysMod (vbsp, vvis, vrad, bspzip, gmad, gmpublish, studiomdl, vbspinfo in bin/).
 - Budget 2026-11-27 (session 54): 26,285/65,536 verts, 15,335 faces, BSP 49.6 MB (with cubemaps), gma 51.6 MB, 120-146 fps capped, nav 1,384 areas.
@@ -87,6 +87,7 @@ Updated: 2026-11-27 (session 59)
 
 - Session 57: 0.7.2 released (benches). Compile, cubemaps, nav.sh (1,384 areas, same count as before the benches: they may not cut the mesh; flagged, check with nav_edit 1 in game if bots walk through benches), wr_benches camera moved to the south-east end bay, shots/20261127-0823 (1,000+ fps uncapped), README + wiki drafts + Workshop text, Workshop EResult 1 with a benches preview, tag v0.7.2.
 - Session 58: 0.7.3 released (solid props). No MDL had a collision model, so columns, benches, tables, counters, lamps, the Cassatt statue and the trains were walk-through and the nav mesh ignored them. tools/penn_models.py COLLIDE gives each a box $collisionmodel; nav.sh now 1,462 areas (was 1,384). 26,285 verts, 146 fps capped, gma 48.6 MB, Workshop EResult 1, tag v0.7.3. Flag: wr_benches reports CAMERA IN SOLID (already in 0.7.2, persists 50 u away, the image is clear); check with a noclip in game. shots/20261127-0838.
+- Session 60: chain closed. Moynihan (ask/moynihan-scope) still unanswered, so no new area; map stays at 0.7.3. To resume, answer the page, raise the session cap in this file and in the continue prompt's chain bound, and start the prompt again.
 
 ## Next
 1. Moynihan Train Hall: waits on Mark (ask/moynihan-scope). Read the answer with ask.py read ask/moynihan-scope; until then take the polish items below. Re-run tools/nav.sh after any walkable change.
