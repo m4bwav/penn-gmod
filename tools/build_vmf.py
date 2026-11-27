@@ -36,9 +36,10 @@ A_SPRING = LAND + 32 * FT                              # 576: vaults spring 32 f
 YA = HY + T + 60 * FT                                  # 1468: west end of the arcade, top of the stair hall
 YB = YA + AL                                           # 4168: Seventh Avenue end
 VEST = 40 * FT                                         # entrance vestibule east of the arcade
-# Exterior (area 5, session 36): the Seventh Avenue front is 780 ft long, 31st to 33rd Street,
-# with 100 ft corner pavilions; the cross streets (60 ft with sidewalks) run past both ends.
-EX_FX, EX_PAV, EX_XS = 390 * FT, 100 * FT, 100 * FT
+# Exterior (area 5, session 36; session 49 shortened to the real 430 ft): the Seventh Avenue front
+# runs 31st to 33rd Street with 40 ft corner pavilions (kept outside the waiting room's end walls);
+# the cross streets (60 ft with sidewalks) run past both ends.
+EX_FX, EX_PAV, EX_XS = 215 * FT, 40 * FT, 100 * FT
 EX_PAVD = 90 * FT                                      # session 37: corner pavilion depth along the side streets
 # Train concourse (area 3): about 314 x 200 ft west of the waiting room, at the same floor level,
 # under three glass groin vaults on steel lattice columns (HABS photos, refs/SOURCES.md).
@@ -324,7 +325,7 @@ def colonnade(W, det, ents, f0):
     # the facade; warm bounce lights under the portico soffit and inside the colonnade.
     ents.append(ent("light_environment", (0, cy, cz - 64), pitch="-55", angles="0 250 0",
                     _light="255 236 205 320", _ambient="150 170 205 140"))
-    for k in range(-6, 7):
+    for k in range(-3, 4):
         ents.append(ent("light", (k * 5 * 108, (f1 + cy) // 2, cz - 3 * FT), _light="250 228 195 40"))
         ents.append(ent("light", (k * 5 * 108, pe - FT, z0 + 6 * FT), _light="255 232 200 25"))
     ents.append(ent("env_cubemap", (0, sw1, z0 + 100)))
@@ -337,9 +338,9 @@ def colonnade(W, det, ents, f0):
         eag += [(s * (KX + 6 * FT), pe - 6 * FT, PT + 10 * FT), (s * (FX - 6 * FT), pe - 6 * FT, PT + 10 * FT)]
     for q in eag:
         ents.append(ent("prop_static", q, angles="0 180 0", model="models/penn/eagle.mdl", solid="0", disableshadows="1"))
-    for k in range(-3, 4):
+    for k in range(-2, 2):
         ents.append(ent("prop_static", (k * 120 * FT + 60 * FT, sw1 - 2 * FT, z0 - 8), model="models/penn/lamp.mdl", solid="6"))
-    for k in range(-6, 7):
+    for k in range(-3, 4):
         ents.append(ent("light", (k * 5 * 108, f1 + 6 * FT, FTOP - 8 * FT), _light="250 230 200 18"))
 
 
