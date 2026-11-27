@@ -16,4 +16,4 @@ The map isn't drawn in Hammer. A Python script, `tools/build_vmf.py`, writes the
 
 ## Status
 
-Release 0.7.1 has every area in the plan: the waiting room, the Seventh Avenue arcade and colonnade, the train concourse, the track level with two trains, the outside of the station, the dining room and lunch room, and a nav mesh. Whether Moynihan Train Hall belongs here is still open.
+Release 0.7.2 has every area in the plan: the waiting room, the Seventh Avenue arcade and colonnade, the train concourse, the track level with two trains, the outside of the station, the dining room and lunch room, and a nav mesh. Whether Moynihan Train Hall belongs here is still open.

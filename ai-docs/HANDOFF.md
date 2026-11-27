@@ -1,14 +1,14 @@
 # HANDOFF: gm_penn_station
 
 Status: in progress
-Updated: 2026-11-27 (session 56)
+Updated: 2026-11-27 (session 57)
 
 - Prompt: plans/2026-11-25-penn-gmod-60x-continue-prompt.md
-- Chain: session 56 of 60 (started 2026-11-26)
+- Chain: session 57 of 60 (started 2026-11-26)
 - Plan: plans/penn-gmod-plan.md. Era: 1910 station (decisions/2026-11-26-era-1910.md).
 - Garry's Mod: D:/SteamLibrary/steamapps/common/GarrysMod (vbsp, vvis, vrad, bspzip, gmad, gmpublish, studiomdl, vbspinfo in bin/).
 - Budget 2026-11-27 (session 54): 26,285/65,536 verts, 15,335 faces, BSP 49.6 MB (with cubemaps), gma 51.6 MB, 120-146 fps capped, nav 1,384 areas.
-- Workshop ID: 3846546331 (public, 0.7.1). tools/package.sh defaults to it.
+- Workshop ID: 3846546331 (public, 0.7.2). tools/package.sh defaults to it.
 - Driver: the user-level chain_loop (C:/Users/m4bwa/.chainwright/penn-prompt.md, stop check penn_stop.py, log penn-chain.log, 60 sessions / 24 h) runs this chain. Sessions it starts never start another driver.
 
 ## Done
@@ -85,11 +85,13 @@ Updated: 2026-11-27 (session 56)
 - Session 55: wiki drafts in docs/wiki/ (Home, Building-The-Map, Tools, Reference-Photos-And-Accuracy, Roadmap, Changelog, _Sidebar, _Footer), modelled on GCT's set and checked against tools/, SOURCES.md and the dimensions note. No map change.
 - Session 56: waiting-room benches. bench.mdl (tools/penn_models.py: 30 ft double-sided oak bench, central back, end arms) in four rows of two in each end bay (16), long along x so the middle bay stays clear from the stair to the concourse. Ruling (flagged): layout from general period practice, not a sourced plan. Camera wr_benches (sits against a column base; move it next time). 26,285 verts, 146 fps capped. shots/20261127-0811. Not released; re-run tools/nav.sh before the next release (solid props in the walk).
 
+- Session 57: 0.7.2 released (benches). Compile, cubemaps, nav.sh (1,384 areas, same count as before the benches: they may not cut the mesh; flagged, check with nav_edit 1 in game if bots walk through benches), wr_benches camera moved to the south-east end bay, shots/20261127-0823 (1,000+ fps uncapped), README + wiki drafts + Workshop text, Workshop EResult 1 with a benches preview, tag v0.7.2.
+
 ## Next
 1. Moynihan Train Hall: waits on Mark (ask/moynihan-scope). Read the answer with ask.py read ask/moynihan-scope; until then take the polish items below. Re-run tools/nav.sh after any walkable change.
 2. Exterior polish: done in session 49 (figures with limbs, clock face raised above the parapet).
 3. 0.7.0 released (session 51).
-4. Polish done: attic storey (s52), coffered cross arches (s53), 0.7.1 released (s54). Next: further polish (check every vault_up/conc_vault shot for sky after any exterior change), or stop the chain if nothing worthwhile is left and Moynihan stays unanswered.
+4. Polish done: attic storey (s52), coffered cross arches (s53), 0.7.1 released (s54), benches + 0.7.2 (s56-57). Next: further polish (check every vault_up/conc_vault shot for sky after any exterior change), or stop the chain if nothing worthwhile is left and Moynihan stays unanswered.
 5. Wiki: drafts are in docs/wiki/ (session 55). Once Mark creates the first wiki page in the browser, push them to penn-gmod.wiki.git (wikiwright) and keep the Changelog page current with each release.
 
 ## Waiting on Mark

@@ -45,7 +45,7 @@ local CAMS = {
   { "front_centre", Vector(0, 6150, 250), Angle(-12, 270, 0) },
   { "front_attic", Vector(900, 6150, 250), Angle(-28, 255, 0) },
   { "loggia_doors", Vector(-150, 1440, 270), Angle(5, -40, 0) },
-  { "wr_benches", Vector(560, -470, 150), Angle(12, 20, 0) },
+  { "wr_benches", Vector(1750, -560, 140), Angle(14, 135, 0) },
   { "dining_in", Vector(360, 1000, 290), Angle(2, 15, 0) },
   { "lunch_in", Vector(-360, 1300, 270), Angle(2, 195, 0) },
   { "dining_tables", Vector(700, 1110, 250), Angle(14, 60, 0) },
