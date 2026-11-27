@@ -248,7 +248,9 @@ def colonnade(W, det, ents, f0):
     stand-in block opposite, the two cross streets at the ends, under sky."""
     a, b, z0 = -ARC_W // 2, ARC_W // 2, LAND
     f1 = f0 + T
-    FX, SKYZ, FTOP = EX_FX, LAND + 130 * FT, LAND + 75 * FT
+    # Session 54: the sky ceiling spans the whole block, so it must clear the waiting-room vault
+    # (crown slab top 1880); at 130 ft (1752) it carved a cross of sky out of every crown.
+    FX, SKYZ, FTOP = EX_FX, LAND + 145 * FT, LAND + 75 * FT
     cy = f1 + 18 * FT                                   # column centre line
     pe = cy + 4 * FT                                    # portico edge
     sw1, st1, far = pe + 20 * FT, pe + 80 * FT, pe + 95 * FT
