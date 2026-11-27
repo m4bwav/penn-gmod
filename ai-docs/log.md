@@ -59,3 +59,4 @@
 - 2026-11-27 session 50: verified PR #57 (avenue front 780 -> 430 ft) on top of main: compile, cubemaps, front_*/side_* shots clean, 25,594 verts, 14,943 faces, BSP 48.9 MB. Merged. Nav mesh not rebuilt yet.
 - 2026-11-27 session 51: 0.7.0 released. Compile + cubemaps, nav 1,384 areas, shots/20261127-0731 (1,138-1,250 fps uncapped), gma 50.9 MB, Workshop EResult 1, tag v0.7.0. Moynihan page still unanswered. Driver 393900 is gone; only 429196 runs.
 - 2026-11-27 session 52: attic storey over the waiting-room entablature (plinth course, cornice, pedestals over columns, spandrel tablets). 25,884 verts, 15,082 faces, 124-146 fps capped. shots/20261127-0739.
+- 2026-11-27 session 53: cross arches in the waiting room at BAYS[1]/BAYS[2] (coffered soffit + trim fascias, 16 facets). 26,324 verts, 15,342 faces, BSP 49.3 MB, 122-146 fps capped. shots/20261127-0746.
