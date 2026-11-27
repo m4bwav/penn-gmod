@@ -52,6 +52,7 @@ TEX_COL = "penn/travertine"
 vmf_lib.SCALE.update({TEX_WALL: 0.375, TEX_TRIM: 0.375, TEX_VAULT: 0.6, TEX_FLOOR: 0.5, "penn/conc_glass": 0.75})
 TEX_GLASS = "penn/window_glass"
 TEX_DOOR = "penn/window_glow"
+TEX_LAMP = "penn/lamp_glow"
 NODRAW = "tools/toolsnodraw"
 TEX_SHOP = "penn/shopfront"
 # One shopfront tile per 45 ft bay along y (aligned to YA), 18 ft tall from the arcade floor.
@@ -343,7 +344,7 @@ def platforms(W, det, ents, wells, sw):
             if CY0 - 2 * FT < y < CY0 + 640:
                 continue
             det(box(c - 2, y - 2, -136, c + 2, y + 2, -64, TEX_STEEL))
-            det(box(c - 10, y - 10, -148, c + 10, y + 10, -136, TEX_DOOR))
+            det(box(c - 10, y - 10, -148, c + 10, y + 10, -136, TEX_LAMP))
             ents.append(ent("light", (c, y, -156), _light="255 214 160 60"))
         # Fill over the tracks either side so the ceiling and train roofs are not black.
         for s in (-1, 1):

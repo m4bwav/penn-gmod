@@ -1,13 +1,13 @@
 # HANDOFF: gm_penn_station
 
 Status: in progress
-Updated: 2026-11-27 (session 31)
+Updated: 2026-11-27 (session 32)
 
 - Prompt: plans/2026-11-25-penn-gmod-60x-continue-prompt.md
-- Chain: session 31 of 60 (started 2026-11-26)
+- Chain: session 32 of 60 (started 2026-11-26)
 - Plan: plans/penn-gmod-plan.md. Era: 1910 station (decisions/2026-11-26-era-1910.md).
 - Garry's Mod: D:/SteamLibrary/steamapps/common/GarrysMod (vbsp, vvis, vrad, bspzip, gmad, gmpublish, studiomdl, vbspinfo in bin/).
-- Budget 2026-11-27 (session 31): 19,265/65,536 verts, 10,926 faces, BSP 30.3 MB. 133-147 fps capped.
+- Budget 2026-11-27 (session 32): 19,265/65,536 verts, 10,926 faces, BSP 30.3 MB. 133-147 fps capped.
 - Workshop ID: 3846546331 (public, 0.3.0). tools/package.sh defaults to it.
 - Driver: the user-level chain_loop (C:/Users/m4bwa/.chainwright/penn-prompt.md, stop check penn_stop.py, log penn-chain.log, 60 sessions / 24 h) runs this chain. Sessions it starts never start another driver.
 
@@ -53,9 +53,10 @@ Updated: 2026-11-27 (session 31)
 - Session 29: the train. train.mdl (tools/penn_models.py: three 80 ft P70-style Tuscan red coaches with lit windows, clerestory roofs, vestibules and trucks, plus a two-unit DD1 electric in Brunswick green with box cabs, hoods, 68 in drivers and side rods) on the middle track (x -1), engine west, angles "0 180 0". Cameras train_nose, train_side. shots/20261127-0429. Not released.
 - Session 30: area 4 detail 1. Stone coping on both platform edges (2 ft, 4 in overhang), riveted bases and cap plates on the platform columns, steel cross beams under the concourse floor over each column line, a second train (same train.mdl) on the next track west, 120 ft further in. shots/20261127-0433. Not released.
 - Session 31: platform lighting. A hanging lamp (steel rod, glowing shade on penn/window_glow) midway between the platform columns every 40 ft with a warm light (60) under it, and dim fills (20) over the tracks. The ceiling no longer reads dark; first try at 120 / 45 blew the steel out white. The shades render blue-grey, not warm. shots/20261127-0439 (committed). Not released.
+- Session 32: lamp shades use a new warm unlit penn/lamp_glow (UnlitGeneric $color 1.0 0.84 0.58, texlight 255 214 160 60); they read cream now. window_glow was an unlit blue tint, not a lighting problem. shots/20261127-0443. Not released.
 
 ## Next
-1. Area 4: give the lamp shades a warm glow material (they show blue-grey), check platform/track layout against the 1910 booklet plates (refs/photos/The_New_York_improvement_*), then 0.4.0. The train could get a texture (lettering, panel lines) and a second train on another track. Railings (3.4k verts of brush posts) could become one MDL if the budget tightens.
+1. Area 4: check platform/track layout against the 1910 booklet plates (refs/photos/The_New_York_improvement_*), then 0.4.0. The train could get a texture (lettering, panel lines) and a second train on another track. Railings (3.4k verts of brush posts) could become one MDL if the budget tightens.
 2. Optional leftovers: attic storey above the waiting-room side arches, coffered soffits on the cross arches, eagles/clock on the facade; the colonnade cornice still reads dark from the street.
 3. Wiki: the GitHub wiki needs its first page created by hand in the browser before it can be pushed (as with GCT); draft pages can go in docs/wiki/ meanwhile.
 
