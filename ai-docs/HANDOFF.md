@@ -1,14 +1,14 @@
 # HANDOFF: gm_penn_station
 
 Status: in progress
-Updated: 2026-11-26 (session 16)
+Updated: 2026-11-26 (session 17)
 
 - Prompt: plans/2026-11-25-penn-gmod-60x-continue-prompt.md
-- Chain: session 16 of 60 (started 2026-11-26)
+- Chain: session 17 of 60 (started 2026-11-26)
 - Plan: plans/penn-gmod-plan.md. Era: 1910 station (decisions/2026-11-26-era-1910.md).
 - Garry's Mod: D:/SteamLibrary/steamapps/common/GarrysMod (vbsp, vvis, vrad, bspzip, gmad, gmpublish, studiomdl, vbspinfo in bin/).
-- Budget 2026-11-26 (session 15): 5,264/65,536 verts, 3,449 faces, BSP 15.8 MB. 977-1,106 fps uncapped.
-- Workshop ID: 3846546331 (public, 0.1.0). tools/package.sh defaults to it.
+- Budget 2026-11-26 (session 17): 5,264/65,536 verts, 3,449 faces, BSP 15.8 MB. 976-1,190 fps uncapped.
+- Workshop ID: 3846546331 (public, 0.2.0). tools/package.sh defaults to it.
 - Driver: the user-level chain_loop (C:/Users/m4bwa/.chainwright/penn-prompt.md, stop check penn_stop.py, log penn-chain.log, 60 sessions / 24 h) runs this chain. Sessions it starts never start another driver.
 
 ## Done
@@ -38,10 +38,11 @@ Updated: 2026-11-26 (session 16)
 - Session 14: the Cassatt niche on the stair hall's north wall at the landing: 10 ft round-headed recess with imposts, travertine pedestal, cassatt.mdl (simplified 9 ft bronze standing figure in tools/penn_models.py) facing south, a small warm light. Camera cassatt_niche. shots/20261126-2145. Not released.
 - Session 15: Seventh Avenue entrance colonnade: facade wall with the arcade opening, 12 Doric columns (doric.mdl, 35 ft), portico roof, cornice and attic, sidewalks, avenue, stand-in block opposite, open sky with light_environment. Cameras colonnade_street, colonnade_portico, arcade_to_street. shots/20261126-2158. Not released.
 - Session 16: area 2 lighting. Sun turned to come from the east (yaw 250, pitch -35) onto the facade, brighter ambient, 10 warm lights under the portico soffit and colonnade, arcade and vestibule fills raised. shots/20261126-2304 (146 fps capped). Not released.
+- Session 17: 0.2.0 released (area 2). README, Workshop description and previews, level map now draws both walking levels (make_map.py LAND) with labels for every area, gma uploaded, tag v0.2.0. shots/20261126-2307.
 
 ## Next
-1. Left over from the polish list (optional): attic storey above the side arches, coffered soffits on the cross arches. The west doors still show flat sky-blue glow; the concourse will replace them.
-2. Area 2: eagles/clock on the facade optional, then release 0.2.0 (README, level map, Workshop, tag). No PD photo of the shops themselves found on Commons; the etching is the only arcade ref.
+1. Area 3: train concourse. Refs first (PD photos of the steel-and-glass concourse, HABS drawings; refs/SOURCES.md), then a blockout joined through the waiting room's west openings, which still show flat sky-blue glow.
+2. Optional leftovers: attic storey above the waiting-room side arches, coffered soffits on the cross arches, eagles/clock on the facade; the colonnade cornice still reads dark from the street.
 3. Wiki: the GitHub wiki needs its first page created by hand in the browser before it can be pushed (as with GCT); draft pages can go in docs/wiki/ meanwhile.
 
 ## Waiting on Mark

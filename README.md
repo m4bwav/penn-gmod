@@ -6,17 +6,18 @@
 
 A Garry's Mod map of the 1910 Pennsylvania Station in New York (McKim, Mead & White), built at true scale (1 ft = 12 units). The station was torn down in 1963; this map rebuilds it from public-domain photographs and plans.
 
-Release 0.1.0 has the main waiting room: three groin-vaulted bays 150 ft to the crown, coffered vaults, Corinthian columns on tall pedestals, thermal windows in every lunette with morning sun on the floor, and the grand stair up to the arcade. The arcade, the train concourse, the platforms and the Seventh Avenue front come after it (see the [plan](ai-docs/plans/penn-gmod-plan.md)).
+Release 0.2.0 adds the Seventh Avenue front: the Doric colonnade on the street, the entrance vestibule and the 225 ft shopping arcade with bronze shopfronts, groin vaults and lamp standards, down to the Cassatt statue niche at the head of the grand stair. Release 0.1.0 had the main waiting room: three groin-vaulted bays 150 ft to the crown, coffered vaults, Corinthian columns on tall pedestals, thermal windows in every lunette with morning sun on the floor. The train concourse, the platforms and the rest of the exterior come next (see the [plan](ai-docs/plans/penn-gmod-plan.md)).
 
-The map is written as VMF text by a Python script, not drawn in Hammer. The textures (travertine, coffers, floor, window glass) and the column model are made by scripts in `tools/`.
+The map is written as VMF text by a Python script, not drawn in Hammer. The textures (travertine, coffers, floor, window glass, shopfronts, paving) and the models (columns, lamps, statue) are made by scripts in `tools/`.
 
-Screenshots from release 0.1.0:
+Screenshots from release 0.2.0:
 
 | | |
 |---|---|
-| ![From the southwest](docs/from_sw.jpg) | ![From the northwest](docs/from_nw.jpg) |
-| ![Looking north](docs/nave_north.jpg) | ![The vault](docs/vault_up.jpg) |
-| ![Stair to the arcade](docs/stair_east.jpg) | ![West wall](docs/west_wall.jpg) |
+| ![Seventh Avenue colonnade](docs/colonnade_street.jpg) | ![Under the portico](docs/colonnade_portico.jpg) |
+| ![The arcade](docs/arcade_west.jpg) | ![Arcade shopfront and lamp](docs/arcade_lamp.jpg) |
+| ![Cassatt niche](docs/cassatt_niche.jpg) | ![Waiting room from the southwest](docs/from_sw.jpg) |
+| ![The vault](docs/vault_up.jpg) | ![Stair to the arcade](docs/stair_east.jpg) |
 
 ### Level map
 
