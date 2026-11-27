@@ -38,6 +38,7 @@ VEST = 40 * FT                                         # entrance vestibule east
 # Exterior (area 5, session 36): the Seventh Avenue front is 780 ft long, 31st to 33rd Street,
 # with 100 ft corner pavilions; the cross streets (60 ft with sidewalks) run past both ends.
 EX_FX, EX_PAV, EX_XS = 390 * FT, 100 * FT, 100 * FT
+EX_PAVD = 90 * FT                                      # session 37: corner pavilion depth along the side streets
 # Train concourse (area 3): about 314 x 200 ft west of the waiting room, at the same floor level,
 # under three glass groin vaults on steel lattice columns (HABS photos, refs/SOURCES.md).
 CY1 = -HY - T - 10 * FT                                # -868: east edge, end of the west passages
@@ -259,29 +260,41 @@ def colonnade(W, det, ents, f0):
     # (31st and 33rd) run off at both ends of the block past the corner pavilions.
     EX = FX + EX_XS
     W(box(-FX, f1, z0 - 64, FX, pe, z0, TEX_FLOOR))
-    for x0, x1 in ((-EX, -FX), (FX, EX)):
-        W(box(x0, f0, z0 - 64, x1, pe, z0 - 8, "penn/sidewalk"))
+    YW = CY0 - T                                        # session 37: the side streets run west to here
+    for s in (-1, 1):                                   # cross streets: sidewalk, roadway, sidewalk
+        for u0, u1, h, tx in ((FX, FX + 20 * FT, 8, "penn/sidewalk"), (FX + 20 * FT, EX - 20 * FT, 16, "penn/asphalt"),
+                              (EX - 20 * FT, EX, 8, "penn/sidewalk")):
+            x0, x1 = sorted((s * u0, s * u1))
+            W(box(x0, YW, z0 - 64, x1, pe, z0 - h, tx))
     W(box(-EX, pe, z0 - 64, EX, sw1, z0 - 8, "penn/sidewalk"))
     W(box(-EX, sw1, z0 - 64, EX, st1, z0 - 16, "penn/asphalt"))
     W(box(-EX, st1, z0 - 64, EX, far, z0 - 8, "penn/sidewalk"))
     # Enclosure: block opposite, stand-in blocks across the cross streets, sky over everything.
     W(box(-EX, far, z0 - 64, EX, far + 32, SKYZ, TEX_WALL))
     for x0, x1 in ((-EX - 32, -EX), (EX, EX + 32)):
-        W(box(x0, f0 - 32, z0 - 64, x1, far + 32, SKYZ, TEX_WALL))
-    for x0, x1 in ((-EX, -FX), (FX, EX)):               # cross streets end in a low wall for now, sky above:
-        W(box(x0, f0 - 32, z0 - 64, x1, f0, z0 + 30 * FT, TEX_WALL))     # a tall one shaded the pavilions
-        W(box(x0, f0 - 32, z0 + 30 * FT, x1, f0, SKYZ, "tools/toolsskybox"))
-    W(box(-FX, f0 - 32, FTOP, FX, f0, SKYZ, "tools/toolsskybox"))
-    W(box(-EX - 32, f0 - 32, SKYZ, EX + 32, far + 32, SKYZ + 32, "tools/toolsskybox"))
+        W(box(x0, YW - 32, z0 - 64, x1, far + 32, SKYZ, TEX_WALL))
+    for x0, x1 in ((-EX, -FX), (FX, EX)):               # west ends of the cross streets: a low wall, sky above
+        W(box(x0, YW - 32, z0 - 64, x1, YW, z0 + 30 * FT, TEX_WALL))     # (a tall one shaded the pavilions)
+        W(box(x0, YW - 32, z0 + 30 * FT, x1, YW, SKYZ, "tools/toolsskybox"))
+    W(box(-KX, f0 - 32, FTOP, KX, f0, SKYZ, "tools/toolsskybox"))
+    W(box(-EX - 32, YW - 32, SKYZ, EX + 32, far + 32, SKYZ + 32, "tools/toolsskybox"))
+    side_fronts(W, det, ents, f0, YW, KX, FTOP, SKYZ, cz=z0 + 35 * FT)
     # Corner pavilions: solid ashlar blocks 100 ft wide standing forward to the portico edge and
     # 10 ft above the main cornice, a cornice band and a plain attic (pediments face the cross
     # streets and come with the side fronts).
     PT = FTOP + 10 * FT
     for s in (-1, 1):
         x0, x1 = sorted((s * KX, s * FX))
-        W(box(x0, f1, z0 - 64, x1, pe, PT, TEX_WALL))
-        det(box(x0 - 16, f0, PT, x1 + 16, pe + 18, PT + 2 * FT, TEX_TRIM))
-        det(box(x0 + 2 * FT, f0, PT + 2 * FT, x1 - 2 * FT, pe - 2 * FT, PT + 10 * FT, TEX_WALL))
+        PB = f0 - EX_PAVD                               # session 37: pavilions run 90 ft back along the side street
+        W(box(x0, PB, z0 - 64, x1, pe, PT, TEX_WALL))
+        det(box(x0 - 16, PB - 16, PT, x1 + 16, pe + 18, PT + 2 * FT, TEX_TRIM))
+        det(box(x0 + 2 * FT, PB + 2 * FT, PT + 2 * FT, x1 - 2 * FT, pe - 2 * FT, PT + 10 * FT, TEX_WALL))
+        # Temple-front pediment facing the cross street (ridge along x, gable end on the side front).
+        det(xprism([(PB - 16, PT + 2 * FT), (pe + 18, PT + 2 * FT), ((PB + pe) // 2, PT + 22 * FT)], x0, x1, TEX_TRIM))
+        # Pilasters on the side face of the pavilion.
+        for v in (PB, pe - 4 * FT):
+            u0, u1 = sorted((s * FX, s * (FX + 12)))
+            det(box(u0, v, z0, u1, v + 4 * FT, PT, TEX_TRIM))
         det(box(x0, f0, FTOP, x1, f1, PT, TEX_WALL))
         # Pilaster strips at the pavilion corners and a tall blind window panel in the middle.
         for u in (x0, x1 - 4 * FT):
@@ -313,6 +326,74 @@ def colonnade(W, det, ents, f0):
         ents.append(ent("light", (k * 5 * 108, (f1 + cy) // 2, cz - 3 * FT), _light="250 228 195 40"))
         ents.append(ent("light", (k * 5 * 108, pe - FT, z0 + 6 * FT), _light="255 232 200 25"))
     ents.append(ent("env_cubemap", (0, sw1, z0 + 100)))
+
+
+def _dedup(poly):
+    """Drop repeated points (the end segments of a half disc meet the base line in a triangle)."""
+    return [q for i, q in enumerate(poly) if q != poly[i - 1]]
+
+
+def side_fronts(W, det, ents, f0, YW, KX, FTOP, SKYZ, cz):
+    """Session 37 (area 5 blockout 2): the 31st Street (-x) and 33rd Street (+x) fronts, the north one a
+    mirror of the south (flagged ruling, notes/2026-11-27-exterior-refs.md). Ashlar wall from the corner
+    pavilion back to the concourse's west end, pilaster strips every 36 ft, a cornice; mid-block the
+    carriage-drive entrance, a 144 ft recess behind eight Doric columns; above it the arched gable
+    with the waiting room's thermal window rising over the roofline. The roof is a 100 ft strip
+    (KX..FX) with a sky seal at KX, so nothing behind it shows."""
+    FX, z0 = EX_FX, LAND
+    RD, RY = 30 * FT, 864                               # carriage-drive recess depth, half length
+    PB = f0 - EX_PAVD
+    for s in (-1, 1):
+        X = lambda a, b: sorted((s * a, s * b))
+        x0, x1 = X(FX - RD - T, FX)
+        W(box(x0, YW, z0 - 64, x1, -RY, FTOP, TEX_WALL))
+        W(box(x0, RY, z0 - 64, x1, PB, FTOP, TEX_WALL))
+        x0, x1 = X(FX - RD - T, FX - RD)
+        W(box(x0, -RY, z0 - 64, x1, RY, cz, TEX_WALL))                      # recess back wall
+        x0, x1 = X(FX - RD, FX)
+        W(box(x0, -RY, z0 - 64, x1, RY, z0, TEX_FLOOR))                     # carriage drive floor
+        W(box(x0, -RY, cz, x1, RY, FTOP, TEX_WALL))                         # entablature over the columns
+        x0, x1 = X(FX - RD - T, FX - RD)
+        W(box(x0, -RY, cz, x1, RY, FTOP, TEX_WALL))
+        x0, x1 = X(KX, FX)
+        W(box(x0, YW - 32, FTOP - 16, x1, f0, FTOP, TEX_WALL))              # roof strip
+        x0, x1 = X(KX - 32, KX)
+        W(box(x0, YW - 32, FTOP, x1, f0, SKYZ, "tools/toolsskybox"))        # sky seal over the roof
+        x0, x1 = X(KX, FX)
+        W(box(x0, YW - 32, z0 - 64, x1, YW, FTOP, TEX_WALL))                # west end of the side wing
+        # Pilaster strips every 36 ft along the plain wall, a cornice and a plinth course.
+        u0, u1 = X(FX, FX + 12)
+        for y in range(YW + 18 * FT, PB - 2 * FT, 36 * FT):
+            if -RY - 4 * FT < y < RY:
+                continue
+            det(box(u0, y, z0, u1, y + 4 * FT, FTOP - 3 * FT, TEX_TRIM))
+        c0, c1 = X(FX, FX + 18)
+        for a, b in ((YW, -RY), (RY, PB)):
+            det(box(c0, a, FTOP - 3 * FT, c1, b, FTOP, TEX_TRIM))
+            det(box(u0, a, z0 - 8, u1, b, z0 + 4 * FT, TEX_TRIM))
+        det(box(c0, -RY, FTOP - 3 * FT, c1, RY, FTOP, TEX_TRIM))
+        det(box(c0, -RY, cz, c1, RY, cz + 2 * FT, TEX_TRIM))
+        for k in range(-4, 4):
+            ents.append(ent("prop_static", (s * (FX - 3 * FT), (2 * k + 1) * 108, z0), model="models/penn/doric.mdl", solid="6"))
+        # Arched gable over the carriage drive: a half disc of ashlar on the recess back wall line,
+        # the thermal window glazed in it, a trim band round the arch.
+        g0, g1 = X(FX - RD - 4 * FT, FX - RD)
+        r, n = 46 * FT, 12
+        arc, win = halfdisc(0, FTOP, r, n), halfdisc(0, FTOP + 4 * FT, r - 8 * FT, n)
+        for i in range(n):
+            (ya, za), (yb, zb) = arc[i + 1], arc[i]
+            W(xprism(_dedup([(ya, FTOP), (yb, FTOP), (yb, zb), (ya, za)]), g0, g1, TEX_WALL))
+        w0, w1 = X(FX - RD, FX - RD + 4)
+        for i in range(n):
+            (ya, za), (yb, zb) = win[i + 1], win[i]
+            det(xprism(_dedup([(ya, FTOP + 4 * FT), (yb, FTOP + 4 * FT), (yb, zb), (ya, za)]), w0, w1, TEX_GLASS))
+        b0, b1 = X(FX - RD, FX - RD + 12)
+        band = halfdisc(0, FTOP, r + 2 * FT, n)
+        for i in range(n):
+            det(xprism([arc[i + 1], arc[i], band[i], band[i + 1]], b0, b1, TEX_TRIM))
+        for y in range(-RY + 216, RY, 432):                 # warm bounce in the carriage drive
+            ents.append(ent("light", (s * (FX - RD // 2), y, z0 + 20 * FT), _light="250 228 195 30"))
+        ents.append(ent("env_cubemap", (s * (FX + 50 * FT), 0, z0 + 100)))
 
 
 # Track level (area 4): session 28 blockout. One 30 ft island platform under each concourse stair,
