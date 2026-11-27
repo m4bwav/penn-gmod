@@ -1,0 +1,3 @@
+from_sw         146 fps
+from_nw         124 fps
+stair_east      146 fps

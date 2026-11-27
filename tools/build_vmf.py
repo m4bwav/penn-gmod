@@ -780,6 +780,31 @@ def build():
         x0, x1 = (HX - 4 * FT, HX) if s > 0 else (-HX, -HX + 4 * FT)
         det(box(x0, -HY + 4 * FT, ENT_Z0, x1, HY - 4 * FT, ENT_Z1, TEX_TRIM))
 
+    # Session 52: attic storey over the entablature, under the lunette sills (z 1056-1156): a 2 ft
+    # proud plinth course with a 1 ft cornice, attic pedestals 4 ft proud over every column, and a
+    # plain tablet in the spandrel above each side arch.
+    def proud(s, p, d):
+        return sorted((s * (HY - p), s * (HY - p - d)))
+    AT1 = ENT_Z1 + 7 * FT                                  # 1140, 16 u under the lunette sill
+    for s in (-1, 1):
+        y0, y1 = proud(s, 0, 2 * FT)
+        det(box(-HX, y0, ENT_Z1, HX, y1, AT1 - FT, TEX_TRIM))
+        y0, y1 = proud(s, 0, 3 * FT)
+        det(box(-HX, y0, AT1 - FT, HX, y1, AT1, TEX_TRIM))
+        x0, x1 = sorted((s * HX, s * (HX - 2 * FT)))
+        det(box(x0, -HY + 2 * FT, ENT_Z1, x1, HY - 2 * FT, AT1 - FT, TEX_TRIM))
+        x0, x1 = sorted((s * HX, s * (HX - 3 * FT)))
+        det(box(x0, -HY + 3 * FT, AT1 - FT, x1, HY - 3 * FT, AT1, TEX_TRIM))
+        for x in (BAYS[1], BAYS[2], -(HX - 6 * FT), HX - 6 * FT):
+            y0, y1 = proud(s, 0, 4 * FT)
+            det(box(x - 7 * FT, y0, ENT_Z1, x + 7 * FT, y1, AT1 - FT, TEX_TRIM))
+        for i in range(3):
+            if s > 0 and i == 1:
+                continue
+            cx = (BAYS[i] + BAYS[i + 1]) // 2
+            y0, y1 = proud(s, FACE, 6)
+            det(box(cx - 8 * FT, y0, ARCH_SPRING + ARCH_W // 2 + 3 * FT, cx + 8 * FT, y1, ENT_Z0 - 2 * FT, TEX_TRIM))
+
     # Giant Corinthian columns (blockout: pedestal, 12-sided shaft, capital block) at the
     # bay piers and the room corners. The detail pass replaces them with MDL models.
     cols = [(x, s * (HY - 13 * FT)) for x in (BAYS[1], BAYS[2]) for s in (-1, 1)]
