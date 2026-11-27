@@ -1,0 +1,2 @@
+front_centre    147 fps
+front_attic     146 fps
