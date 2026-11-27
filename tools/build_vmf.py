@@ -716,6 +716,15 @@ def build():
     for i in range(3):
         groin(W, BAYS[i], BAYS[i + 1], -HY, HY, SPRING, RISE, TEX_VAULT)
 
+    # Session 53: cross arches at the inner bay lines, springing from the attic over the columns:
+    # a 10 ft coffered soffit hanging 2 ft under the vault, a 1 ft travertine fascia each side 6 u lower.
+    for x in (BAYS[1], BAYS[2]):
+        for (w0, w1), dz, tex in (((-5 * FT, 5 * FT), 24, TEX_VAULT),
+                                  ((-6 * FT, -5 * FT), 30, TEX_TRIM), ((5 * FT, 6 * FT), 30, TEX_TRIM)):
+            inner, outer = halfdisc(0, SPRING, RISE - dz, 16), halfdisc(0, SPRING, RISE + 8, 16)
+            for i in range(16):
+                det(xprism([inner[i + 1], inner[i], outer[i], outer[i + 1]], x + w0, x + w1, tex))
+
     # Thermal windows in every lunette: long walls (per bay) and both ends.
     for i in range(3):
         cx = (BAYS[i] + BAYS[i + 1]) // 2
