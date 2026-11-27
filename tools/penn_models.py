@@ -29,6 +29,11 @@ VMTS = {
              '\t"$surfaceprop" "metal"\n}\n',
     "clockface": '"UnlitGeneric"\n{\n\t"$basetexture" "models/debug/debugwhite"\n\t"$color2" "[0.92 0.88 0.76]"\n\t"$surfaceprop" "glass"\n}\n',
     "globe": '"UnlitGeneric"\n{\n\t"$basetexture" "models/debug/debugwhite"\n\t"$color2" "[1 0.9 0.72]"\n\t"$surfaceprop" "glass"\n}\n',
+    "tuscan": '"VertexLitGeneric"\n{\n\t"$basetexture" "models/debug/debugwhite"\n\t"$color2" "[0.30 0.10 0.07]"\n'
+              '\t"$phong" "1"\n\t"$phongboost" "1"\n\t"$phongexponent" "12"\n\t"$phongfresnelranges" "[0.3 0.6 1]"\n\t"$surfaceprop" "metal"\n}\n',
+    "brunswick": '"VertexLitGeneric"\n{\n\t"$basetexture" "models/debug/debugwhite"\n\t"$color2" "[0.06 0.10 0.07]"\n'
+                 '\t"$phong" "1"\n\t"$phongboost" "1"\n\t"$phongexponent" "12"\n\t"$phongfresnelranges" "[0.3 0.6 1]"\n\t"$surfaceprop" "metal"\n}\n',
+    "carwin": '"UnlitGeneric"\n{\n\t"$basetexture" "models/debug/debugwhite"\n\t"$color2" "[0.42 0.34 0.22]"\n\t"$surfaceprop" "glass"\n}\n',
 }
 
 
@@ -267,7 +272,113 @@ def clock():
     return m
 
 
-MODELS = {"clock": clock, "conc_arch": conc_arch, "conc_diag": conc_diag, "lattice": lattice, "corinthian": corinthian, "lamp": lamp, "cassatt": cassatt, "doric": doric}
+def _box(m, mat, x0, y0, z0, x1, y1, z1):
+    """Axis-aligned box, all six faces."""
+    P = lambda x, y, z, n: ((x, y, z), n, (x / 64.0 + y / 64.0, z / 64.0))
+    m.quad(mat, P(x0, y0, z0, (0, 0, -1)), P(x0, y1, z0, (0, 0, -1)), P(x1, y1, z0, (0, 0, -1)), P(x1, y0, z0, (0, 0, -1)))
+    m.quad(mat, P(x0, y0, z1, (0, 0, 1)), P(x1, y0, z1, (0, 0, 1)), P(x1, y1, z1, (0, 0, 1)), P(x0, y1, z1, (0, 0, 1)))
+    m.quad(mat, P(x0, y0, z0, (0, -1, 0)), P(x1, y0, z0, (0, -1, 0)), P(x1, y0, z1, (0, -1, 0)), P(x0, y0, z1, (0, -1, 0)))
+    m.quad(mat, P(x0, y1, z0, (0, 1, 0)), P(x0, y1, z1, (0, 1, 0)), P(x1, y1, z1, (0, 1, 0)), P(x1, y1, z0, (0, 1, 0)))
+    m.quad(mat, P(x0, y0, z0, (-1, 0, 0)), P(x0, y0, z1, (-1, 0, 0)), P(x0, y1, z1, (-1, 0, 0)), P(x0, y1, z0, (-1, 0, 0)))
+    m.quad(mat, P(x1, y0, z0, (1, 0, 0)), P(x1, y1, z0, (1, 0, 0)), P(x1, y1, z1, (1, 0, 0)), P(x1, y0, z1, (1, 0, 0)))
+
+
+def _xprism(m, mat, prof, x0, x1):
+    """Extrude an open (y, z) profile, listed left to right over the top, along x from x0 to x1,
+    with end caps fanned down to the profile's first height."""
+    for k in range(len(prof) - 1):
+        (ya, za), (yb, zb) = prof[k], prof[k + 1]
+        ln = math.hypot(yb - ya, zb - za) or 1
+        nn = (0, (za - zb) / ln, (yb - ya) / ln)
+        m.quad(mat, ((x0, ya, za), nn, (0, 0)), ((x1, ya, za), nn, ((x1 - x0) / 64, 0)),
+               ((x1, yb, zb), nn, ((x1 - x0) / 64, 1)), ((x0, yb, zb), nn, (0, 1)))
+        base = prof[0][1]
+        m.quad(mat, ((x0, ya, base), (-1, 0, 0), (0, 0)), ((x0, ya, za), (-1, 0, 0), (0, 1)),
+               ((x0, yb, zb), (-1, 0, 0), (1, 1)), ((x0, yb, base), (-1, 0, 0), (1, 0)))
+        m.quad(mat, ((x1, yb, base), (1, 0, 0), (0, 0)), ((x1, yb, zb), (1, 0, 0), (0, 1)),
+               ((x1, ya, za), (1, 0, 0), (1, 1)), ((x1, ya, base), (1, 0, 0), (1, 0)))
+
+
+def _wheels(m, x, r):
+    """A wheel pair on standard gauge (rail heads at y = +-28), axle at height r above the rail."""
+    for y in (-31, 31):
+        m.frame("steel", [(0, -3), (r, -3), (r, 3), (0, 3)], (x, y, r), (1, 0, 0), (0, 0, 1), (0, 1, 0), 14)
+
+
+def _truck(m, x, r=18, base=8 * FT):
+    for dx in (-base / 2, base / 2):
+        _wheels(m, x + dx, r)
+    for y in (-40, 34):
+        _box(m, "steel", x - base / 2 - 14, y, r - 8, x + base / 2 + 14, y + 6, r + 10)
+
+
+def coach(m, x0, ln=80 * FT):
+    """PRR P70-style steel coach (1910s): Tuscan red body 10 ft wide on two four-wheel trucks, a row
+    of lit windows each side, clerestory roof, end vestibules. Built along SMD +x from x0."""
+    x1, hw, zf, zb, zr = x0 + ln, 60, 44, 44 + 9 * FT, 44 + 11 * FT
+    _truck(m, x0 + 9 * FT)
+    _truck(m, x1 - 9 * FT)
+    _box(m, "steel", x0 + 6, -hw + 8, zf - 10, x1 - 6, hw - 8, zf)             # underframe
+    _box(m, "steel", x0 + 20 * FT, -40, zf - 30, x1 - 20 * FT, 40, zf - 10)   # battery and tanks
+    _box(m, "tuscan", x0 + 6, -hw, zf, x1 - 6, hw, zf + 34)                   # below the windows
+    _box(m, "tuscan", x0 + 6, -hw, zf + 64, x1 - 6, hw, zb)                   # letter board
+    n = 16                                                                    # windows a side
+    xs = [x0 + 8 * FT + i * (ln - 16 * FT) / n for i in range(n + 1)]
+    for x in xs:                                                              # piers between windows
+        _box(m, "tuscan", x - 6, -hw, zf + 34, x + 6, hw, zf + 64)
+    for xa, xb in ((x0 + 6, xs[0] - 6), (xs[-1] + 6, x1 - 6)):                # vestibule ends, no windows
+        _box(m, "tuscan", xa, -hw, zf + 34, xb, hw, zf + 64)
+    _box(m, "carwin", xs[0], -hw + 3, zf + 34, xs[-1], hw - 3, zf + 64)       # glass set back 3 u
+    # Roof: a low arch up to the clerestory, then the clerestory and its rounded top.
+    _xprism(m, "steel", [(-hw - 2, zb), (-hw + 10, zb + 9), (-40, zb + 14), (-40, zr - 6), (-30, zr - 1),
+                         (30, zr - 1), (40, zr - 6), (40, zb + 14), (hw - 10, zb + 9), (hw + 2, zb)], x0 + 4, x1 - 4)
+    for xd in (x0 + 3 * FT, x1 - 3 * FT):                                     # vestibule doors
+        for y in (-hw - 1, hw - 1):
+            _box(m, "steel", xd - 14, y, zf + 4, xd + 14, y + 2, zb - 10)
+    for xe in (x0 - 6, x1):                                                   # diaphragms
+        _box(m, "steel", xe, -30, zf, xe + 6, 30, zb - 6)
+
+
+def dd1(m, x0):
+    """PRR DD1 electric (1910, built for the Hudson tunnels): two coupled halves, each a 4-4-0 with
+    a box cab and a sloped hood toward its outer end, side rods, Brunswick green. About 64 ft over
+    both halves. Built along SMD +x from x0."""
+    half = 32 * FT
+    for k, s in ((0, -1), (1, 1)):
+        a = x0 + k * half
+        out, inner = (a, a + half) if s < 0 else (a + half, a)
+        _box(m, "steel", a + 4, -54, 30, a + half - 4, 54, 42)                   # frame
+        for dx in (11 * FT, 18 * FT):                                            # two 68 in drivers
+            _wheels(m, inner - s * dx, 34)
+        _truck(m, out - s * 5 * FT, r=18, base=5 * FT)                           # leading truck
+        rx = sorted((inner - s * 11 * FT, inner - s * 18 * FT))                 # side rods
+        for y in (-40, 36):
+            _box(m, "steel", rx[0] - 4, y, 30, rx[1] + 4, y + 4, 38)
+        cab0, cab1 = sorted((inner, inner - s * 13 * FT))
+        _box(m, "brunswick", cab0, -54, 42, cab1, 54, 42 + 10 * FT)              # box cab
+        _box(m, "brunswick", cab0 - 2, -58, 42 + 10 * FT, cab1 + 2, 58, 42 + 10 * FT + 8)
+        for y in (-55, 52):                                                      # cab side windows
+            _box(m, "carwin", cab0 + 18, y, 42 + 6 * FT, cab0 + 40, y + 3, 42 + 8 * FT)
+            _box(m, "carwin", cab1 - 40, y, 42 + 6 * FT, cab1 - 18, y + 3, 42 + 8 * FT)
+        h0, h1 = sorted((cab0 if s < 0 else cab1, out))
+        _box(m, "brunswick", h0, -40, 42, h1, 40, 42 + 5 * FT)                   # hood
+        _xprism(m, "brunswick", [(-40, 42 + 5 * FT), (-30, 42 + 6 * FT), (30, 42 + 6 * FT), (40, 42 + 5 * FT)], h0, h1)
+        _box(m, "steel", out - 3, -54, 18, out + 3, 54, 36)                      # pilot beam
+        m.frame("globe", [(0, 0), (7, 0), (7, 4), (0, 4)], (out, 0, 42 + 5 * FT), (0, 1, 0), (0, 0, 1), (s, 0, 0), 10)
+
+
+def train():
+    """Session 29: a 1910 Pennsylvania Railroad train for the platforms: three P70-style coaches and
+    a DD1 electric at the +x end, which studiomdl turns to world -y (west, toward the tunnels) at
+    yaw 0. Origin: rail top, track centre, at the rear of the last coach."""
+    m = Mesh()
+    for i in range(3):
+        coach(m, i * 81 * FT)
+    dd1(m, 3 * 81 * FT)
+    return m
+
+
+MODELS = {"train": train, "clock": clock, "conc_arch": conc_arch, "conc_diag": conc_diag, "lattice": lattice, "corinthian": corinthian, "lamp": lamp, "cassatt": cassatt, "doric": doric}
 
 
 def build():
