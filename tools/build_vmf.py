@@ -21,10 +21,12 @@ SPRING = CROWN - RISE - 16                # 1132: groin() adds 16 u above the cr
 BAYS = (-HX, -HX // 3, HX // 3, HX)       # three groin bays
 T = 8 * FT                                # wall thickness
 LUNETTE = 460                             # thermal window radius, 38 ft 4 in
-PED = 10 * FT                             # column pedestal
+PED = 14 * FT                             # column pedestal (session 5: taller, per the photos)
 COL_TOP = PED + 60 * FT                   # capital top, 60 ft above the pedestal
 ENT_Z0, ENT_Z1 = COL_TOP, COL_TOP + 14 * FT   # entablature over the columns
 ARC_W, ARC_H, LAND = 40 * FT, 30 * FT, 16 * FT  # stair opening to the arcade, landing rise
+ARCH_W, ARCH_SPRING = 30 * FT, 45 * FT    # round-headed arches in each long-wall bay, crown 60 ft
+FACE = 4 * FT                             # arcade face layer standing proud of the long walls
 
 TEX_FLOOR = "penn/floor_travertine"
 TEX_WALL = "penn/travertine_ashlar"
@@ -123,6 +125,38 @@ def build():
     for s in (-1, 1):
         mullions(0, s * HX, s, False)
 
+    # Round-headed arches: one per bay in each long wall, a 4 ft face layer with the arch cut out;
+    # the recess shows the wall behind. The east middle bay is the stair opening, so its arch is
+    # 40 ft wide and springs at the opening head, with a glass tympanum.
+    def arch_face(cx, s, w, zs):
+        wy = s * HY
+        d0, d1 = sorted((wy, wy - FACE * s))
+        r = w // 2
+        lo, hi = (BAYS[0], BAYS[1]) if cx < BAYS[1] else ((BAYS[1], BAYS[2]) if cx < BAYS[2] else (BAYS[2], BAYS[3]))
+        det(box(lo, d0, 0, cx - r, d1, ENT_Z0, TEX_WALL))
+        det(box(cx + r, d0, 0, hi, d1, ENT_Z0, TEX_WALL))
+        arc = halfdisc(cx, zs, r, 10)
+        for i in range(10):
+            (xa, za), (xb, zb) = arc[i + 1], arc[i]          # left to right
+            poly = [(xa, za), (xb, zb), (xb, ENT_Z0), (xa, ENT_Z0)]
+            det(yprism(poly, d0, d1, TEX_WALL))
+        # Archivolt: a plain travertine band round the arch, 6 u proud of the face.
+        f0, f1 = (d0 - 6, d0) if s > 0 else (d1, d1 + 6)
+        band = halfdisc(cx, zs, r + 18, 10)
+        for i in range(10):
+            det(yprism([arc[i + 1], arc[i], band[i], band[i + 1]], f0, f1, TEX_TRIM))
+        # Impost blocks at the springing.
+        for x in (cx - r - 16, cx + r - 2):
+            det(box(x, min(d0, d1) - (12 if s > 0 else 0), zs - 24, x + 18, max(d0, d1) + (12 if s < 0 else 0), zs, TEX_TRIM))
+    for i in range(3):
+        cx = (BAYS[i] + BAYS[i + 1]) // 2
+        arch_face(cx, -1, ARCH_W, ARCH_SPRING)
+        if i == 1:
+            arch_face(cx, 1, ARC_W, ARC_H + LAND)
+            det(yprism(halfdisc(cx, ARC_H + LAND, ARC_W // 2, 10), HY - 4, HY, TEX_GLASS))
+        else:
+            arch_face(cx, 1, ARCH_W, ARCH_SPRING)
+
     # Entablature band round the room over the column tops.
     for s in (-1, 1):
         y0, y1 = (HY - 4 * FT, HY) if s > 0 else (-HY, -HY + 4 * FT)
@@ -132,16 +166,20 @@ def build():
 
     # Giant Corinthian columns (blockout: pedestal, 12-sided shaft, capital block) at the
     # bay piers and the room corners. The detail pass replaces them with MDL models.
-    cols = [(x, s * (HY - 6 * FT)) for x in (BAYS[1], BAYS[2]) for s in (-1, 1)]
-    cols += [(sx * (HX - 6 * FT), sy * (HY - 6 * FT)) for sx in (-1, 1) for sy in (-1, 1)]
+    cols = [(x, s * (HY - 13 * FT)) for x in (BAYS[1], BAYS[2]) for s in (-1, 1)]
+    cols += [(sx * (HX - 6 * FT), sy * (HY - 13 * FT)) for sx in (-1, 1) for sy in (-1, 1)]
     for cx, cy in cols:
         det(box(cx - 66, cy - 66, 0, cx + 66, cy + 66, PED, TEX_TRIM))
         ents.append(ent("prop_static", (cx, cy, PED), model="models/penn/corinthian.mdl", solid="6"))
+        # The entablature breaks forward over every column.
+        wy = HY if cy > 0 else -HY
+        det(box(cx - 7 * FT, min(wy, cy - 6 * FT * (1 if cy < 0 else -1)), ENT_Z0,
+                cx + 7 * FT, max(wy, cy - 6 * FT * (1 if cy < 0 else -1)), ENT_Z1, TEX_TRIM))
         # Pier behind the column: a pilaster strip of the wall up to the entablature.
         wy = HY if cy > 0 else -HY
         if abs(cx) < HX - 8 * FT:
-            det(box(cx - 8 * FT, min(wy, wy - 3 * FT * (1 if cy > 0 else -1)), 0,
-                    cx + 8 * FT, max(wy, wy - 3 * FT * (1 if cy > 0 else -1)), ENT_Z0, TEX_WALL))
+            det(box(cx - 8 * FT, min(wy, wy - 7 * FT * (1 if cy > 0 else -1)), 0,
+                    cx + 8 * FT, max(wy, wy - 7 * FT * (1 if cy > 0 else -1)), ENT_Z0, TEX_WALL))
 
     # Lights: warm fill under the vaults, cool light at each window.
     for i in range(3):
