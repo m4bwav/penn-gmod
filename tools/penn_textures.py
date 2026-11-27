@@ -114,3 +114,24 @@ for k in (0, cell):
     img[k:k+2] *= 0.6
     img[:, k:k+2] *= 0.6
 save(img, "floor_travertine")
+
+# Shopfront (session 10): bronze frame, dark sign band on top, transom lights, three tall
+# plate-glass panes over a low bronze stall riser. One tile spans a 30 x 18 ft front.
+BR = np.array([78, 62, 40], float)
+img = BR * (1 + fbm(N, 4) * 0.08)[..., None]
+GL = np.array([210, 200, 170], float)
+def pane(y0, y1, x0, x1, tone):
+    g = np.linspace(1.05, 0.85, y1 - y0)[:, None, None]
+    img[y0:y1, x0:x1] = GL * tone * g
+img[20:84, 16:N-16] = np.array([30, 26, 20], float)        # sign band
+for k in range(3):
+    x0 = 24 + k * (N - 48) // 3
+    x1 = x0 + (N - 48) // 3 - 12
+    pane(100, 150, x0, x1, 0.95)                             # transom
+    pane(162, 440, x0, x1, 1.0)                              # plate glass
+img[440:N] = BR * 0.8
+# The tile spans one 45 ft bay along the wall; the 30 ft front fills its middle two thirds.
+front = np.asarray(Image.fromarray(np.clip(img, 0, 255).astype(np.uint8)).resize((N * 2 // 3, N)), float)
+img = BR * 0.7 * np.ones((N, N, 3))
+img[:, N // 6:N // 6 + N * 2 // 3] = front
+save(img, "shopfront", "metal")

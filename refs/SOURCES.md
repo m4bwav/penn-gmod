@@ -17,3 +17,4 @@ Wikimedia Commons, downloaded at 1600 px for colour, tone and pattern sampling. 
 | Penn_Station_interior.jpg | Cervin Robinson | Public domain | https://commons.wikimedia.org/wiki/File:Penn_Station_interior.jpg |
 | Pennsylvania_Station_NYC_1922.jpg | Dr. D. J. Ruzicka - Photographer (Drahomir Josef Ružicka, 1870-1960) | Public domain | https://commons.wikimedia.org/wiki/File:Pennsylvania_Station,_NYC_(1922).jpg |
 | Plan_of_the_Pennsylvania_Railroad_s_new_station_on_Manhattan.jpg | The Library of Congress | No restrictions | https://commons.wikimedia.org/wiki/File:Plan_of_the_Pennsylvania_Railroad%27s_new_station_on_Manhattan_Island_LOC_4090934238.jpg |
+| The_arcade_Pennsylvania_Station_New_York_DPLA_8dffb5db601d24.jpg | Pennell, Joseph, 1857-1926 | Public domain | https://commons.wikimedia.org/wiki/File:The_arcade_Pennsylvania_Station,_New_York_-_DPLA_-_8dffb5db601d24dcfd0bd95f6a2e273a.jpg |
