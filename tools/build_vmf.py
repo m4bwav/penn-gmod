@@ -140,7 +140,36 @@ def arcade(W, det, ents):
 def concourse(W, det, ents, top):
     """Area 3 blockout: floor, outer walls, three glass groin bays along x, lattice columns."""
     ctop = C_SPRING + C_RISE + 16 + 64
-    W(box(-HX - T, CY0 - T, -64, HX + T, CY1, 0, TEX_FLOOR))
+    # Session 23: six stairs down to the tracks in the west half of the floor (HABS CONCOURSE_FROM_SOUTH),
+    # 10 ft wide, 30 steps of 8 x 16 in descending westward to a landing 20 ft down, a glowing door at
+    # the foot until area 4 adds the platforms. Steel railings on three sides, open at the top step.
+    sy0, sy1, sz, sw = CY0 + 48, CY0 + 600, -240, 60
+    wells = [c + d for c in ((BAYS[i] + BAYS[i + 1]) // 2 for i in range(3)) for d in (-300, 300)]
+    W(box(-HX - T, CY0 - T, -64, HX + T, sy0, 0, TEX_FLOOR))
+    W(box(-HX - T, sy1, -64, HX + T, CY1, 0, TEX_FLOOR))
+    xs = [-HX - T] + [v for c in wells for v in (c - sw, c + sw)] + [HX + T]
+    for k in range(0, len(xs), 2):
+        W(box(xs[k], sy0, -64, xs[k + 1], sy1, 0, TEX_FLOOR))
+    for c in wells:
+        x0, x1 = c - sw, c + sw
+        W(box(x0 - 32, sy0 - 32, sz - 32, x1 + 32, sy1 + 32, sz, TEX_FLOOR))
+        for a, b in ((x0 - 32, x0), (x1, x1 + 32)):
+            W(box(a, sy0 - 32, sz, b, sy1 + 32, -64, TEX_WALL))
+        W(box(x0, sy0 - 32, sz, x1, sy0, -64, TEX_WALL))
+        W(box(x0, sy1, sz, x1, sy1 + 32, -64, TEX_WALL))
+        det(box(c - 40, sy0, sz, c + 40, sy0 + 2, sz + 8 * FT, TEX_DOOR))
+        for k in range(30):
+            det(box(x0, sy0 + 72 + 16 * k, sz, x1, sy1, sz + 8 * (k + 1), TEX_FLOOR))
+        for ly, lz in ((sy0 + 40, sz + 96), (sy0 + 300, sz + 200)):
+            ents.append(ent("light", (c, ly, lz), _light="255 220 170 160"))
+        rz = 42
+        for a in (x0 - 3, x1 + 1):                                         # side rails along y
+            det(box(a, sy0 - 3, rz - 3, a + 2, sy1, rz, TEX_STEEL))
+            for y in range(sy0, sy1 + 1, 46):
+                det(box(a, y - 1, 0, a + 2, y + 1, rz - 3, TEX_STEEL))
+        det(box(x0 - 3, sy0 - 3, rz - 3, x1 + 3, sy0 - 1, rz, TEX_STEEL))  # end rail
+        for x in range(x0 + 24, x1 - 23, 24):
+            det(box(x - 1, sy0 - 3, 0, x + 1, sy0 - 1, rz - 3, TEX_STEEL))
     W(box(-HX - T, CY0 - T, 0, HX + T, CY0, ctop, TEX_WALL))                 # west wall
     for s in (-1, 1):                                                      # 31st / 33rd St ends
         x0, x1 = (HX, HX + T) if s > 0 else (-HX - T, -HX)
@@ -253,7 +282,7 @@ def build():
     X0, X1 = -HX - T - 256, HX + T + 256
     # Session 15: the hull now reaches past the Seventh Avenue block opposite (colonnade()).
     Y0, Y1 = CY0 - T - 256, YB + T + VEST + T + 117 * FT + 32 + 256
-    Z0, Z1 = -128, top + 128
+    Z0, Z1 = -384, top + 128                 # session 23: below the track stairs (landing at -240)
     for b in ((X0, Y0, Z0 - 64, X1, Y1, Z0), (X0, Y0, Z1, X1, Y1, Z1 + 64),
               (X0 - 64, Y0, Z0, X0, Y1, Z1), (X1, Y0, Z0, X1 + 64, Y1, Z1),
               (X0, Y0 - 64, Z0, X1, Y0, Z1), (X0, Y1, Z0, X1, Y1 + 64, Z1)):
