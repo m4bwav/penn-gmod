@@ -444,6 +444,7 @@ P_TOP, P_RAIL, P_BED = -240, -288, -300
 DN_Y0, DN_Y1, DOOR_H = 1132, 1204, 12 * FT        # 6 ft doorway west of the Cassatt niche
 LU_Y0, LU_Y1 = 1176, 1416                         # 20 ft opening in the south wall
 R_X0, R_X1, R_Y0, R_Y1 = 304, 304 + 100 * FT, HY + T + 12, 1432
+LU_COUNTERS = ((930, 0), (1270, 180))            # session 43: lunch counters (y, yaw)
 
 
 def dining_lunch(W, det, ents):
@@ -481,8 +482,29 @@ def dining_lunch(W, det, ents):
         for i in range(5):
             cx = s * (R_X0 + i * 20 * FT + 10 * FT)
             det(box(cx - 4 * FT, R_Y1 - 4, z0 + 6 * FT, cx + 4 * FT, R_Y1, z0 + 6 * FT + wh, TEX_GLASS))
-            # Chandelier (blockout: a light down the centre line).
-            ents.append(ent("light", (cx, (R_Y0 + R_Y1) // 2, zc - 10 * FT), _light="255 220 170 45"))
+            # Session 43: a brass chandelier per bay in the dining room (light just under its globes),
+            # two bell pendants per bay over the counters in the lunch room.
+            if s > 0:
+                ents.append(ent("prop_static", (cx, (R_Y0 + R_Y1) // 2, zc - 2), model="models/penn/chandelier.mdl",
+                                solid="0", disableshadows="1"))
+                ents.append(ent("light", (cx, (R_Y0 + R_Y1) // 2, zc - 11 * FT), _light="255 220 170 45"))
+            else:
+                for y in LU_COUNTERS:
+                    ents.append(ent("prop_static", (cx, y[0], zc - 2), model="models/penn/pendant.mdl",
+                                    solid="0", disableshadows="1"))
+                    ents.append(ent("light", (cx, y[0], zc - 8 * FT), _light="255 214 160 28"))
+        if s > 0:
+            # Two rows of six tables with bentwood chairs either side of a centre aisle from the door.
+            for y in (R_Y0 + 120, R_Y1 - 150):
+                for i in range(6):
+                    ents.append(ent("prop_static", (R_X0 + 110 + i * 190, y, z0), model="models/penn/dining_set.mdl",
+                                    solid="6", disableshadows="1"))
+        else:
+            # Two 40 ft lunch counters with stools; a mirror band along the inner (north) wall.
+            for y, yaw in LU_COUNTERS:
+                ents.append(ent("prop_static", (-(R_X0 + 50 * FT), y, z0), angles=f"0 {yaw} 0",
+                                model="models/penn/lunch_counter.mdl", solid="6", disableshadows="1"))
+            det(box(lo + 4 * FT, R_Y0 + 6, z0 + 5 * FT, hi - 4 * FT, R_Y0 + 8, z0 + 12 * FT, "penn/ext_glass"))
         ents.append(ent("env_cubemap", (s * (R_X0 + 50 * FT), (R_Y0 + R_Y1) // 2, z0 + 6 * FT)))
 
 

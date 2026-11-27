@@ -1,0 +1,6 @@
+$modelname "penn/lunch_counter.mdl"
+$body body "lunch_counter.smd"
+$cdmaterials "models/penn/"
+$staticprop
+$surfaceprop "stone"
+$sequence idle "lunch_counter.smd"

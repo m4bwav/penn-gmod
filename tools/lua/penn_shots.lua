@@ -47,6 +47,8 @@ local CAMS = {
   { "loggia_doors", Vector(-150, 1440, 270), Angle(5, -40, 0) },
   { "dining_in", Vector(360, 1000, 290), Angle(2, 15, 0) },
   { "lunch_in", Vector(-360, 1300, 270), Angle(2, 195, 0) },
+  { "dining_tables", Vector(700, 1110, 250), Angle(14, 60, 0) },
+  { "lunch_counter", Vector(-560, 1100, 260), Angle(16, 215, 0) },
   { "colonnade_portico", Vector(-900, 4990, 260), Angle(-4, 15, 0) },
   { "arcade_to_street", Vector(0, 3900, 290), Angle(0, 90, 0) },
 }
