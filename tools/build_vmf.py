@@ -331,7 +331,7 @@ def colonnade(W, det, ents, f0):
     # Session 38 (area 5 detail): the clock group on the central pavilion attic, eagles at the attic
     # corners of the central and corner pavilions (exterior refs), lamp standards along the kerb,
     # and a weak fill under the main cornice, which faced away from the sun and read black.
-    ents.append(ent("prop_static", (0, f1 + 2, CTOP), angles="0 180 0", model="models/penn/clock_group.mdl", solid="0", disableshadows="1"))
+    ents.append(ent("prop_static", (0, f1 + 2, CTOP), angles="0 0 0", model="models/penn/clock_group.mdl", solid="0", disableshadows="1"))
     eag = [(x, f1 - 3 * FT, CTOP) for x in (-PX + 4 * FT, PX - 4 * FT)]
     for s in (-1, 1):
         eag += [(s * (KX + 6 * FT), pe - 6 * FT, PT + 10 * FT), (s * (FX - 6 * FT), pe - 6 * FT, PT + 10 * FT)]

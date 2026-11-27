@@ -441,30 +441,50 @@ def eagle():
     return m
 
 
+def _reclining(m, s):
+    """Session 49: a draped figure reclining on the attic, propped on the elbow nearest the clock,
+    one leg out, one drawn up (was four blobs). s = +1/-1 for the clock's two sides."""
+    def P(x, d, z):
+        return (x, s * d, z)
+    m.blob("travertine", P(8, 168, 9), 24, 74, 9, 10)                 # drapery spread on the attic
+    m.sphere("travertine", *P(8, 150, 24), 14, 8)                     # hips
+    m.tube("travertine", P(10, 150, 24), P(14, 196, 28), 9, 7, 8)     # outstretched thigh
+    m.tube("travertine", P(14, 196, 28), P(16, 236, 15), 7, 4, 8)     # shin
+    m.tube("travertine", P(2, 150, 26), P(0, 184, 42), 9, 7, 8)       # drawn-up thigh
+    m.tube("travertine", P(0, 184, 42), P(2, 220, 17), 7, 4, 8)       # shin
+    m.blob("travertine", P(14, 188, 30), 15, 34, 9, 8)                # cloth over the knees
+    m.tube("travertine", P(8, 148, 28), P(10, 114, 62), 13, 15, 10)   # torso leaning up
+    m.sphere("travertine", *P(10, 112, 64), 13, 8)                    # shoulders
+    m.tube("travertine", P(10, 108, 72), P(12, 104, 80), 5, 4, 6)     # neck
+    m.sphere("travertine", *P(12, 102, 88), 8, 8)                     # head
+    m.tube("travertine", P(8, 116, 66), P(10, 126, 32), 5, 4, 6)      # upper arm, elbow down
+    m.tube("travertine", P(10, 126, 32), P(18, 150, 28), 4, 3, 6)     # forearm on the drapery
+    m.tube("travertine", P(18, 108, 62), P(26, 128, 46), 5, 4, 6)     # far arm across the body
+    m.tube("travertine", P(26, 128, 46), P(24, 150, 38), 4, 3, 6)
+
+
 def clock_group():
     """Session 38: the Seventh Avenue clock group on the central pavilion attic (exterior refs:
     the clock flanked by two reclining figures). A stone frame round a 7 ft face, a pediment cap,
-    two draped figures reclining on the attic top, heads toward the clock. Faces SMD +x (world -y
-    at yaw 0; build_vmf.py uses yaw 180 for the +y front). Origin: base of the frame, back."""
+    two draped figures reclining on the attic top, heads toward the clock. Faces SMD +x, which is
+    world +y (the avenue) at yaw 0; session 38's yaw 180 turned the face to the station. Origin: base of the frame, back."""
     m = Mesh()
     R = 42
-    _box(m, "travertine", 0, -78, 0, 18, 78, 132)               # frame block
-    _box(m, "travertine", 0, -86, 132, 24, 86, 142)             # cornice
-    _xprism(m, "travertine", [(-86, 142), (0, 172), (86, 142)], 0, 24)
-    o, u, v, w = (18, 0, 66), (0, 1, 0), (0, 0, 1), (1, 0, 0)
+    H = 48                                                      # session 49: the face sat below the parapet line; raised 4 ft
+    _box(m, "travertine", 0, -78, 0, 18, 78, 132 + H)               # frame block
+    _box(m, "travertine", 0, -86, 132 + H, 24, 86, 142 + H)             # cornice
+    _xprism(m, "travertine", [(-86, 142 + H), (0, 172 + H), (86, 142 + H)], 0, 24)
+    o, u, v, w = (18, 0, 66 + H), (0, 1, 0), (0, 0, 1), (1, 0, 0)
     m.frame("travertine", [(R, 0), (R + 8, 0), (R + 10, 4), (R + 6, 8), (R, 8)], o, u, v, w, 32)
     m.frame("clockface", [(R, 2), (0, 2)], o, u, v, w, 32)
     for k in range(12):
         t = 2 * math.pi * k / 12
         a, b = R - (10 if k % 3 == 0 else 6), R - 3
-        _bar(m, "bronze", (21, a * math.sin(t), 66 + a * math.cos(t)), (21, b * math.sin(t), 66 + b * math.cos(t)), 3)
+        _bar(m, "bronze", (21, a * math.sin(t), 66 + H + a * math.cos(t)), (21, b * math.sin(t), 66 + H + b * math.cos(t)), 3)
     for t, ln in ((2 * math.pi * (10 + 1 / 6) / 12, R * 0.55), (2 * math.pi * 2 / 12, R * 0.82)):
-        _bar(m, "bronze", (22, 0, 66), (22, ln * math.sin(t), 66 + ln * math.cos(t)), 3)
+        _bar(m, "bronze", (22, 0, 66 + H), (22, ln * math.sin(t), 66 + H + ln * math.cos(t)), 3)
     for s in (-1, 1):                                           # reclining figures, heads to the clock
-        m.blob("travertine", (10, s * 150, 14), 26, 66, 14, 10)            # drapery and legs
-        m.blob("travertine", (10, s * 104, 40), 18, 20, 28, 8)             # torso, propped up
-        m.sphere("travertine", 12, s * 96, 74, 10, 8)                      # head
-        m.tube("travertine", (10, s * 112, 58), (14, s * 140, 36), 6, 5, 6)  # arm on the drapery
+        _reclining(m, s)
     return m
 
 
