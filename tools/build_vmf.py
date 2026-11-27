@@ -202,6 +202,8 @@ def concourse(W, det, ents, top):
             for x in (c - r - 16, c + r - 2):
                 det(box(x, d0 - 12, ARC_H - 24, x + 18, d1, ARC_H, TEX_TRIM))
     det(box(-HX, d0 - 18, atop, HX, d1, atop + 2 * FT, TEX_TRIM))
+    # Session 24: clock (clock.mdl, 10 ft face) on the east wall above the middle passage and cornice.
+    ents.append(ent("prop_static", (0, d0, atop + 8 * FT), model="models/penn/clock.mdl", solid="0", disableshadows="1"))
     # Glass groin vaults: one per waiting-room bay, spanning the full 200 ft depth.
     for i in range(3):
         groin(W, BAYS[i], BAYS[i + 1], CY0, CY1, C_SPRING, C_RISE, TEX_CGLASS)

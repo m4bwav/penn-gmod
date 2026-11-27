@@ -27,6 +27,7 @@ VMTS = {
               '\t"$phong" "1"\n\t"$phongboost" "2"\n\t"$phongexponent" "20"\n\t"$phongfresnelranges" "[0.4 0.8 1]"\n\t"$surfaceprop" "metal"\n}\n',
     "steel": '"VertexLitGeneric"\n{\n\t"$basetexture" "models/debug/debugwhite"\n\t"$color2" "[0.13 0.14 0.15]"\n'
              '\t"$surfaceprop" "metal"\n}\n',
+    "clockface": '"UnlitGeneric"\n{\n\t"$basetexture" "models/debug/debugwhite"\n\t"$color2" "[0.92 0.88 0.76]"\n\t"$surfaceprop" "glass"\n}\n',
     "globe": '"UnlitGeneric"\n{\n\t"$basetexture" "models/debug/debugwhite"\n\t"$color2" "[1 0.9 0.72]"\n\t"$surfaceprop" "glass"\n}\n',
 }
 
@@ -242,7 +243,29 @@ def conc_diag():
     return m
 
 
-MODELS = {"conc_arch": conc_arch, "conc_diag": conc_diag, "lattice": lattice, "corinthian": corinthian, "lamp": lamp, "cassatt": cassatt, "doric": doric}
+CLOCK_R = 5 * FT
+
+
+def clock():
+    """Session 24: concourse clock, a round face 10 ft across in a moulded bronze rim, twelve bronze
+    hour bars and hands at ten past ten. Built facing SMD +x, which studiomdl turns to world -y at
+    yaw 0 (session 21), so it faces into the concourse from the east wall. Origin: back of the rim, centre."""
+    m = Mesh()
+    R = CLOCK_R
+    o, u, v, w = (0, 0, 0), (0, 1, 0), (0, 0, 1), (1, 0, 0)
+    m.frame("bronze", [(R - 6, 0), (R + 8, 0), (R + 10, 4), (R + 8, 10), (R + 3, 13), (R, 12), (R - 2, 8)], o, u, v, w, 32)
+    m.frame("clockface", [(R - 2, 8), (0, 8)], o, u, v, w, 32)
+    for k in range(12):
+        t = 2 * math.pi * k / 12
+        a, b = R - (16 if k % 3 == 0 else 10), R - 4
+        _bar(m, "bronze", (9, a * math.sin(t), a * math.cos(t)), (9, b * math.sin(t), b * math.cos(t)), 4 if k % 3 == 0 else 3)
+    for t, ln, wd in ((2 * math.pi * (10 + 1 / 6) / 12, R * 0.55, 4), (2 * math.pi * 2 / 12, R * 0.82, 3)):
+        _bar(m, "bronze", (10, -6 * math.sin(t), -6 * math.cos(t)), (10, ln * math.sin(t), ln * math.cos(t)), wd)
+    m.frame("bronze", [(0, 8), (4, 9), (3, 12), (0, 12)], o, u, v, w, 12)
+    return m
+
+
+MODELS = {"clock": clock, "conc_arch": conc_arch, "conc_diag": conc_diag, "lattice": lattice, "corinthian": corinthian, "lamp": lamp, "cassatt": cassatt, "doric": doric}
 
 
 def build():
