@@ -1,0 +1,2 @@
+arcade_east    1112 fps
+arcade_stairarch 1096 fps
