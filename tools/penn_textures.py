@@ -135,3 +135,18 @@ front = np.asarray(Image.fromarray(np.clip(img, 0, 255).astype(np.uint8)).resize
 img = BR * 0.7 * np.ones((N, N, 3))
 img[:, N // 6:N // 6 + N * 2 // 3] = front
 save(img, "shopfront", "metal")
+
+# Session 15, Seventh Avenue: granite sidewalk flags (4x4 per tile) and grey asphalt.
+SWK = np.array([150, 148, 142], float)
+img = np.zeros((N, N, 3))
+c4 = N // 4
+for i in range(4):
+    for j in range(4):
+        img[i*c4:(i+1)*c4, j*c4:(j+1)*c4] = SWK * (1 + rng.uniform(-.05, .05))
+img *= (1 + fbm(N, 6) * 0.12)[..., None]
+for k in range(0, N, c4):
+    img[k:k+3] *= 0.55
+    img[:, k:k+3] *= 0.55
+save(img, "sidewalk", "concrete")
+img = np.array([70, 70, 72], float) * (1 + fbm(N, 6) * 0.18 + (rng.random((N, N)) - .5) * 0.12)[..., None]
+save(img, "asphalt", "concrete")
