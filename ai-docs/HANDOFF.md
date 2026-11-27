@@ -1,13 +1,13 @@
 # HANDOFF: gm_penn_station
 
 Status: in progress
-Updated: 2026-11-27 (session 36)
+Updated: 2026-11-27 (session 37)
 
 - Prompt: plans/2026-11-25-penn-gmod-60x-continue-prompt.md
-- Chain: session 36 of 60 (started 2026-11-26)
+- Chain: session 37 of 60 (started 2026-11-26)
 - Plan: plans/penn-gmod-plan.md. Era: 1910 station (decisions/2026-11-26-era-1910.md).
 - Garry's Mod: D:/SteamLibrary/steamapps/common/GarrysMod (vbsp, vvis, vrad, bspzip, gmad, gmpublish, studiomdl, vbspinfo in bin/).
-- Budget 2026-11-27 (session 36): 20,801/65,536 verts, 12,052 faces, BSP 34.0 MB. 138-146 fps capped on the street. (0.4.0: gma 21.6 MB, 926-1,227 fps uncapped.)
+- Budget 2026-11-27 (session 37): 24,644/65,536 verts, 14,767 faces, BSP 42.1 MB. 138-146 fps capped on the streets. (0.4.0: gma 21.6 MB, 926-1,227 fps uncapped.)
 - Workshop ID: 3846546331 (public, 0.4.0). tools/package.sh defaults to it.
 - Driver: the user-level chain_loop (C:/Users/m4bwa/.chainwright/penn-prompt.md, stop check penn_stop.py, log penn-chain.log, 60 sessions / 24 h) runs this chain. Sessions it starts never start another driver.
 
@@ -59,10 +59,13 @@ Updated: 2026-11-27 (session 36)
 - Session 35: area 5 refs. Seven PD exterior refs (HABS east/south/west-end facades, Detroit postcard, two 1910 booklet plates) in refs/SOURCES.md; what they show is in notes/2026-11-27-exterior-refs.md. Ruling (flagged): the 33rd Street front mirrors 31st Street. No map change. (The driver's pass 35 wrongly thought another session was running and did nothing; a session started by chain_loop is a child of that python process, check the parent chain before deciding.)
 - Session 36: area 5 blockout 1, the Seventh Avenue front. colonnade() now spans the full 780 ft block (EX_FX = 390 ft each side of the axis): 32 Doric columns on a low step between two 100 ft corner pavilions (ashlar, cornice, attic, corner pilaster strips, a recessed blind window), the central pavilion 20 ft higher than the wings, the 31st/33rd Street crossings at both ends (100 ft stubs ending in a 30 ft wall with sky above), hull widened. Sun raised from 35 to 55 degrees: at 35 the 130 ft stand-in block opposite shaded the whole front. Cameras front_south, front_north, front_centre. shots/20261127-0508 (committed). Not released.
 
+- Session 37: area 5 blockout 2, the 31st/33rd Street fronts (side_fronts() in build_vmf.py). The cross streets now run west to the concourse's west end (YW = CY0 - T, about 680 ft): ashlar side walls with pilasters every 36 ft, cornice and plinth; a 144 ft carriage-drive recess mid-block behind eight Doric columns with warm bounce lights; the arched gable with a glazed thermal window above it; corner pavilions run 90 ft back (EX_PAVD) with pediments facing the side streets. The roof is a 100 ft strip with a sky seal at KX. Cameras side_south, side_carriage, side_corner, side_north. shots/20261127-0515, -0517. Not released.
+
 ## Next
-1. Area 5 blockout 2: the 31st/33rd Street fronts down the cross streets (open the stub walls at y = f0 and run the streets west along the station), with the corner pavilions' pediments facing them, (ashlar wall, carriage-drive colonnade, the waiting room's arched gable above the roof). A sourced track plan (HABS or a 1910 PRR plan) would still confirm the 21-track layout. Railings (3.4k verts of brush posts) could become one MDL if the budget tightens.
-2. Optional leftovers: attic storey above the waiting-room side arches, coffered soffits on the cross arches, eagles/clock on the facade; the colonnade cornice still reads dark from the street.
-3. Wiki: the GitHub wiki needs its first page created by hand in the browser before it can be pushed (as with GCT); draft pages can go in docs/wiki/ meanwhile.
+1. Area 5 detail: the eagles and clock group on the central pavilion attic (MDLs), balustrade along the side wing tops, small square windows and recessed panels on the side walls, kerb lamp standards; the colonnade cornice still reads dark from the street. Then exterior lighting and the 0.5.0 release (README, level map with the side streets, Workshop, tag).
+2. Flag for the next exterior pass: the real station measured about 780 ft along the side streets and 430 ft along Seventh Avenue. Session 36 made the avenue front 780 ft. The side fronts (about 680 ft) match the real length, but the avenue front is about 350 ft too long. Shortening it means moving the corner pavilions in (EX_FX) and needs a check that nothing inside crosses the new line. A sourced track plan would still confirm the 21-track layout.
+3. Optional leftovers: attic storey above the waiting-room side arches, coffered soffits on the cross arches.
+4. Wiki: the GitHub wiki needs its first page created by hand in the browser before it can be pushed (as with GCT); draft pages can go in docs/wiki/ meanwhile.
 
 ## Waiting on Mark
 - Nothing. (Flag: era ruled 1910 by default.)

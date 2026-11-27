@@ -1,0 +1,2 @@
+side_south      138 fps
+side_carriage   146 fps
