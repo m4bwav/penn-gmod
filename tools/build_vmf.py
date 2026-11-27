@@ -125,8 +125,8 @@ def arcade(W, det, ents):
             ents.append(ent("prop_static", (p[0], p[1], z0), model="models/penn/lamp.mdl", solid="6"))
             ents.append(ent("light", (p[0], p[1], z0 + 15 * FT + 24), _light="255 214 160 8"))
     for i in range(5):
-        ents.append(ent("light", (0, YA + i * ABAY + ABAY // 2, A_SPRING), _light="250 225 190 30"))
-    ents.append(ent("light", (0, YB + T + VEST // 2, LAND + 20 * FT), _light="250 225 190 15"))
+        ents.append(ent("light", (0, YA + i * ABAY + ABAY // 2, A_SPRING), _light="250 225 190 40"))
+    ents.append(ent("light", (0, YB + T + VEST // 2, LAND + 20 * FT), _light="250 225 190 35"))
     ents.append(ent("env_cubemap", (0, (YA + YB) // 2, LAND + 200)))
 
 
@@ -165,8 +165,13 @@ def colonnade(W, det, ents, f0):
     det("".join(sol))
     for k in range(12):
         ents.append(ent("prop_static", ((2 * k - 11) * 108, cy, z0), model="models/penn/doric.mdl", solid="6"))
-    ents.append(ent("light_environment", (0, cy, cz - 64), pitch="-40", angles="0 75 0",
-                    _light="255 238 214 280", _ambient="150 170 205 110"))
+    # Session 16: Seventh Avenue faces east (+y), so the morning sun travels west (yaw 250) onto
+    # the facade; warm bounce lights under the portico soffit and inside the colonnade.
+    ents.append(ent("light_environment", (0, cy, cz - 64), pitch="-35", angles="0 250 0",
+                    _light="255 236 205 320", _ambient="150 170 205 140"))
+    for k in range(-2, 3):
+        ents.append(ent("light", (k * 5 * 108, (f1 + cy) // 2, cz - 3 * FT), _light="250 228 195 40"))
+        ents.append(ent("light", (k * 5 * 108, pe - FT, z0 + 6 * FT), _light="255 232 200 25"))
     ents.append(ent("env_cubemap", (0, sw1, z0 + 100)))
 
 

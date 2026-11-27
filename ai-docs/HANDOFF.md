@@ -1,10 +1,10 @@
 # HANDOFF: gm_penn_station
 
 Status: in progress
-Updated: 2026-11-26 (session 15)
+Updated: 2026-11-26 (session 16)
 
 - Prompt: plans/2026-11-25-penn-gmod-60x-continue-prompt.md
-- Chain: session 15 of 60 (started 2026-11-26)
+- Chain: session 16 of 60 (started 2026-11-26)
 - Plan: plans/penn-gmod-plan.md. Era: 1910 station (decisions/2026-11-26-era-1910.md).
 - Garry's Mod: D:/SteamLibrary/steamapps/common/GarrysMod (vbsp, vvis, vrad, bspzip, gmad, gmpublish, studiomdl, vbspinfo in bin/).
 - Budget 2026-11-26 (session 15): 5,264/65,536 verts, 3,449 faces, BSP 15.8 MB. 977-1,106 fps uncapped.
@@ -37,10 +37,11 @@ Updated: 2026-11-26 (session 15)
 
 - Session 14: the Cassatt niche on the stair hall's north wall at the landing: 10 ft round-headed recess with imposts, travertine pedestal, cassatt.mdl (simplified 9 ft bronze standing figure in tools/penn_models.py) facing south, a small warm light. Camera cassatt_niche. shots/20261126-2145. Not released.
 - Session 15: Seventh Avenue entrance colonnade: facade wall with the arcade opening, 12 Doric columns (doric.mdl, 35 ft), portico roof, cornice and attic, sidewalks, avenue, stand-in block opposite, open sky with light_environment. Cameras colonnade_street, colonnade_portico, arcade_to_street. shots/20261126-2158. Not released.
+- Session 16: area 2 lighting. Sun turned to come from the east (yaw 250, pitch -35) onto the facade, brighter ambient, 10 warm lights under the portico soffit and colonnade, arcade and vestibule fills raised. shots/20261126-2304 (146 fps capped). Not released.
 
 ## Next
 1. Left over from the polish list (optional): attic storey above the side arches, coffered soffits on the cross arches. The west doors still show flat sky-blue glow; the concourse will replace them.
-2. Area 2: lighting (portico underside is near black from the street; arcade and vestibule), eagles/clock on the facade optional, then 0.2.0. No PD photo of the shops themselves found on Commons; the etching is the only arcade ref.
+2. Area 2: eagles/clock on the facade optional, then release 0.2.0 (README, level map, Workshop, tag). No PD photo of the shops themselves found on Commons; the etching is the only arcade ref.
 3. Wiki: the GitHub wiki needs its first page created by hand in the browser before it can be pushed (as with GCT); draft pages can go in docs/wiki/ meanwhile.
 
 ## Waiting on Mark
