@@ -59,7 +59,8 @@ for h in floor: d.polygon([P(*q) for q in h], fill=(120, 96, 64))
 for x, y in spawn:
     cx, cy = P(x, y); d.ellipse((cx-10, cy-10, cx+10, cy+10), fill=(200, 40, 40)); d.text((cx+14, cy-12), "spawn", fill=(200, 40, 40), font=f)
 for lbl, x, y in (("Waiting room", 1300, 0), ("Stair", 0, 1000), ("Arcade", 0, 2800),
-                  ("Train concourse", 0, -2068), ("Track platforms (below)", 0, -5200), ("Colonnade, Seventh Ave", -900, 4700)):
+                  ("Train concourse", 0, -2068), ("Track platforms (below)", 0, -5200), ("Colonnade, Seventh Ave", -900, 4700),
+                  ("33rd Street", 5300, -2068), ("31st Street", -5300, -2068)):
     cx, cy = P(x, y); w = d.textlength(lbl, font=f); d.rectangle((cx-w/2-6, cy-16, cx+w/2+6, cy+14), fill=(255, 255, 255)); d.text((cx-w/2, cy-13), lbl, fill=(30, 30, 30), font=f)
 d.text((60, 30), "gm_penn_station: rough plan", fill=(40, 30, 20), font=fb)
 d.text((60, 78), f"dark = walls and columns at chest height, light = at 30 ft, all three levels   |   grid 50 ft   |   {round((y1-y0)/FT)} x {round((x1-x0)/FT)} ft   |   N up", fill=(80, 70, 60), font=f)
