@@ -1,0 +1,5 @@
+loggia_doors    146 fps
+dining_in       139 fps
+lunch_in        146 fps
+dining_tables   146 fps
+lunch_counter   146 fps
