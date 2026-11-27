@@ -1,14 +1,14 @@
 # HANDOFF: gm_penn_station
 
 Status: in progress
-Updated: 2026-11-27 (session 26)
+Updated: 2026-11-27 (session 27)
 
 - Prompt: plans/2026-11-25-penn-gmod-60x-continue-prompt.md
-- Chain: session 26 of 60 (started 2026-11-26)
+- Chain: session 27 of 60 (started 2026-11-26)
 - Plan: plans/penn-gmod-plan.md. Era: 1910 station (decisions/2026-11-26-era-1910.md).
 - Garry's Mod: D:/SteamLibrary/steamapps/common/GarrysMod (vbsp, vvis, vrad, bspzip, gmad, gmpublish, studiomdl, vbspinfo in bin/).
-- Budget 2026-11-27 (session 26): 10,654/65,536 verts, 6,275 faces, BSP 21.7 MB. 125-147 fps capped.
-- Workshop ID: 3846546331 (public, 0.2.0). tools/package.sh defaults to it.
+- Budget 2026-11-27 (session 27): 10,654/65,536 verts, 6,275 faces, BSP 21.8 MB. 917-1,185 fps uncapped.
+- Workshop ID: 3846546331 (public, 0.3.0). tools/package.sh defaults to it.
 - Driver: the user-level chain_loop (C:/Users/m4bwa/.chainwright/penn-prompt.md, stop check penn_stop.py, log penn-chain.log, 60 sessions / 24 h) runs this chain. Sessions it starts never start another driver.
 
 ## Done
@@ -48,9 +48,10 @@ Updated: 2026-11-27 (session 26)
 - Session 24: concourse clock. clock.mdl (tools/penn_models.py: 10 ft face, unlit cream clockface VMT, moulded bronze rim, hour bars, hands at 10:10) on the east wall above the middle passage, just over the 50 ft cornice. Ruling (flagged): placed from general period practice, not a sourced photo; move it if a ref shows the real clock. Camera conc_clock. shots/20261127-0035 (committed). Not released.
 - Session 25: lattice.mdl ribs now take the first 60 degrees of an elliptical curve (24 ft radius) so they leave the cap vertically and are still climbing at about 45 degrees where they stop, 12 ft out and 21 ft up, like the branching columns in the HABS photos. shots/20261127-0043 (committed). Not released.
 - Session 26: area 3 lighting. A 3 x 3 grid of cool daylight fills (225 230 240 22) at 28 ft in each concourse bay and the roof glass texlight raised 70 to 85: floor and lower walls no longer grey, the sun shading on the walls kept. A first try at 55 / 110 washed everything out. shots/20261127-0053 (committed). Not released.
+- Session 27: 0.3.0 released (area 3). README text and concourse screenshots, level map labels the concourse, Workshop description, gma (15.3 MB) and 7 previews uploaded (EResult 1), tag v0.3.0. shots/20261127-0056.
 
 ## Next
-1. Area 3 detail: railings are 3.4k verts of brush posts and could become one MDL if the budget tightens. Next: 0.3.0 release (README, level map, Workshop, tag).
+1. Area 4: track platforms and a train. Refs first (PD platform photos, HABS), then blockout below the concourse stairs; lower build() Z0 again (platforms sit deeper than -384). Railings (3.4k verts of brush posts) could become one MDL if the budget tightens.
 2. Optional leftovers: attic storey above the waiting-room side arches, coffered soffits on the cross arches, eagles/clock on the facade; the colonnade cornice still reads dark from the street.
 3. Wiki: the GitHub wiki needs its first page created by hand in the browser before it can be pushed (as with GCT); draft pages can go in docs/wiki/ meanwhile.
 
