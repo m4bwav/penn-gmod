@@ -105,7 +105,8 @@ def arcade(W, det, ents):
     arc, band = halfdisc(0, A_SPRING, LR, 12), halfdisc(0, A_SPRING, LR + 14, 12)
     det("".join(yprism([arc[i + 1], arc[i], band[i], band[i + 1]], YA, YA + 10, TEX_TRIM) for i in range(12)))
     for i in range(5):
-        groin(W, -AHX, AHX, YA + i * ABAY, YA + (i + 1) * ABAY, A_SPRING, AHX, TEX_VAULT)
+        # Session 12: plain travertine webs, coffers only in the crown strips.
+        groin(W, -AHX, AHX, YA + i * ABAY, YA + (i + 1) * ABAY, A_SPRING, AHX, TEX_TRIM, crown=TEX_VAULT)
     # East end: a 40 ft x 30 ft opening into the entrance vestibule; the street doors glow for now.
     W(box(-AHX - T, YB, ARC_H + LAND, AHX + T, YB + T, ztop, TEX_WALL))
     for x0, x1 in ((-AHX - T, a), (b, AHX + T)):

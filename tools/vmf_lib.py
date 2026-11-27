@@ -106,10 +106,11 @@ def ent(cls, origin=None, solids="", **kv):
 
 
 
-def groin(W, x0, x1, y0, y1, zs, rise, tex, n=8):
+def groin(W, x0, x1, y0, y1, zs, rise, tex, n=8, crown=None):
     """Groin vault over x0..x1, y0..y1 springing at zs: the solid is the intersection of two
     crossing barrels' solids, so the plan splits along the diagonals into four triangles and
-    each triangle follows the barrel whose arch stands on its wall. n even. World brushes."""
+    each triangle follows the barrel whose arch stands on its wall. n even. World brushes.
+    crown: texture for the strips next to the crown (the middle two of n); tex covers the rest."""
     top = zs + rise + 16
     yc, hy, xc, hx = (y0+y1)/2, (y1-y0)/2, (x0+x1)/2, (x1-x0)/2
     a = [math.pi*i/n for i in range(n+1)]
@@ -130,7 +131,7 @@ def groin(W, x0, x1, y0, y1, zs, rise, tex, n=8):
                 s = (z1 - z0) / (u1 - u0)
                 zf = (lambda x, y, u0=u0, z0=z0, s=s: z0 + s*((y if axis == 0 else x) - u0))
                 nb = (0, s, -1) if axis == 0 else (s, 0, -1)
-                W(_slab(poly, zf, nb, top, tex))
+                W(_slab(poly, zf, nb, top, crown if crown and i in (n//2 - 1, n//2) else tex))
     W(box(x0, y0, top, x1, y1, top + WALL, tex))
 
 
