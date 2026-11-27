@@ -415,7 +415,70 @@ def train():
     return m
 
 
-MODELS = {"train": train, "clock": clock, "conc_arch": conc_arch, "conc_diag": conc_diag, "lattice": lattice, "corinthian": corinthian, "lamp": lamp, "cassatt": cassatt, "doric": doric}
+def eagle():
+    """Session 38: one of the stone eagles on the pavilion attics (refs: HABS west end of the south
+    facade, Old_Penn_Station_NY_exterior). Stylised: a square plinth, the body and breast as blobs,
+    head and hooked beak, half-spread wings raised from the shoulders, tail fanned down behind.
+    About 11 ft to the wing tips. Looks along SMD +x (world -y at yaw 0). Origin: plinth bottom centre."""
+    m = Mesh()
+    _box(m, "travertine", -30, -30, 0, 30, 30, 24)
+    _box(m, "travertine", -34, -34, 24, 34, 34, 30)
+    m.blob("travertine", (0, 0, 66), 22, 18, 34, 10)            # body
+    m.blob("travertine", (12, 0, 80), 16, 15, 22, 8)            # breast
+    m.blob("travertine", (20, 0, 112), 9, 8, 10, 8)             # head
+    m.tube("travertine", (26, 0, 112), (36, 0, 104), 4, 1, 6)   # beak
+    m.tube("travertine", (-14, 0, 44), (-34, 0, 32), 12, 4, 8)  # tail
+    for y in (-1, 1):
+        m.tube("travertine", (-2, y * 14, 92), (-14, y * 44, 122), 9, 6, 8)        # wing arm
+        m.tube("travertine", (-14, y * 44, 122), (-24, y * 62, 132), 6, 2, 8)      # wing tip
+        m.blob("travertine", (-12, y * 34, 98), 7, 18, 22, 8)                      # feathers
+        m.tube("travertine", (6, y * 8, 36), (8, y * 9, 30), 4, 4, 6)              # talons
+    return m
+
+
+def clock_group():
+    """Session 38: the Seventh Avenue clock group on the central pavilion attic (exterior refs:
+    the clock flanked by two reclining figures). A stone frame round a 7 ft face, a pediment cap,
+    two draped figures reclining on the attic top, heads toward the clock. Faces SMD +x (world -y
+    at yaw 0; build_vmf.py uses yaw 180 for the +y front). Origin: base of the frame, back."""
+    m = Mesh()
+    R = 42
+    _box(m, "travertine", 0, -78, 0, 18, 78, 132)               # frame block
+    _box(m, "travertine", 0, -86, 132, 24, 86, 142)             # cornice
+    _xprism(m, "travertine", [(-86, 142), (0, 172), (86, 142)], 0, 24)
+    o, u, v, w = (18, 0, 66), (0, 1, 0), (0, 0, 1), (1, 0, 0)
+    m.frame("travertine", [(R, 0), (R + 8, 0), (R + 10, 4), (R + 6, 8), (R, 8)], o, u, v, w, 32)
+    m.frame("clockface", [(R, 2), (0, 2)], o, u, v, w, 32)
+    for k in range(12):
+        t = 2 * math.pi * k / 12
+        a, b = R - (10 if k % 3 == 0 else 6), R - 3
+        _bar(m, "bronze", (21, a * math.sin(t), 66 + a * math.cos(t)), (21, b * math.sin(t), 66 + b * math.cos(t)), 3)
+    for t, ln in ((2 * math.pi * (10 + 1 / 6) / 12, R * 0.55), (2 * math.pi * 2 / 12, R * 0.82)):
+        _bar(m, "bronze", (22, 0, 66), (22, ln * math.sin(t), 66 + ln * math.cos(t)), 3)
+    for s in (-1, 1):                                           # reclining figures, heads to the clock
+        m.blob("travertine", (10, s * 150, 14), 26, 66, 14, 10)            # drapery and legs
+        m.blob("travertine", (10, s * 104, 40), 18, 20, 28, 8)             # torso, propped up
+        m.sphere("travertine", 12, s * 96, 74, 10, 8)                      # head
+        m.tube("travertine", (10, s * 112, 58), (14, s * 140, 36), 6, 5, 6)  # arm on the drapery
+    return m
+
+
+def balustrade():
+    """Session 38: a 36 ft run of the balustrade along the top of the side wings (ref: booklet
+    14573132588): plinth, turned balusters at 12 in, top rail; a pier at each end. Along SMD +x
+    from 0 (world -y at yaw 0). Origin: plinth bottom at the run's start, on the wall face line."""
+    m = Mesh()
+    L = 36 * FT
+    _box(m, "travertine", 0, -9, 0, L, 9, 6)
+    _box(m, "travertine", 0, -10, 34, L, 10, 40)
+    for x in (0, L - 18):
+        _box(m, "travertine", x, -11, 0, x + 18, 11, 42)
+    for k in range(2, 35):
+        m.lathe("travertine", [(0, 6), (4, 6), (4, 9), (6, 14), (3, 22), (2.5, 26), (4, 30), (4, 34), (0, 34)], k * FT, 0, 0, 8)
+    return m
+
+
+MODELS = {"train": train, "clock": clock, "conc_arch": conc_arch, "conc_diag": conc_diag, "lattice": lattice, "corinthian": corinthian, "lamp": lamp, "cassatt": cassatt, "doric": doric, "eagle": eagle, "clock_group": clock_group, "balustrade": balustrade}
 
 
 def build():

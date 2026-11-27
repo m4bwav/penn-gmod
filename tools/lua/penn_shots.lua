@@ -43,6 +43,7 @@ local CAMS = {
   { "side_corner", Vector(-5600, 5900, 260), Angle(-8, -55, 0) },
   { "side_north", Vector(5450, -2800, 300), Angle(-8, 80, 0) },
   { "front_centre", Vector(0, 6150, 250), Angle(-12, 270, 0) },
+  { "front_attic", Vector(900, 6150, 250), Angle(-28, 255, 0) },
   { "colonnade_portico", Vector(-900, 4990, 260), Angle(-4, 15, 0) },
   { "arcade_to_street", Vector(0, 3900, 290), Angle(0, 90, 0) },
 }
