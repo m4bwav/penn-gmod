@@ -1,0 +1,16 @@
+from_sw        1014 fps
+from_nw         976 fps
+nave_north     1029 fps
+vault_up       1056 fps
+stair_east     1025 fps
+west_wall      1079 fps
+stair_down     1116 fps
+arcade_west    1014 fps
+arcade_east    1052 fps
+arcade_vault   1037 fps
+arcade_stairarch 1046 fps
+arcade_lamp    1103 fps
+cassatt_niche  1190 fps
+colonnade_street  984 fps
+colonnade_portico 1188 fps
+arcade_to_street 1092 fps
