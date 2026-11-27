@@ -3,6 +3,7 @@
 set -e
 G="${GMOD:-D:/SteamLibrary/steamapps/common/GarrysMod}"
 cd "$(dirname "$0")/.."
+. tools/gmod_lock.sh; gmod_lock_take   # shared GMod lock, released on exit
 python tools/build_vmf.py
 [ -f tools/penn_models.py ] && python tools/penn_models.py
 mkdir -p "$G/garrysmod/materials/penn"

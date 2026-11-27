@@ -5,16 +5,18 @@
 G="${GMOD:-D:/SteamLibrary/steamapps/common/GarrysMod}"
 QW="C:/Users/m4bwa/.claude/plugins/cache/mark-local/quirkwright/0.2.1/skills/quirkwright/scripts/qw.py"
 cd "$(dirname "$0")/.."
+. tools/gmod_lock.sh; gmod_lock_take   # shared GMod lock, released on exit
 D="$G/garrysmod/data"
 echo 4000 > "$G/steam_appid.txt"
 mkdir -p "$G/garrysmod/lua/autorun/server" "$D"
 cp tools/lua/penn_nav.lua "$G/garrysmod/lua/autorun/server/penn_nav.lua"
 rm -rf "$D/penn_nav" "$G/garrysmod/maps/gm_penn_station.nav"; echo go > "$D/penn_nav_go.txt"
+gmod_snapshot
 "$G/gmod.exe" -windowed -w 1280 -h 720 -novid -nojoy -condebug +sv_cheats 1 +map gm_penn_station &
 for n in $(seq 1 240); do [ -f "$D/penn_nav/done.txt" ] && break; sleep 5; done
 sleep 5
-# Every gmod.exe by PID (Lua quit is blocked in this GMod build; qw pid matched a helper process, not the game).
-for PID in $(tasklist //FI "IMAGENAME eq gmod.exe" //FO CSV //NH | cut -d'"' -f4); do taskkill //PID "$PID" //F >/dev/null 2>&1; done
+# Only the gmod.exe this script started, by PID (Lua quit is blocked in this GMod build; another chain may share GMod).
+gmod_kill_own
 rm -f "$G/garrysmod/lua/autorun/server/penn_nav.lua" "$D/penn_nav_go.txt"
 cat "$D/penn_nav/done.txt" 2>/dev/null || { echo "no nav: see $G/garrysmod/console.log"; exit 1; }
 cp "$G/garrysmod/maps/gm_penn_station.nav" src/
