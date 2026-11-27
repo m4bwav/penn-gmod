@@ -1,0 +1,4 @@
+arcade_west     949 fps
+loggia_doors    378 fps
+dining_in      1240 fps
+lunch_in       1180 fps

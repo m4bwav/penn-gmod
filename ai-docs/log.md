@@ -45,3 +45,5 @@
 - 2026-11-27 session 39: area 5 lighting (side-wall fill rows, penn/ext_glass, clock_group $scale 1.5 via QC_SCALE). Lights only, so verts unchanged at 24,964; BSP 43.1 MB, 139-147 fps capped. shots/20261127-0534.
 - 2026-11-27 session 40: 0.5.0 release (area 5, exterior). 24,964 verts / 14,967 faces, BSP 43.1 MB, gma 33.7 MB; 895-1,183 fps uncapped (shots/20261127-0539). make_map.py labels 31st/33rd Street.
 - 2026-11-27 session 41: area 6 refs, three plates from the 1910 PRR booklet (archive.org pennsylvaniastat00penn; IA page images at /page/nN_w1600.jpg). Rooms open off the Loggia = our stair hall. No map change.
+
+- 2026-11-27 session 42: area 6 blockout (dining room north, lunch room south of the stair hall). Clean compile, 25,613 verts, shots/20261127-0550. The Cassatt niche limits the dining doorway to 6 ft.
