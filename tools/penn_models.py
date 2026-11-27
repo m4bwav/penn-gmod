@@ -607,6 +607,33 @@ def bench():
 # Session 39: the clock group read small from the street; studiomdl scales it up.
 QC_SCALE = {"clock_group": 1.5}
 
+# Session 58: no MDL had a collision model, so the solid="6" props (columns, benches, tables,
+# counters, lamps, the statue, the train) were walk-through and the nav mesh ignored them. Each
+# listed model gets a $collisionmodel of plain boxes (x0, y0, z0, x1, y1, z1 in SMD units);
+# "bbox" uses the render mesh's bounds.
+COLLIDE = {
+    "corinthian": [(-36, -36, 0, 36, 36, COL_H)],
+    "doric": [(-24, -24, 0, 24, 24, DORIC_H)],
+    "lamp": [(-16, -16, 0, 16, 16, LAMP_GLOBE_Z)],
+    "cassatt": [(-14, -14, 0, 14, 14, 102)],
+    "bench": [(-180, -24, 0, 180, 24, 17), (-174, -6, 17, 174, 6, 37)],
+    "dining_set": [(-26, -26, 0, 26, 26, 30)],
+    "lunch_counter": [(-22, -20 * FT - 3, 0, 18, 20 * FT + 3, 42), (42, -20 * FT, 0, 66, 20 * FT, 36)],
+    "train": "bbox",
+}
+
+
+def collision(name, m):
+    boxes = COLLIDE[name]
+    if boxes == "bbox":
+        ps = [v[0] for _, vs in m.tris for v in vs]
+        boxes = [tuple(min(p[i] for p in ps) for i in range(3)) + tuple(max(p[i] for p in ps) for i in range(3))]
+    c = Mesh()
+    for b in boxes:
+        _box(c, "phys", *b)
+    return c
+
+
 MODELS = {"train": train, "clock": clock, "conc_arch": conc_arch, "conc_diag": conc_diag, "lattice": lattice, "corinthian": corinthian, "lamp": lamp, "cassatt": cassatt, "doric": doric, "eagle": eagle, "clock_group": clock_group, "balustrade": balustrade, "dining_set": dining_set, "chandelier": chandelier, "pendant": pendant, "lunch_counter": lunch_counter, "bench": bench}
 
 
@@ -624,8 +651,13 @@ def build():
     out = ROOT / "src" / "models" / "penn"
     out.mkdir(parents=True, exist_ok=True)
     for name, fn in MODELS.items():
-        (SRC / f"{name}.smd").write_text(fn().smd(), encoding="ascii", newline="\n")
-        (SRC / f"{name}.qc").write_text(
+        m = fn()
+        (SRC / f"{name}.smd").write_text(m.smd(), encoding="ascii", newline="\n")
+        phys = ""
+        if name in COLLIDE:
+            (SRC / f"{name}_phys.smd").write_text(collision(name, m).smd(), encoding="ascii", newline="\n")
+            phys = f'$collisionmodel "{name}_phys.smd" {{\n $concave\n $maxconvexpieces 16\n}}\n'
+        (SRC / f"{name}.qc").write_text(phys +
             f'$modelname "penn/{name}.mdl"\n' + (f'$scale {QC_SCALE[name]}\n' if name in QC_SCALE else '') + f'$body body "{name}.smd"\n$cdmaterials "models/penn/"\n'
             f'$staticprop\n$surfaceprop "stone"\n$sequence idle "{name}.smd"\n', encoding="ascii", newline="\n")
         r = subprocess.run([str(G / "bin" / "studiomdl.exe"), "-game", str(G / "garrysmod"), "-nop4",
