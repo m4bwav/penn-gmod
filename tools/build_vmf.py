@@ -27,6 +27,7 @@ ENT_Z0, ENT_Z1 = COL_TOP, COL_TOP + 14 * FT   # entablature over the columns
 ARC_W, ARC_H, LAND = 40 * FT, 30 * FT, 16 * FT  # stair opening to the arcade, landing rise
 ARCH_W, ARCH_SPRING = 30 * FT, 45 * FT    # round-headed arches in each long-wall bay, crown 60 ft
 FACE = 4 * FT                             # arcade face layer standing proud of the long walls
+NICHE, NICHE_H = 4 * FT, ARCH_SPRING + ARCH_W // 2   # recess behind the side arches, up to the crown
 
 TEX_FLOOR = "penn/floor_travertine"
 TEX_WALL = "penn/travertine_ashlar"
@@ -69,9 +70,23 @@ def build():
         for a, b in ops:
             W(box(a, y0, h, b, y1, top, TEX_WALL))
 
+    # Niches (session 8): behind each side arch the wall steps back 4 ft (NICHE) up to the arch
+    # crown, so the arches read as openings into the side passages. The wall proper sits NICHE
+    # back from the room face; filler brushes bring the face forward everywhere else.
+    def niche_fill(s, gaps):
+        """Face brushes between y = s*HY and s*(HY + NICHE), open over gaps [(x0, x1, z_top)]."""
+        y0, y1 = sorted((s * HY, s * (HY + NICHE)))
+        edges = [-HX] + [v for g in gaps for v in g[:2]] + [HX]
+        for i in range(0, len(edges), 2):
+            W(box(edges[i], y0, 0, edges[i + 1], y1, top, TEX_WALL))
+        for x0, x1, zt in gaps:
+            W(box(x0, y0, zt, x1, y1, top, TEX_WALL))
+    side = lambda i: ((BAYS[i] + BAYS[i + 1]) // 2 - ARCH_W // 2, (BAYS[i] + BAYS[i + 1]) // 2 + ARCH_W // 2, NICHE_H)
+
     # West wall (y = -HY): one 20 ft opening per bay toward the concourse, sealed for now.
     ops = [((BAYS[i] + BAYS[i + 1]) // 2 - 120, (BAYS[i] + BAYS[i + 1]) // 2 + 120) for i in range(3)]
-    long_wall(-HY - T, -HY, ops, ARC_H)
+    long_wall(-HY - T, -HY - NICHE, ops, ARC_H)
+    niche_fill(-1, [side(i) for i in range(3)])
     py = -HY - T - 10 * FT
     for a, b in ops:
         W(box(a - 32, py, 0, a, -HY - T, ARC_H, TEX_WALL))
@@ -82,7 +97,8 @@ def build():
 
     # East wall (y = +HY): the 40 ft stair opening up to the arcade from Seventh Avenue.
     a, b = -ARC_W // 2, ARC_W // 2
-    long_wall(HY, HY + T, [(a, b)], ARC_H + LAND)
+    long_wall(HY + NICHE, HY + T, [(a, b)], ARC_H + LAND)
+    niche_fill(1, [side(0), (a, b, ARC_H + LAND), side(2)])
     # Stair hall east of the opening: 16 steps up to a landing, sealed door at the arcade end.
     sy0, run, steps = HY, 32 * FT, 16
     sy1 = sy0 + T + 60 * FT

@@ -36,6 +36,8 @@ hook.Add("CalcView", "penn_shots", function()
   if cam then return { origin = cam[2], angles = cam[3], fov = 90, drawviewer = false } end
 end)
 hook.Add("HUDShouldDraw", "penn_shots", function() if cam then return false end end)
+-- Hide the held weapon (the physgun glowed at the right edge of every shot).
+hook.Add("PreDrawViewModel", "penn_shots", function() if cam then return true end end)
 hook.Add("PostRender", "penn_shots", function()
   if not cam then return end
   frames = frames + 1
