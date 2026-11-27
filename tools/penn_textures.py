@@ -214,3 +214,11 @@ r = np.hypot(xx - N / 2, yy - N / 2)
 img[r < 34] = PLASTER * 0.95
 img[(r > 22) & (r < 26)] *= 0.7
 save(img, "ceiling_coffer", "plaster")
+
+# Session 48: exterior window glass. ext_glass used window_glass (blue pane grid) darkened; seen
+# from the street it read as a blue lattice. Plain dark slate with a faint vertical sheen instead.
+img = np.array([34, 37, 42], float) * (1 + fbm(N, 6) * 0.06 - yy / N * 0.15)[..., None]
+save(img, "ext_glass", "glass")
+(MAT / "ext_glass.vmt").write_text('"LightmappedGeneric"\n{\n\t"$basetexture" "penn/ext_glass"\n'
+                                   '\t"$envmap" "env_cubemap"\n\t"$envmaptint" "[0.3 0.3 0.3]"\n\t"$surfaceprop" "glass"\n}\n',
+                                   encoding="ascii", newline="\n")

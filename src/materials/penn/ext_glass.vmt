@@ -1,7 +1,7 @@
 "LightmappedGeneric"
 {
-	"$basetexture" "penn/window_glass"
-	"$color" "[0.28 0.3 0.33]"
+	"$basetexture" "penn/ext_glass"
 	"$envmap" "env_cubemap"
-	"$envmaptint" "[0.25 0.25 0.25]"
+	"$envmaptint" "[0.3 0.3 0.3]"
+	"$surfaceprop" "glass"
 }
