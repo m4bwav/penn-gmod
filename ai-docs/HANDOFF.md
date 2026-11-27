@@ -1,13 +1,13 @@
 # HANDOFF: gm_penn_station
 
 Status: in progress
-Updated: 2026-11-26 (session 17)
+Updated: 2026-11-26 (session 18)
 
 - Prompt: plans/2026-11-25-penn-gmod-60x-continue-prompt.md
-- Chain: session 17 of 60 (started 2026-11-26)
+- Chain: session 18 of 60 (started 2026-11-26)
 - Plan: plans/penn-gmod-plan.md. Era: 1910 station (decisions/2026-11-26-era-1910.md).
 - Garry's Mod: D:/SteamLibrary/steamapps/common/GarrysMod (vbsp, vvis, vrad, bspzip, gmad, gmpublish, studiomdl, vbspinfo in bin/).
-- Budget 2026-11-26 (session 17): 5,264/65,536 verts, 3,449 faces, BSP 15.8 MB. 976-1,190 fps uncapped.
+- Budget 2026-11-26 (session 18): 6,380/65,536 verts, 4,234 faces, BSP 18.3 MB. 120-147 fps capped.
 - Workshop ID: 3846546331 (public, 0.2.0). tools/package.sh defaults to it.
 - Driver: the user-level chain_loop (C:/Users/m4bwa/.chainwright/penn-prompt.md, stop check penn_stop.py, log penn-chain.log, 60 sessions / 24 h) runs this chain. Sessions it starts never start another driver.
 
@@ -39,9 +39,10 @@ Updated: 2026-11-26 (session 17)
 - Session 15: Seventh Avenue entrance colonnade: facade wall with the arcade opening, 12 Doric columns (doric.mdl, 35 ft), portico roof, cornice and attic, sidewalks, avenue, stand-in block opposite, open sky with light_environment. Cameras colonnade_street, colonnade_portico, arcade_to_street. shots/20261126-2158. Not released.
 - Session 16: area 2 lighting. Sun turned to come from the east (yaw 250, pitch -35) onto the facade, brighter ambient, 10 warm lights under the portico soffit and colonnade, arcade and vestibule fills raised. shots/20261126-2304 (146 fps capped). Not released.
 - Session 17: 0.2.0 released (area 2). README, Workshop description and previews, level map now draws both walking levels (make_map.py LAND) with labels for every area, gma uploaded, tag v0.2.0. shots/20261126-2307.
+- Session 18: area 3 refs + blockout. 6 PD concourse refs (HABS Cervin Robinson x4, Popko roof detail, Pennell 'Hall of iron'; refs/SOURCES.md). concourse() in build_vmf.py: 314 x 200 ft west of the waiting room (y CY0..CY1), floor level 0, three glass groin bays (spring 45 ft, crown ~100 ft, penn/window_glass), 16 blockout lattice columns (metal/metalwall001a boxes), joined through the waiting room's three west passages (glow doors removed). Cameras conc_south, conc_east, conc_vault, wr_to_conc. shots/20261126-2317. Not released.
 
 ## Next
-1. Area 3: train concourse. Refs first (PD photos of the steel-and-glass concourse, HABS drawings; refs/SOURCES.md), then a blockout joined through the waiting room's west openings, which still show flat sky-blue glow.
+1. Area 3 detail: lattice column MDL (riveted box lattice, flared arch ribs up into the vaults), steel arch ribs on the groin edges (texture or MDL), glass texture as a mullion grid with lower texlight, travertine arcade of round arches on the east wall (photos), stairs down to the tracks with railings (refs: CONCOURSE_FROM_SOUTH), clock. Then lighting, then 0.3.0.
 2. Optional leftovers: attic storey above the waiting-room side arches, coffered soffits on the cross arches, eagles/clock on the facade; the colonnade cornice still reads dark from the street.
 3. Wiki: the GitHub wiki needs its first page created by hand in the browser before it can be pushed (as with GCT); draft pages can go in docs/wiki/ meanwhile.
 

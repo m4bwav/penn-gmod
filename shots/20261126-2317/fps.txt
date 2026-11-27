@@ -1,0 +1,5 @@
+from_sw         145 fps
+conc_south      120 fps
+conc_east       146 fps
+conc_vault      147 fps
+wr_to_conc      147 fps

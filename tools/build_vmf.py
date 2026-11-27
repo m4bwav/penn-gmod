@@ -35,6 +35,12 @@ A_SPRING = LAND + 32 * FT                              # 576: vaults spring 32 f
 YA = HY + T + 60 * FT                                  # 1468: west end of the arcade, top of the stair hall
 YB = YA + AL                                           # 4168: Seventh Avenue end
 VEST = 40 * FT                                         # entrance vestibule east of the arcade
+# Train concourse (area 3): about 314 x 200 ft west of the waiting room, at the same floor level,
+# under three glass groin vaults on steel lattice columns (HABS photos, refs/SOURCES.md).
+CY1 = -HY - T - 10 * FT                                # -868: east edge, end of the west passages
+CY0 = CY1 - 200 * FT                                   # -3268: west edge
+C_SPRING, C_RISE = 45 * FT, 55 * FT                    # glass vaults spring at 45 ft, crown about 100 ft
+TEX_STEEL = "metal/metalwall001a"
 
 TEX_FLOOR = "penn/floor_travertine"
 TEX_WALL = "penn/travertine_ashlar"
@@ -130,6 +136,38 @@ def arcade(W, det, ents):
     ents.append(ent("env_cubemap", (0, (YA + YB) // 2, LAND + 200)))
 
 
+def concourse(W, det, ents, top):
+    """Area 3 blockout: floor, outer walls, three glass groin bays along x, lattice columns."""
+    ctop = C_SPRING + C_RISE + 16 + 64
+    W(box(-HX - T, CY0 - T, -64, HX + T, CY1, 0, TEX_FLOOR))
+    W(box(-HX - T, CY0 - T, 0, HX + T, CY0, ctop, TEX_WALL))                 # west wall
+    for s in (-1, 1):                                                      # 31st / 33rd St ends
+        x0, x1 = (HX, HX + T) if s > 0 else (-HX - T, -HX)
+        W(box(x0, CY0, 0, x1, CY1, ctop, TEX_WALL))
+    # East wall: solid between the three 20 ft west passages of the waiting room, and above them.
+    ops = [((BAYS[i] + BAYS[i + 1]) // 2 - 152, (BAYS[i] + BAYS[i + 1]) // 2 + 152) for i in range(3)]
+    edges = [-HX - T] + [v for o in ops for v in o] + [HX + T]
+    for i in range(0, len(edges), 2):
+        W(box(edges[i], CY1, 0, edges[i + 1], -HY - T, top, TEX_WALL))
+    for a, b in ops:
+        W(box(a, CY1, ARC_H + 32, b, -HY - T, top, TEX_WALL))
+    # Glass groin vaults: one per waiting-room bay, spanning the full 200 ft depth.
+    for i in range(3):
+        groin(W, BAYS[i], BAYS[i + 1], CY0, CY1, C_SPRING, C_RISE, TEX_GLASS)
+    # Fill between the vault crowns and the waiting room's west wall top.
+    W(box(-HX - T, CY0 - T, ctop, HX + T, -HY - T, ctop + 64, NODRAW))
+    # Steel lattice columns (blockout boxes; the detail pass makes them MDL): at every bay line
+    # on both long sides and two rows across the floor, each 3 ft square up to the springing.
+    for x in BAYS:
+        for y in (CY0 + 2 * FT, CY0 + 70 * FT, CY1 - 70 * FT, CY1 - 2 * FT):
+            xx = max(-HX + 2 * FT, min(HX - 2 * FT, x))
+            det(box(xx - 18, y - 18, 0, xx + 18, y + 18, C_SPRING, TEX_STEEL))
+    for i in range(3):
+        cx = (BAYS[i] + BAYS[i + 1]) // 2
+        ents.append(ent("light", (cx, (CY0 + CY1) // 2, C_SPRING), _light="215 225 240 40"))
+        ents.append(ent("env_cubemap", (cx, (CY0 + CY1) // 2, 200)))
+
+
 def colonnade(W, det, ents, f0):
     """Session 15: the Seventh Avenue entrance. The facade wall (y f0..f0+T) has the 40 ft
     arcade opening; in front stands a Doric colonnade (doric.mdl, 35 ft) carrying a portico roof,
@@ -184,7 +222,7 @@ def build():
     # Sealed nodraw hull around everything.
     X0, X1 = -HX - T - 256, HX + T + 256
     # Session 15: the hull now reaches past the Seventh Avenue block opposite (colonnade()).
-    Y0, Y1 = -HY - T - 10 * FT - 256, YB + T + VEST + T + 117 * FT + 32 + 256
+    Y0, Y1 = CY0 - T - 256, YB + T + VEST + T + 117 * FT + 32 + 256
     Z0, Z1 = -128, top + 128
     for b in ((X0, Y0, Z0 - 64, X1, Y1, Z0), (X0, Y0, Z1, X1, Y1, Z1 + 64),
               (X0 - 64, Y0, Z0, X0, Y1, Z1), (X1, Y0, Z0, X1 + 64, Y1, Z1),
@@ -218,7 +256,7 @@ def build():
             W(box(x0, y0, zt, x1, y1, top, TEX_WALL))
     side = lambda i: ((BAYS[i] + BAYS[i + 1]) // 2 - ARCH_W // 2, (BAYS[i] + BAYS[i + 1]) // 2 + ARCH_W // 2, NICHE_H)
 
-    # West wall (y = -HY): one 20 ft opening per bay toward the concourse, sealed for now.
+    # West wall (y = -HY): one 20 ft opening per bay into the concourse (session 18).
     ops = [((BAYS[i] + BAYS[i + 1]) // 2 - 120, (BAYS[i] + BAYS[i + 1]) // 2 + 120) for i in range(3)]
     long_wall(-HY - T, -HY - NICHE, ops, ARC_H)
     niche_fill(-1, [side(i) for i in range(3)])
@@ -227,8 +265,8 @@ def build():
         W(box(a - 32, py, 0, a, -HY - T, ARC_H, TEX_WALL))
         W(box(b, py, 0, b + 32, -HY - T, ARC_H, TEX_WALL))
         W(box(a, py, ARC_H, b, -HY - T, ARC_H + 32, TEX_WALL))
-        W(box(a, py - 32, -64, b, -HY - T, 0, TEX_FLOOR))
-        W(box(a, py - 32, 0, b, py, ARC_H, TEX_DOOR))
+        W(box(a, py, -64, b, -HY - T, 0, TEX_FLOOR))
+    concourse(W, det, ents, top)
 
     # East wall (y = +HY): the 40 ft stair opening up to the arcade from Seventh Avenue.
     a, b = -ARC_W // 2, ARC_W // 2
