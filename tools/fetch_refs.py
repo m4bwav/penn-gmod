@@ -15,7 +15,9 @@ for title in sys.argv[1:]:
     page = next(iter(json.loads(get("https://commons.wikimedia.org/w/api.php?" + q))["query"]["pages"].values()))
     ii = page["imageinfo"][0]
     m = ii["extmetadata"]
-    name = re.sub(r"[^A-Za-z0-9]+", "_", title[5:].rsplit(".", 1)[0]).strip("_")[:60] + ".jpg"
+    stem = re.sub(r"[^A-Za-z0-9]+", "_", title[5:].rsplit(".", 1)[0]).strip("_")
+    # Session 28: keep the tail too, so book scans that differ only in their id don't overwrite each other.
+    name = (stem if len(stem) <= 60 else stem[:40] + "_" + stem[-19:]) + ".jpg"
     open("refs/photos/" + name, "wb").write(get(ii["thumburl"]))
     artist = re.sub("<[^>]+>", "", m.get("Artist", {}).get("value", "?")).strip()
     rows.append(f"| {name} | {artist} | {m.get('LicenseShortName', {}).get('value', '?')} | {ii['descriptionurl']} |")
