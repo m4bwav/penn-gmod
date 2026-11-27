@@ -21,6 +21,9 @@ A "session" is one unit of work, not the end of the conversation. When an item f
 ## Unattended runs
 A headless session ends when its turn ends, and background jobs die with it. Run compiles, nav, shots and packaging in the foreground (under the 10-minute tool timeout; split long chains), never in the background, and don't end the turn while one runs. Before finishing, commit and push your branch even if the work is unfinished, and name it in HANDOFF.md. A leftover worktree from an earlier session means resume it, unless a gmod/vbsp/vrad process is actually running. Never run two compile or shots jobs at once.
 
+## Shared Garry's Mod (read before any compile, shots, nav or package)
+Another chain (penn-modern-gmod) uses the same GMod install. tools/compile.sh, shots.sh, nav.sh and package.sh take `C:/Users/m4bwa/.chainwright/gmod.lock` (holder's Windows PID, via tools/gmod_lock.sh) and release it on exit; a waiting script prints `gmod.lock: waiting for ...`, so let it wait rather than killing anything. Any new script or command that writes into garrysmod/ or launches gmod.exe must source tools/gmod_lock.sh and call gmod_lock_take first. Kill only the gmod.exe your own script started (gmod_snapshot before launch, gmod_kill_own after), never every gmod.exe. Never delete a lock whose PID is alive.
+
 ## Budget rules from GCT (vbsp's hard caps)
 65,536 unique vertices is the limit you hit first. Use textures for grids and lettering, MDL models for props and repeated ornament (capitals, coffers if needed, eagles), one func_brush per area for decor, and vbspinfo after every compile. Plan for the waiting room's columns and coffers to be models from day one. 150 MB file budget, 60 fps on a mid-range PC.
 
