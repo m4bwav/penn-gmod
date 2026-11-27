@@ -25,3 +25,4 @@
 - 2026-11-27 session 21: studiomdl rotates SMD geometry 90 degrees about z: a model built along +y stands along +x at yaw 0. conc_arch therefore ran along the concourse and read as a thin line from the centre-line cameras; fixed with angles "0 90 0" on conc_arch and conc_diag. Asymmetric models need that yaw (or build them along x). 6,263 verts, BSP 19.9 MB, 146 fps capped; shots/20261127-0002. In two short CAMS runs the last camera's jpg was missing from data/penn_shots (full runs fine); add a dummy last camera if it recurs.
 
 - 2026-11-27 session 22: concourse east-wall arcade (27 arches, func_detail, +986 verts). vrad shades a prop_static as a solid block: every big see-through MDL (lattice, ribs) needs disableshadows=1, or it throws a black silhouette. shots/20261127-0008.
+- 2026-11-27 session 22: git add shots/ before the PR. Removing the worktree deleted the untracked session-22 shots (git add -A tools ai-docs left them out).
