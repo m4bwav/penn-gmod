@@ -3,6 +3,7 @@
 Blockout stage: main waiting room. Run: python tools/build_vmf.py
 Dimensions: ai-docs/notes/2026-11-26-dimensions.md.
 """
+import math
 from pathlib import Path
 
 import vmf_lib
@@ -450,6 +451,12 @@ TEX_WAIN, TEX_OAK, TEX_MIRROR = "penn/wood_panel", "penn/wood_plain", "penn/mirr
 _ws = 8 * FT / 512
 vmf_lib.FACEUV[TEX_WAIN] = lambda n: ("[%s 0] %g" % ("0 1 0" if abs(n[0]) > 0.5 else "1 0 0", _ws),
                                       "[0 0 -1 %g] %g" % (((LAND + 8 * FT) / _ws) % 512, _ws))
+# Session 45: light plaster walls and a square-coffered ceiling, one coffer per 10 ft, aligned so
+# the coffer grid starts at the room's inner end (R_X0) and its door-side wall (R_Y0).
+TEX_PLASTER, TEX_CEIL = "penn/plaster", "penn/ceiling_coffer"
+_cs = 10 * FT / 512
+vmf_lib.FACEUV[TEX_CEIL] = lambda n: ("[1 0 0 %g] %g" % (-(R_X0 / _cs) % 512, _cs),
+                                      "[0 -1 0 %g] %g" % ((R_Y0 / _cs) % 512, _cs))
 
 
 def dining_lunch(W, det, ents):
@@ -464,15 +471,15 @@ def dining_lunch(W, det, ents):
         ji0, ji1 = (272, 304) if s > 0 else (-304, -272)        # inner wall band between hall and room
         W(box(lo, R_Y0, z0 - 64, hi, R_Y1, z0, TEX_FLOOR))
         W(box(ji0, d0, z0 - 64, ji1, d1, z0, TEX_FLOOR))         # threshold
-        W(box(lo - 32, R_Y0 - 32, zc, hi + 32, R_Y1 + 32, zc + 64, TEX_VAULT))
-        W(box(lo, R_Y0 - 32, z0 - 64, hi, R_Y0, zc, TEX_WALL))
-        W(box(lo, R_Y1, z0 - 64, hi, R_Y1 + 32, zc, TEX_WALL))
+        W(box(lo - 32, R_Y0 - 32, zc, hi + 32, R_Y1 + 32, zc + 64, TEX_CEIL))
+        W(box(lo, R_Y0 - 32, z0 - 64, hi, R_Y0, zc, TEX_PLASTER))
+        W(box(lo, R_Y1, z0 - 64, hi, R_Y1 + 32, zc, TEX_PLASTER))
         xo0, xo1 = (hi, hi + 32) if s > 0 else (lo - 32, lo)
-        W(box(xo0, R_Y0 - 32, z0 - 64, xo1, R_Y1 + 32, zc, TEX_WALL))
+        W(box(xo0, R_Y0 - 32, z0 - 64, xo1, R_Y1 + 32, zc, TEX_PLASTER))
         # Inner wall band: solid except the doorway (the dining side keeps the niche back in it).
-        W(box(ji0, R_Y0 - 32, z0 - 64, ji1, d0, zc, TEX_WALL))
-        W(box(ji0, d0, z0 + (DOOR_H if s > 0 else 16 * FT), ji1, d1, zc, TEX_WALL))
-        W(box(ji0, d1, z0 - 64, ji1, R_Y1 + 32, zc, TEX_WALL))
+        W(box(ji0, R_Y0 - 32, z0 - 64, ji1, d0, zc, TEX_PLASTER))
+        W(box(ji0, d0, z0 + (DOOR_H if s > 0 else 16 * FT), ji1, d1, zc, TEX_PLASTER))
+        W(box(ji0, d1, z0 - 64, ji1, R_Y1 + 32, zc, TEX_PLASTER))
         W(box(wi0, R_Y0 - 32, ARC_H + LAND + 32, wi1, R_Y1 + 32, zc + 64, TEX_WALL))   # over the hall wall
         # Session 44: 8 ft panelled oak wainscot with a cap rail round the room (long walls and the
         # outer end wall), and a cornice.
@@ -501,7 +508,16 @@ def dining_lunch(W, det, ents):
         wh = (18 if s > 0 else 12) * FT
         for i in range(5):
             cx = s * (R_X0 + i * 20 * FT + 10 * FT)
-            det(box(cx - 4 * FT, R_Y1 - 4, z0 + 8 * FT + 4, cx + 4 * FT, R_Y1, z0 + 8 * FT + 4 + wh, TEX_GLASS))
+            wz = z0 + 8 * FT + 4 + wh
+            det(box(cx - 4 * FT, R_Y1 - 4, z0 + 8 * FT + 4, cx + 4 * FT, R_Y1, wz, TEX_GLASS))
+            # Session 45: round heads as in the plates, a semicircle of r 4 ft in four 1 ft steps,
+            # with a 6 in oak architrave band stepped round it.
+            for k in range(4):
+                hw = int(4 * FT * math.sqrt(1 - ((k + 0.5) / 4) ** 2))
+                det(box(cx - hw, R_Y1 - 4, wz + k * FT, cx + hw, R_Y1, wz + (k + 1) * FT, TEX_GLASS))
+                det(box(cx - hw - 6, R_Y1 - 6, wz + k * FT, cx - hw, R_Y1, wz + (k + 1) * FT, TEX_OAK))
+                det(box(cx + hw, R_Y1 - 6, wz + k * FT, cx + hw + 6, R_Y1, wz + (k + 1) * FT, TEX_OAK))
+            det(box(cx - 6, R_Y1 - 6, wz + 4 * FT, cx + 6, R_Y1, wz + 4 * FT + 6, TEX_OAK))
             # Session 43: a brass chandelier per bay in the dining room (light just under its globes),
             # two bell pendants per bay over the counters in the lunch room.
             if s > 0:
