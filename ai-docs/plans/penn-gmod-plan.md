@@ -5,9 +5,9 @@ Updated 2026-11-26 (session 1). Era ruling: [decisions/2026-11-26-era-1910.md](.
 ## Scope
 The 1910 Pennsylvania Station, one map, true scale (1 ft = 12 units, as gm_grand_central). Walkable from Seventh Avenue through the arcade to the waiting room, the concourse and down to the platforms.
 
-## Scale (to verify against HABS drawings in the refs session; figures below are the commonly cited ones)
+## Scale (sourced: notes/2026-11-26-dimensions.md)
 - Building footprint about 780 x 430 ft (two blocks, 31st to 33rd St, Seventh to Eighth Ave).
-- Main waiting room about 314 x 108 ft, about 150 ft to the vault crown; three groin-vault bays over Corinthian columns, thermal (Diocletian) windows in the lunettes.
+- Main waiting room 314 ft 4 in x 108 ft 8 in, 150 ft tall; three groin-vault bays over ~60 ft Corinthian columns on pedestals, thermal windows (r 38 ft 4 in) in the lunettes.
 - Concourse: steel lattice columns and glass groin vaults, roughly 340 x 210 ft.
 - Platforms about 45 ft below street.
 A 314 ft room is about 3,770 units; the whole station fits inside the 32,768 u Source grid but the platforms need care.

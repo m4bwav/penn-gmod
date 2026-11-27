@@ -2,7 +2,7 @@
 Usage: python tools/fetch_refs.py "File:A.jpg" "File:B.jpg" ..."""
 import json, os, re, sys, urllib.parse, urllib.request
 
-UA = {"User-Agent": "gcs-gmod-refs/1.0 (m4bwav@gmail.com)"}
+UA = {"User-Agent": "penn-gmod-refs/1.0 (m4bwav@gmail.com)"}
 os.makedirs("refs/photos", exist_ok=True)
 
 def get(url):
