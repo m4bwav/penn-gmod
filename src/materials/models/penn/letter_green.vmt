@@ -1,0 +1,5 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/penn/letter_green"
+	"$surfaceprop" "metal"
+}
