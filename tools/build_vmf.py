@@ -181,22 +181,27 @@ def build():
             det(box(cx - 8 * FT, min(wy, wy - 7 * FT * (1 if cy > 0 else -1)), 0,
                     cx + 8 * FT, max(wy, wy - 7 * FT * (1 if cy > 0 else -1)), ENT_Z0, TEX_WALL))
 
-    # Lights: warm fill under the vaults, cool light at each window.
+    # Lights (session 6). Daylight comes in through the thermal windows: the glass panes are texture
+    # lights (src/lights.rad), morning sun from the east lunettes falls as light_spot shafts on the
+    # floor of the west half, and a dim warm fill keeps the column shadows readable.
     for i in range(3):
         cx = (BAYS[i] + BAYS[i + 1]) // 2
-        ents.append(ent("light", (cx, 0, SPRING), _light="235 225 205 60"))
-        ents.append(ent("light", (cx, 0, 20 * FT), _light="250 225 190 30"))
-        for s in (-1, 1):
-            ents.append(ent("light", (cx, s * (HY - 200), SPRING + 200), _light="200 215 235 40"))
+        ents.append(ent("light", (cx, 0, SPRING), _light="235 220 195 35"))
+        ents.append(ent("light", (cx, 0, 30 * FT), _light="250 220 180 18"))
+        # Sun shaft: from just inside the east lunette, aimed down and west (pitch -50, yaw 270).
+        ents.append(ent("light_spot", (cx, HY - 120, SPRING + 160), angles="-50 270 0", pitch="-50",
+                        _light="255 236 200 260", _inner_cone="14", _cone="22", _exponent="1",
+                        _constant_attn="1", _linear_attn="0", _quadratic_attn="0"))
+        ents.append(ent("light", (cx, -(HY - 200), SPRING + 200), _light="195 210 235 25"))
     for s in (-1, 1):
-        ents.append(ent("light", (s * (HX - 200), 0, SPRING + 200), _light="200 215 235 40"))
+        ents.append(ent("light", (s * (HX - 200), 0, SPRING + 200), _light="195 210 235 25"))
     ents.append(ent("light", (0, HY + T + 40 * FT, LAND + 20 * FT), _light="250 225 190 20"))
 
     NL = "\n"
     ents.append(ent("env_tonemap_controller", (0, 0, 64), targetname="tonemap"))
-    conn = ['"OnMapSpawn" "tonemap,SetAutoExposureMin,0.5,0,-1"',
-            '"OnMapSpawn" "tonemap,SetAutoExposureMax,1.2,0,-1"',
-            '"OnMapSpawn" "tonemap,SetBloomScale,0.1,0,-1"']
+    conn = ['"OnMapSpawn" "tonemap,SetAutoExposureMin,0.6,0,-1"',
+            '"OnMapSpawn" "tonemap,SetAutoExposureMax,1.6,0,-1"',
+            '"OnMapSpawn" "tonemap,SetBloomScale,0.25,0,-1"']
     block = "\tconnections" + NL + "\t{" + NL + "".join("\t\t" + c + NL for c in conn) + "\t}" + NL + "}" + NL
     ents.append(ent("logic_auto", (0, 0, 96), spawnflags="1")[:-2] + block)
     ents.append(ent("info_player_start", (0, HY + T + 50 * FT, LAND + 8), angles="0 270 0"))
