@@ -52,7 +52,7 @@ def pits(img, count, tone):
     return img
 
 
-TRAV = np.array([150, 138, 120], float)
+TRAV = np.array([122, 112, 98], float)   # session 5: photos read mid-grey, darker than 150
 yy, xx = np.mgrid[0:N, 0:N]
 bed = np.sin(yy / N * 2*np.pi * 18 + fbm(N, 4) * 6)
 
@@ -79,21 +79,26 @@ save(img, "travertine_ashlar")
 img = TRAV * 1.05 * (1 + fbm(N, 6) * 0.08 + bed * 0.02)[..., None]
 save(pits(img, 160, 0.8), "travertine")
 
-# Vault: 2x2 coffers per tile, a round sunk coffer in each square frame, rosette in the middle.
+# Vault: round coffers in octagonal frames on a diagonal lattice (session 5, matching the
+# HABS photos), four per tile at the square corners and centre, rosette in each.
 PLAS = np.array([170, 160, 144], float)
 img = PLAS * (1 + fbm(N, 5) * 0.06)[..., None]
 cell = N // 2
-u, w = xx % cell - cell/2, yy % cell - cell/2
+u, w = (xx + cell/2) % cell - cell/2, (yy + cell/2) % cell - cell/2
+u2, w2 = xx % cell - cell/2, yy % cell - cell/2
+pick = np.hypot(u, w) > np.hypot(u2, w2)
+u, w = np.where(pick, u2, u), np.where(pick, w2, w)
 r = np.hypot(u, w)
-edge = cell/2 - np.maximum(abs(u), abs(w))
-img[edge < 10] *= 1.12                               # rib between coffers
-shade = np.where(r < 104, 0.62, 1.0)                 # deep round coffer
-shade = np.where((r < 104) & (r > 92), 0.78, shade)  # first step
-shade = np.where((r < 92) & (r > 82), 0.9, shade)    # second step, lit
-shade = np.where((r >= 104) & (r < 112), 0.85, shade)
+octo = np.maximum(np.maximum(abs(u), abs(w)), (abs(u) + abs(w)) / np.sqrt(2))
+shade = np.ones_like(r)
+shade = np.where(octo < 84, 0.86, shade)              # octagonal frame, first step
+shade = np.where(r < 70, 0.62, shade)                 # deep round coffer
+shade = np.where((r < 70) & (r > 62), 0.78, shade)
+shade = np.where((r < 62) & (r > 55), 0.9, shade)
+shade = np.where((octo >= 84) & (octo < 90), 1.12, shade)  # lit rib edge
 img *= shade[..., None]
-img[(r < 104) & (w < -0.3 * r)] *= 0.9               # top lip casts shadow downward
-ros = np.clip((22 - r) / 4, 0, 1) * (0.8 + 0.2 * np.cos(np.arctan2(w, u) * 8))
+img[(r < 70) & (w < -0.3 * r)] *= 0.9                # top lip casts shadow downward
+ros = np.clip((16 - r) / 4, 0, 1) * (0.8 + 0.2 * np.cos(np.arctan2(w, u) * 8))
 img = img * (1 - ros[..., None]) + PLAS * 1.15 * ros[..., None]
 save(img, "vault_coffer", "plaster")
 
