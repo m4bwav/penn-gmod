@@ -7,6 +7,7 @@ The lost Pennsylvania Station in New York, as McKim, Mead & White built it in 19
 [*]Two spawns: the Seventh Avenue end of the arcade and the waiting room floor (see the level map in the screenshots)
 [*]Runs at hundreds of frames per second on a mid-range PC
 [*]Nav mesh included, so NPCs and nextbots can walk the station
+[*]Columns, benches, tables, counters, lamps, the statue and the trains are solid, and the nav mesh walks around them
 [*]Needs nothing else installed
 [/list]
 

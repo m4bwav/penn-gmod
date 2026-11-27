@@ -1,5 +1,6 @@
 | Version | What changed |
 |---|---|
+| 0.7.3 | Columns, benches, tables, counters, lamps, the Cassatt statue and the trains are solid (collision models); nav mesh rebuilt around them |
 | 0.7.2 | 16 oak benches in the waiting-room end bays, nav mesh rebuilt |
 | 0.7.1 | Attic storey over the waiting-room columns, coffered cross arches between the vault bays, the gap of sky in the vault crowns closed |
 | 0.7.0 | Seventh Avenue front cut to its real 430 ft, clock group figures with limbs, clock face turned to the avenue, nav mesh rebuilt |
