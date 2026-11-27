@@ -1,0 +1,7 @@
+from_sw          20 fps
+from_nw          20 fps
+nave_north       20 fps
+vault_up         20 fps
+stair_east       20 fps
+west_wall        20 fps
+stair_down       20 fps
