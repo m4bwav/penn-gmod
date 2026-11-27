@@ -1,13 +1,13 @@
 # HANDOFF: gm_penn_station
 
 Status: in progress
-Updated: 2026-11-27 (session 51)
+Updated: 2026-11-27 (session 52)
 
 - Prompt: plans/2026-11-25-penn-gmod-60x-continue-prompt.md
-- Chain: session 51 of 60 (started 2026-11-26)
+- Chain: session 52 of 60 (started 2026-11-26)
 - Plan: plans/penn-gmod-plan.md. Era: 1910 station (decisions/2026-11-26-era-1910.md).
 - Garry's Mod: D:/SteamLibrary/steamapps/common/GarrysMod (vbsp, vvis, vrad, bspzip, gmad, gmpublish, studiomdl, vbspinfo in bin/).
-- Budget 2026-11-27 (session 50): 25,594/65,536 verts, 14,943 faces, BSP 48.9 MB (with cubemaps). (0.7.0: gma 50.9 MB, ~1,140-1,250 fps uncapped, nav 1,384 areas.)
+- Budget 2026-11-27 (session 52): 25,884/65,536 verts, 15,082 faces, BSP 49.1 MB (with cubemaps). (0.7.0: gma 50.9 MB, ~1,140-1,250 fps uncapped, nav 1,384 areas.)
 - Workshop ID: 3846546331 (public, 0.7.0). tools/package.sh defaults to it.
 - Driver: the user-level chain_loop (C:/Users/m4bwa/.chainwright/penn-prompt.md, stop check penn_stop.py, log penn-chain.log, 60 sessions / 24 h) runs this chain. Sessions it starts never start another driver.
 
@@ -78,13 +78,14 @@ Updated: 2026-11-27 (session 51)
 - Session 49: clock group polish. The reclining figures are now jointed (_reclining() in tools/penn_models.py: drapery, hips, one leg out and one drawn up, torso propped on the near elbow, far arm across, neck, head). The clock face sat below the attic parapet's sight line from the avenue; the frame block, face, hands, cornice and pediment rose 4 ft (H = 48), and the face had pointed at the station since session 38: the prop is now yaw 0 (SMD +x = world +y). 26,778/65,536 verts, BSP 52.0 MB, 146-147 fps capped. shots/20261127-0645 (compare_clock.jpg, figures before/after), shots/20261127-0712 (face visible). Not released.
 - Session 50: PR #57 verified and merged. The Seventh Avenue front is now the real 430 ft (EX_FX 215 ft, corner pavilions 40 ft, a flagged ruling). Rebuilt on main, cubemaps, front_*/side_* shots clean: colonnade, clock group, pavilions, carriage drives and cross streets all intact. 25,594/65,536 verts, BSP 48.9 MB, 146 fps capped. shots/20261127-0720 (sheet.jpg). Not released; re-run tools/nav.sh before the next release (the front walk changed).
 - Session 51: 0.7.0 released (430 ft front, clock group figures and face). compile, cubemaps, nav.sh (1,384 areas), shots/20261127-0731 (uncapped 1,138-1,250 fps), level map redrawn, README and Workshop text (column count dropped; front now "430 ft"), gma 50.9 MB, 3 previews (EResult 1), tag v0.7.0. Moynihan still unanswered.
+- Session 52: waiting-room attic storey (build_vmf.py, after the entablature): a 2 ft proud plinth course with a 1 ft cornice from the entablature top to 16 u under the lunette sills on all four walls, attic pedestals 4 ft proud over every column, and a plain travertine tablet in the spandrel over each side arch (not the stair arch). 25,884 verts, 124-146 fps capped. shots/20261127-0739 (sheet.jpg). Not released.
 - Warning (session 49): two chain_loop drivers were running at once (PIDs 429196, chainwright 0.9.0, and 393900, 0.15.0), each starting a session at 06:34-06:35. Before starting a driver, check none is running. Sessions claim an item by pushing their sN- branch at once; check `git ls-remote origin 'refs/heads/sN*'` first.
 
 ## Next
 1. Moynihan Train Hall: waits on Mark (ask/moynihan-scope). Read the answer with ask.py read ask/moynihan-scope; until then take the polish items below. Re-run tools/nav.sh after any walkable change.
 2. Exterior polish: done in session 49 (figures with limbs, clock face raised above the parapet).
 3. 0.7.0 released (session 51).
-4. Optional leftovers: attic storey above the waiting-room side arches, coffered soffits on the cross arches.
+4. Optional leftovers: coffered soffits on the cross arches (attic storey done in session 52). Release 0.7.1 when a few polish items have landed.
 5. Wiki: the GitHub wiki needs its first page created by hand in the browser before it can be pushed (as with GCT); draft pages can go in docs/wiki/ meanwhile.
 
 ## Waiting on Mark
