@@ -193,3 +193,24 @@ save(img, "mirror", "glass")
 (MAT / "mirror.vmt").write_text('"LightmappedGeneric"\n{\n\t"$basetexture" "penn/mirror"\n\t"$color" "[0.35 0.35 0.35]"\n'
                                 '\t"$envmap" "env_cubemap"\n\t"$envmaptint" "[0.8 0.8 0.78]"\n\t"$surfaceprop" "glass"\n}\n',
                                 encoding="ascii", newline="\n")
+
+# Session 45, after compare_dining.jpg: the booklet plates show light walls above the wainscot and a
+# deep ceiling of square coffers. Cream plaster for the restaurant walls; one coffer per tile
+# (10 x 10 ft, FACEUV in build_vmf.py): a light grid of ribs, three stepped mouldings going in,
+# the recess shaded darker toward its far edges and a small rosette in the middle.
+PLASTER = np.array([196, 186, 162], float)
+img = PLASTER * (1 + fbm(N, 6) * 0.04)[..., None]
+save(img, "plaster", "plaster")
+img = PLASTER * (1 + fbm(N, 6) * 0.04)[..., None]
+d = np.minimum(np.minimum(xx, N - 1 - xx), np.minimum(yy, N - 1 - yy))      # distance in from the tile edge
+rib, step = 40, 18
+for k, tone in enumerate((0.82, 0.70, 0.60)):
+    ring = (d >= rib + k * step) & (d < rib + (k + 1) * step)
+    lit = (yy < xx) & (yy < N - 1 - xx) | (xx < yy) & (xx < N - 1 - yy)    # upper/left faces catch the light
+    img[ring] *= np.where(lit[ring], tone + 0.12, tone - 0.08)[:, None]
+inner = d >= rib + 3 * step
+img[inner] *= 0.55 + 0.25 * ((d[inner] - (rib + 3 * step)) / (N / 2 - rib - 3 * step))[:, None]
+r = np.hypot(xx - N / 2, yy - N / 2)
+img[r < 34] = PLASTER * 0.95
+img[(r > 22) & (r < 26)] *= 0.7
+save(img, "ceiling_coffer", "plaster")
