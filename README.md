@@ -6,14 +6,16 @@
 
 A Garry's Mod map of the 1910 Pennsylvania Station in New York (McKim, Mead & White), built at true scale (1 ft = 12 units). The station was torn down in 1963; this map rebuilds it from public-domain photographs and plans.
 
-Release 0.3.0 adds the train concourse: three glass groin vaults about 100 ft high on branching steel lattice columns and truss ribs, a travertine arcade and clock on the east wall, and six stairs down toward the tracks. Release 0.2.0 added the Seventh Avenue front: the Doric colonnade on the street, the entrance vestibule and the 225 ft shopping arcade with bronze shopfronts, groin vaults and lamp standards, down to the Cassatt statue niche at the head of the grand stair. Release 0.1.0 had the main waiting room: three groin-vaulted bays 150 ft to the crown, coffered vaults, Corinthian columns on tall pedestals, thermal windows in every lunette with morning sun on the floor. The track platforms and the rest of the exterior come next (see the [plan](ai-docs/plans/penn-gmod-plan.md)).
+Release 0.4.0 adds the track level: six island platforms with stone coping, steel columns and hanging lamps under the concourse, seven tracks running west to the tunnel portals, and two trains of Tuscan red coaches behind DD1 electrics lettered PENNSYLVANIA. Release 0.3.0 added the train concourse: three glass groin vaults about 100 ft high on branching steel lattice columns and truss ribs, a travertine arcade and clock on the east wall, and six stairs down toward the tracks. Release 0.2.0 added the Seventh Avenue front: the Doric colonnade on the street, the entrance vestibule and the 225 ft shopping arcade with bronze shopfronts, groin vaults and lamp standards, down to the Cassatt statue niche at the head of the grand stair. Release 0.1.0 had the main waiting room: three groin-vaulted bays 150 ft to the crown, coffered vaults, Corinthian columns on tall pedestals, thermal windows in every lunette with morning sun on the floor. The rest of the exterior comes next (see the [plan](ai-docs/plans/penn-gmod-plan.md)).
 
-The map is written as VMF text by a Python script, not drawn in Hammer. The textures (travertine, coffers, floor, window glass, shopfronts, paving) and the models (columns, lamps, statue, steel lattice columns and roof ribs, clock) are made by scripts in `tools/`.
+The map is written as VMF text by a Python script, not drawn in Hammer. The textures (travertine, coffers, floor, window glass, shopfronts, paving) and the models (columns, lamps, statue, steel lattice columns and roof ribs, clock, train) are made by scripts in `tools/`.
 
-Screenshots from release 0.3.0:
+Screenshots from release 0.4.0:
 
 | | |
 |---|---|
+| ![Train at the platform](docs/train_side.jpg) | ![DD1 electric](docs/train_nose.jpg) |
+| ![Along a platform](docs/plat_long.jpg) | ![Across the tracks](docs/plat_tracks.jpg) |
 | ![Concourse from the south](docs/conc_south.jpg) | ![Concourse looking east](docs/conc_east.jpg) |
 | ![Concourse glass vault](docs/conc_vault.jpg) | ![Concourse clock](docs/conc_clock.jpg) |
 | ![Seventh Avenue colonnade](docs/colonnade_street.jpg) | ![Under the portico](docs/colonnade_portico.jpg) |
