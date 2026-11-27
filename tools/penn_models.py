@@ -478,6 +478,9 @@ def balustrade():
     return m
 
 
+# Session 39: the clock group read small from the street; studiomdl scales it up.
+QC_SCALE = {"clock_group": 1.5}
+
 MODELS = {"train": train, "clock": clock, "conc_arch": conc_arch, "conc_diag": conc_diag, "lattice": lattice, "corinthian": corinthian, "lamp": lamp, "cassatt": cassatt, "doric": doric, "eagle": eagle, "clock_group": clock_group, "balustrade": balustrade}
 
 
@@ -497,7 +500,7 @@ def build():
     for name, fn in MODELS.items():
         (SRC / f"{name}.smd").write_text(fn().smd(), encoding="ascii", newline="\n")
         (SRC / f"{name}.qc").write_text(
-            f'$modelname "penn/{name}.mdl"\n$body body "{name}.smd"\n$cdmaterials "models/penn/"\n'
+            f'$modelname "penn/{name}.mdl"\n' + (f'$scale {QC_SCALE[name]}\n' if name in QC_SCALE else '') + f'$body body "{name}.smd"\n$cdmaterials "models/penn/"\n'
             f'$staticprop\n$surfaceprop "stone"\n$sequence idle "{name}.smd"\n', encoding="ascii", newline="\n")
         r = subprocess.run([str(G / "bin" / "studiomdl.exe"), "-game", str(G / "garrysmod"), "-nop4",
                             str(SRC / f"{name}.qc")], capture_output=True, text=True)

@@ -57,6 +57,7 @@ vmf_lib.SCALE.update({TEX_WALL: 0.375, TEX_TRIM: 0.375, TEX_VAULT: 0.6, TEX_FLOO
 TEX_GLASS = "penn/window_glass"
 TEX_DOOR = "penn/window_glow"
 TEX_LAMP = "penn/lamp_glow"
+TEX_EXTGLASS = "penn/ext_glass"   # session 39: dark lit glass for exterior windows, no texlight
 NODRAW = "tools/toolsnodraw"
 TEX_SHOP = "penn/shopfront"
 # One shopfront tile per 45 ft bay along y (aligned to YA), 18 ft tall from the arcade floor.
@@ -416,7 +417,7 @@ def side_fronts(W, det, ents, f0, YW, KX, FTOP, SKYZ, cz):
             if -RY - 36 * FT < y < RY:
                 continue
             det(box(p0, y + 3 * FT, z0 + 22 * FT, p1, y + 29 * FT, FTOP - 12 * FT, TEX_TRIM))
-            det(box(g0, y + 12 * FT, z0 + 9 * FT, g1, y + 20 * FT, z0 + 17 * FT, TEX_GLASS))
+            det(box(g0, y + 12 * FT, z0 + 9 * FT, g1, y + 20 * FT, z0 + 17 * FT, TEX_EXTGLASS))
         for a, b in ((YW, -RY), (RY, PB)):
             y = b - 2
             while y - 432 >= a:
@@ -424,6 +425,11 @@ def side_fronts(W, det, ents, f0, YW, KX, FTOP, SKYZ, cz):
                 y -= 432
         for y in range(YW + 60 * FT, PB, 120 * FT):
             ents.append(ent("prop_static", (s * (FX + 18 * FT), y, z0 - 8), model="models/penn/lamp.mdl", solid="6"))
+        # Session 39 (area 5 lighting): the side walls face away from the sun and compiled very dark.
+        # A row of soft fills 40 ft out from each wall, at two heights, lifts them without flattening.
+        for y in range(YW + 36 * FT, PB, 72 * FT):
+            ents.append(ent("light", (s * (FX + 40 * FT), y, z0 + 15 * FT), _light="245 230 205 45"))
+            ents.append(ent("light", (s * (FX + 40 * FT), y + 36 * FT, z0 + 45 * FT), _light="215 225 240 35"))
 
 
 # Track level (area 4): session 28 blockout. One 30 ft island platform under each concourse stair,

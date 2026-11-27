@@ -1,0 +1,8 @@
+colonnade_street  139 fps
+front_south     146 fps
+side_south      147 fps
+side_carriage   146 fps
+side_corner     147 fps
+side_north      146 fps
+front_centre    146 fps
+front_attic     146 fps
