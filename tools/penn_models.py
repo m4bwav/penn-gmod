@@ -25,6 +25,8 @@ VMTS = {
     "travertine": '"VertexLitGeneric"\n{\n\t"$basetexture" "penn/travertine"\n\t"$surfaceprop" "stone"\n}\n',
     "bronze": '"VertexLitGeneric"\n{\n\t"$basetexture" "models/debug/debugwhite"\n\t"$color2" "[0.32 0.22 0.11]"\n'
               '\t"$phong" "1"\n\t"$phongboost" "2"\n\t"$phongexponent" "20"\n\t"$phongfresnelranges" "[0.4 0.8 1]"\n\t"$surfaceprop" "metal"\n}\n',
+    "steel": '"VertexLitGeneric"\n{\n\t"$basetexture" "models/debug/debugwhite"\n\t"$color2" "[0.13 0.14 0.15]"\n'
+             '\t"$surfaceprop" "metal"\n}\n',
     "globe": '"UnlitGeneric"\n{\n\t"$basetexture" "models/debug/debugwhite"\n\t"$color2" "[1 0.9 0.72]"\n\t"$surfaceprop" "glass"\n}\n',
 }
 
@@ -148,7 +150,63 @@ def doric():
     return m
 
 
-MODELS = {"corinthian": corinthian, "lamp": lamp, "cassatt": cassatt, "doric": doric}
+LAT_H = 45 * FT          # concourse lattice column: floor to the vault springing (build_vmf.py C_SPRING)
+
+
+def _bar(m, mat, a, b, w):
+    """Square-section steel bar from a to b, w across, as four long quads (ends hide in the joints)."""
+    ax = [b[i] - a[i] for i in range(3)]
+    ln = math.sqrt(sum(c * c for c in ax)) or 1
+    wv = [c / ln for c in ax]
+    up = (1, 0, 0) if abs(wv[0]) < 0.9 else (0, 1, 0)
+    u = [wv[1] * up[2] - wv[2] * up[1], wv[2] * up[0] - wv[0] * up[2], wv[0] * up[1] - wv[1] * up[0]]
+    lu = math.sqrt(sum(c * c for c in u))
+    u = [c / lu for c in u]
+    v = [wv[1] * u[2] - wv[2] * u[1], wv[2] * u[0] - wv[0] * u[2], wv[0] * u[1] - wv[1] * u[0]]
+    h = w / 2
+    cs = [(-h, -h), (h, -h), (h, h), (-h, h)]
+    P = lambda base, p, q: tuple(base[k] + u[k] * p + v[k] * q for k in range(3))
+    for i in range(4):
+        (p0, q0), (p1, q1) = cs[i], cs[(i + 1) % 4]
+        nx, ny = (p0 + p1) / w, (q0 + q1) / w
+        n = tuple(u[k] * nx + v[k] * ny for k in range(3))
+        m.quad(mat, (P(a, p0, q0), n, (0, 0)), (P(a, p1, q1), n, (1, 0)),
+               (P(b, p1, q1), n, (1, ln / 64)), (P(b, p0, q0), n, (0, ln / 64)))
+
+
+def lattice():
+    """Concourse steel column (session 19, HABS photos): four angle posts on a 3 ft square tied by
+    zigzag lacing on every face, a base shoe, and a cap from which four curved arch ribs flare out
+    along +-x and +-y into the glass vaults. Origin on the floor."""
+    m = Mesh()
+    h, c = LAT_H, 16
+    m.lathe("steel", [(0, 0), (30, 0), (30, 6), (24, 10), (22, 24), (0, 24)], 0, 0, 0, 4)
+    corners = [(-c, -c), (c, -c), (c, c), (-c, c)]
+    for x, y in corners:
+        _bar(m, "steel", (x, y, 20), (x, y, h - 18), 5)
+    step = 30
+    for i in range(4):
+        (x0, y0), (x1, y1) = corners[i], corners[(i + 1) % 4]
+        z, k = 24, 0
+        while z + step <= h - 24:
+            a, b = ((x0, y0), (x1, y1)) if k % 2 == 0 else ((x1, y1), (x0, y0))
+            _bar(m, "steel", (a[0], a[1], z), (b[0], b[1], z + step), 2.5)
+            z += step
+            k += 1
+    m.lathe("steel", [(0, h - 24), (22, h - 24), (22, h - 12), (28, h - 8), (28, h), (0, h)], 0, 0, 0, 4)
+    # Flared arch ribs: quarter curves from the cap rising 10 ft while reaching 16 ft out.
+    for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+        pts = []
+        for j in range(7):
+            t = j / 6 * math.pi / 2
+            r, z = 16 * FT * (1 - math.cos(t)), h - 12 + 10 * FT * math.sin(t)
+            pts.append((dx * (c + r), dy * (c + r), z))
+        for p, q in zip(pts, pts[1:]):
+            _bar(m, "steel", p, q, 8)
+    return m
+
+
+MODELS = {"lattice": lattice, "corinthian": corinthian, "lamp": lamp, "cassatt": cassatt, "doric": doric}
 
 
 def build():
