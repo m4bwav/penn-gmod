@@ -445,6 +445,11 @@ DN_Y0, DN_Y1, DOOR_H = 1132, 1204, 12 * FT        # 6 ft doorway west of the Cas
 LU_Y0, LU_Y1 = 1176, 1416                         # 20 ft opening in the south wall
 R_X0, R_X1, R_Y0, R_Y1 = 304, 304 + 100 * FT, HY + T + 12, 1432
 LU_COUNTERS = ((930, 0), (1270, 180))            # session 43: lunch counters (y, yaw)
+TEX_WAIN, TEX_OAK, TEX_MIRROR = "penn/wood_panel", "penn/wood_plain", "penn/mirror"   # session 44
+# One wainscot tile = 8 x 8 ft, its top rail at LAND + 8 ft (v offset 0 because 288 / 0.1875 % 512 == 0).
+_ws = 8 * FT / 512
+vmf_lib.FACEUV[TEX_WAIN] = lambda n: ("[%s 0] %g" % ("0 1 0" if abs(n[0]) > 0.5 else "1 0 0", _ws),
+                                      "[0 0 -1 %g] %g" % (((LAND + 8 * FT) / _ws) % 512, _ws))
 
 
 def dining_lunch(W, det, ents):
@@ -469,9 +474,24 @@ def dining_lunch(W, det, ents):
         W(box(ji0, d0, z0 + (DOOR_H if s > 0 else 16 * FT), ji1, d1, zc, TEX_WALL))
         W(box(ji0, d1, z0 - 64, ji1, R_Y1 + 32, zc, TEX_WALL))
         W(box(wi0, R_Y0 - 32, ARC_H + LAND + 32, wi1, R_Y1 + 32, zc + 64, TEX_WALL))   # over the hall wall
-        # Dado band and a cornice round the room.
+        # Session 44: 8 ft panelled oak wainscot with a cap rail round the room (long walls and the
+        # outer end wall), and a cornice.
         for y0, y1 in ((R_Y0, R_Y0 + 6), (R_Y1 - 6, R_Y1)):
-            det(box(lo, y0, z0, hi, y1, z0 + 4 * FT, TEX_TRIM))
+            det(box(lo, y0, z0, hi, y1, z0 + 8 * FT, TEX_WAIN))
+            det(box(lo, min(y0, y1 - 10) if y0 != R_Y0 else y0, z0 + 8 * FT, hi,
+                    y0 + 10 if y0 == R_Y0 else y1, z0 + 8 * FT + 4, TEX_OAK))
+        ex0, ex1 = (hi - 6, hi) if s > 0 else (lo, lo + 6)
+        det(box(ex0, R_Y0 + 6, z0, ex1, R_Y1 - 6, z0 + 8 * FT, TEX_WAIN))
+        # Oak pilasters at every beam line on both long walls, wainscot top to cornice; in the lunch
+        # room a mirror fills each bay of the inner (north) wall above the wainscot.
+        for i in range(1, 5):
+            x = s * (R_X0 + i * 20 * FT)
+            det(box(x - 12, R_Y0 + 6, z0 + 8 * FT + 4, x + 12, R_Y0 + 14, zc - 2 * FT, TEX_OAK))
+            det(box(x - 12, R_Y1 - 14, z0 + 8 * FT + 4, x + 12, R_Y1 - 6, zc - 2 * FT, TEX_OAK))
+        if s < 0:
+            for i in range(5):
+                xa_, xb_ = sorted((s * (R_X0 + i * 20 * FT + 2 * FT), s * (R_X0 + (i + 1) * 20 * FT - 2 * FT)))
+                det(box(xa_, R_Y0 + 6, z0 + 9 * FT, xb_, R_Y0 + 8, z0 + 17 * FT, TEX_MIRROR))
             det(box(lo, y0 - (0 if y0 == R_Y0 else 12), zc - 2 * FT, hi, y1 + (12 if y0 == R_Y0 else 0), zc, TEX_TRIM))
         # Deep cross beams every 20 ft divide the ceiling into big coffered panels.
         for i in range(1, 5):
@@ -481,7 +501,7 @@ def dining_lunch(W, det, ents):
         wh = (18 if s > 0 else 12) * FT
         for i in range(5):
             cx = s * (R_X0 + i * 20 * FT + 10 * FT)
-            det(box(cx - 4 * FT, R_Y1 - 4, z0 + 6 * FT, cx + 4 * FT, R_Y1, z0 + 6 * FT + wh, TEX_GLASS))
+            det(box(cx - 4 * FT, R_Y1 - 4, z0 + 8 * FT + 4, cx + 4 * FT, R_Y1, z0 + 8 * FT + 4 + wh, TEX_GLASS))
             # Session 43: a brass chandelier per bay in the dining room (light just under its globes),
             # two bell pendants per bay over the counters in the lunch room.
             if s > 0:
@@ -504,7 +524,6 @@ def dining_lunch(W, det, ents):
             for y, yaw in LU_COUNTERS:
                 ents.append(ent("prop_static", (-(R_X0 + 50 * FT), y, z0), angles=f"0 {yaw} 0",
                                 model="models/penn/lunch_counter.mdl", solid="6", disableshadows="1"))
-            det(box(lo + 4 * FT, R_Y0 + 6, z0 + 5 * FT, hi - 4 * FT, R_Y0 + 8, z0 + 12 * FT, "penn/ext_glass"))
         ents.append(ent("env_cubemap", (s * (R_X0 + 50 * FT), (R_Y0 + R_Y1) // 2, z0 + 6 * FT)))
 
 

@@ -163,3 +163,33 @@ for k in range(0, N, N // 4):
     w = 12 if (k // (N // 4)) % 2 == 0 else 6
     img[k:k + w] = ST
 save(img, "conc_glass", "glass")
+
+# Session 44, restaurant rooms after the 1910 booklet plates: dark oak wainscot, one tile = 8 x 8 ft
+# (FACEUV in build_vmf.py), two raised panels per tile between stiles and rails; plain oak for
+# pilasters and cap rails; a silvered mirror (plain grey base, env_cubemap does the work).
+OAK = np.array([92, 58, 34], float)
+grain = np.sin(xx / N * 2*np.pi * 3 + fbm(N, 5) * 9 + yy / N * 0.0) * 0.5 + fbm(N, 6) * 0.6
+wood = OAK * (1 + grain * 0.12)[..., None]
+save(wood.copy(), "wood_plain", "wood")
+vg = np.sin(yy / N * 2*np.pi * 2 + fbm(N, 5) * 9) * 0.5 + fbm(N, 6) * 0.6   # vertical grain in the panels
+img = OAK * 0.92 * (1 + vg * 0.12)[..., None]
+rail, stile, bev = N // 8, N // 16, N // 40
+img[:rail] = wood[:rail]
+img[N - rail:] = wood[N - rail:]
+for x0 in (0, N // 2 - stile, N - stile):
+    img[:, x0:x0 + 2 * stile if x0 == N // 2 - stile else x0 + stile] = wood[:, x0:x0 + 2 * stile if x0 == N // 2 - stile else x0 + stile]
+for px0 in (stile, N // 2 + stile):                    # raised field: lit top/left bevel, shaded bottom/right
+    px1 = px0 + N // 2 - 2 * stile
+    img[rail:rail + bev, px0:px1] *= 1.25
+    img[N - rail - bev:N - rail, px0:px1] *= 0.6
+    img[rail:N - rail, px0:px0 + bev] *= 1.15
+    img[rail:N - rail, px1 - bev:px1] *= 0.7
+img[N // 2 - 2:N // 2 + 2] *= 1.0
+save(img, "wood_panel", "wood")
+img = np.array([150, 152, 150], float) * (1 + fbm(N, 6) * 0.03)[..., None]
+img[:6] *= 0.5
+img[-6:] *= 0.5
+save(img, "mirror", "glass")
+(MAT / "mirror.vmt").write_text('"LightmappedGeneric"\n{\n\t"$basetexture" "penn/mirror"\n\t"$color" "[0.35 0.35 0.35]"\n'
+                                '\t"$envmap" "env_cubemap"\n\t"$envmaptint" "[0.8 0.8 0.78]"\n\t"$surfaceprop" "glass"\n}\n',
+                                encoding="ascii", newline="\n")
