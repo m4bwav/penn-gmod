@@ -1,34 +1,15 @@
 """Side-by-side sheet: each screenshot beside the reference photo from about the same viewpoint.
-Usage: python tools/compare.py shots/<stamp> [lower|plat|chambers]  -> shots/<stamp>/compare.jpg (compare_<set>.jpg)"""
+Usage: python tools/compare.py shots/<stamp> [set]  -> shots/<stamp>/compare.jpg (compare_<set>.jpg)"""
 import os
 import sys
 from PIL import Image, ImageDraw
 
-PAIRS = {  # shot -> refs/photos file
-    "west_balcony": "GCT_Main_Concourse.jpg",
-    "east_balcony": "Grand_Central_main_concourse_facing_Apple_agr.jpg",
-    "booth": "Grand_Central_Terminal_51214194734.jpg",
-    "vault_up": "Grand_Central_Station_Flag_Ceiling.jpg",
-    "floor_east": "GCT_east_windows.jpg",
-    "stairs_west": "GCT_west_windows.jpg",
+PAIRS = {  # shot -> refs/photos file (HABS NY-5471, waiting room)
+    "from_sw": "WAITING_ROOM_FROM_SOUTHWEST_Pennsylvania_Station.jpg",
+    "from_nw": "WAITING_ROOM_FROM_NORTHWEST_Pennsylvania_Station.jpg",
+    "stair_east": "STAIRWAY_FROM_WAITING_ROOM_TO_ARCADE_Pennsylvania_Station.jpg",
 }
-LOWER = {  # area 2, under the concourse
-    "dining": "Grand_Central_Dining_Concourse_Info.jpg",
-    "whisper": "Whispering_Gallery.jpg",
-    "oyster": "Grand_Central_Oyster_Bar_Grand_Central_Station_NYC.jpg",
-}
-PLAT = {  # area 4, track platforms
-    "plat_head": "Grand_Central_Station_tracks.jpg",
-    "car_door": "Metro_North_M7a_Rainbow_Heart_Sticker_Grand_Central.jpg",
-}
-CHAMBERS = {  # chambers added in the 60-session chain
-    "mk_door": "GCT_Market.jpg",
-    "mk_dome": "GCT_Market_2.jpg",
-    "lex_in": "Lexington_Passage.jpg",
-    "gb_in": "Graybar_Passage.jpg",
-    "md_conc": "Grand_Central_Madison_Opening_Day_Middle_Concourse.jpg",
-    "md_esc": "Grand_Central_Madison_escalators.jpg",
-}
+LOWER, PLAT, CHAMBERS = {}, {}, {}  # later areas add their pairs here
 d, W, H = sys.argv[1], 640, 400
 lower = sys.argv[2:3] and sys.argv[2]
 if lower:

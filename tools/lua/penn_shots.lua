@@ -9,8 +9,8 @@ file.Delete("penn_shots_go.txt")
 file.CreateDir("penn_shots")
 
 local CAMS = {
-  { "from_sw",    Vector(-1700, -560, 360), Angle(8, 30, 0) },
-  { "from_nw",    Vector(1700, -560, 360), Angle(8, 150, 0) },
+  { "from_sw",    Vector(-1560, -440, 420), Angle(6, 28, 0) },
+  { "from_nw",    Vector(1560, -440, 420), Angle(6, 152, 0) },
   { "nave_north", Vector(-1600, 0, 72), Angle(-12, 0, 0) },
   { "vault_up",   Vector(-600, 0, 72), Angle(-70, 0, 0) },
   { "stair_east", Vector(0, -400, 72), Angle(-8, 90, 0) },

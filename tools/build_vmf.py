@@ -5,6 +5,7 @@ Dimensions: ai-docs/notes/2026-11-26-dimensions.md.
 """
 from pathlib import Path
 
+import vmf_lib
 from vmf_lib import box, prism, xprism, yprism, halfdisc, ngon, ent, groin, nid, _id
 
 FT = 12
@@ -25,11 +26,13 @@ COL_TOP = PED + 60 * FT                   # capital top, 60 ft above the pedesta
 ENT_Z0, ENT_Z1 = COL_TOP, COL_TOP + 14 * FT   # entablature over the columns
 ARC_W, ARC_H, LAND = 40 * FT, 30 * FT, 16 * FT  # stair opening to the arcade, landing rise
 
-TEX_FLOOR = "stone/marblefloor001c"
-TEX_WALL = "stone/stonewall024a"
-TEX_VAULT = "plaster/plasterceiling005a"
-TEX_TRIM = "plaster/plasterwall003a"
-TEX_COL = "stone/stonewall033a"
+TEX_FLOOR = "penn/floor_travertine"
+TEX_WALL = "penn/travertine_ashlar"
+TEX_VAULT = "penn/vault_coffer"
+TEX_TRIM = "penn/travertine"
+TEX_COL = "penn/travertine"
+# Texture scale: 512 px tiles. Ashlar 16 ft (4 ft courses), coffers 12 ft 10 in, floor slabs 10 ft 8 in.
+vmf_lib.SCALE.update({TEX_WALL: 0.375, TEX_TRIM: 0.375, TEX_VAULT: 0.6, TEX_FLOOR: 0.5})
 TEX_GLASS = "penn/window_glass"
 TEX_DOOR = "penn/window_glow"
 NODRAW = "tools/toolsnodraw"
@@ -105,6 +108,21 @@ def build():
         x = s * HX
         det(xprism(halfdisc(0, SPRING + 48, LUNETTE, 12), min(x, x - 8 * s), max(x, x - 8 * s), TEX_GLASS))
 
+    # Diocletian mullions: two stone piers split each lunette into three lights, a transom across.
+    z0, mw, hz = SPRING + 48, 12, int(LUNETTE * 0.94)
+    def mullions(c, wall, s, along_x):
+        bars = [(c + d - mw, z0, c + d + mw, z0 + hz) for d in (-LUNETTE // 3, LUNETTE // 3)]
+        bars.append((c - LUNETTE + 40, z0 + 168, c + LUNETTE - 40, z0 + 168 + 16))
+        bars.append((c - LUNETTE, z0 - 24, c + LUNETTE, z0))
+        d0, d1 = sorted((wall - 8 * s, wall - 24 * s))
+        for u0, zz0, u1, zz1 in bars:
+            det(box(u0, d0, zz0, u1, d1, zz1, TEX_TRIM) if along_x else box(d0, u0, zz0, d1, u1, zz1, TEX_TRIM))
+    for i in range(3):
+        for s in (-1, 1):
+            mullions((BAYS[i] + BAYS[i + 1]) // 2, s * HY, s, True)
+    for s in (-1, 1):
+        mullions(0, s * HX, s, False)
+
     # Entablature band round the room over the column tops.
     for s in (-1, 1):
         y0, y1 = (HY - 4 * FT, HY) if s > 0 else (-HY, -HY + 4 * FT)
@@ -117,9 +135,13 @@ def build():
     cols = [(x, s * (HY - 6 * FT)) for x in (BAYS[1], BAYS[2]) for s in (-1, 1)]
     cols += [(sx * (HX - 6 * FT), sy * (HY - 6 * FT)) for sx in (-1, 1) for sy in (-1, 1)]
     for cx, cy in cols:
-        det(box(cx - 54, cy - 54, 0, cx + 54, cy + 54, PED, TEX_TRIM))
-        det(prism(ngon(cx, cy, 42, 12), PED, COL_TOP - 5 * FT, TEX_COL))
-        det(box(cx - 60, cy - 60, COL_TOP - 5 * FT, cx + 60, cy + 60, COL_TOP, TEX_TRIM))
+        det(box(cx - 66, cy - 66, 0, cx + 66, cy + 66, PED, TEX_TRIM))
+        ents.append(ent("prop_static", (cx, cy, PED), model="models/penn/corinthian.mdl", solid="6"))
+        # Pier behind the column: a pilaster strip of the wall up to the entablature.
+        wy = HY if cy > 0 else -HY
+        if abs(cx) < HX - 8 * FT:
+            det(box(cx - 8 * FT, min(wy, wy - 3 * FT * (1 if cy > 0 else -1)), 0,
+                    cx + 8 * FT, max(wy, wy - 3 * FT * (1 if cy > 0 else -1)), ENT_Z0, TEX_WALL))
 
     # Lights: warm fill under the vaults, cool light at each window.
     for i in range(3):
