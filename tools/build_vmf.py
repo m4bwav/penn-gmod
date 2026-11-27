@@ -88,6 +88,22 @@ def arcade(W, det, ents):
                for i in range(6)]
         sol.append(box(c0, YA, A_SPRING - CH, c1, YB, A_SPRING, TEX_TRIM))
         det("".join(sol))
+    # Session 11 (Pennell's etching): the stair-hall end. An architrave band frames the 40 ft
+    # opening with a keystone at the head; above it the west lunette is a mullioned glass window.
+    hz = ARC_H + LAND
+    BW, KW = 2 * FT, 4 * FT
+    sol = [box(a - BW, YA, z0, a, YA + 8, hz + BW, TEX_TRIM), box(b, YA, z0, b + BW, YA + 8, hz + BW, TEX_TRIM),
+           box(a, YA, hz, b, YA + 8, hz + BW, TEX_TRIM),
+           box(-KW // 2, YA, hz - FT, KW // 2, YA + 16, hz + BW + 3 * FT, TEX_TRIM)]
+    det("".join(sol))
+    LR = AHX - 2 * FT
+    det(yprism(halfdisc(0, A_SPRING, LR, 12), YA, YA + 4, TEX_GLASS))
+    bars = [(d - 8, A_SPRING, d + 8, A_SPRING + int(LR * 0.94)) for d in (-LR // 3, LR // 3)]
+    bars.append((-LR + 30, A_SPRING + 100, LR - 30, A_SPRING + 112))
+    bars.append((-LR - 12, A_SPRING - 18, LR + 12, A_SPRING))
+    det("".join(box(u0, YA + 4, zz0, u1, YA + 16, zz1, TEX_TRIM) for u0, zz0, u1, zz1 in bars))
+    arc, band = halfdisc(0, A_SPRING, LR, 12), halfdisc(0, A_SPRING, LR + 14, 12)
+    det("".join(yprism([arc[i + 1], arc[i], band[i], band[i + 1]], YA, YA + 10, TEX_TRIM) for i in range(12)))
     for i in range(5):
         groin(W, -AHX, AHX, YA + i * ABAY, YA + (i + 1) * ABAY, A_SPRING, AHX, TEX_VAULT)
     # East end: a 40 ft x 30 ft opening into the entrance vestibule; the street doors glow for now.
