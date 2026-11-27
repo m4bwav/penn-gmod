@@ -10,10 +10,15 @@ PAIRS = {  # shot -> refs/photos file (HABS NY-5471, waiting room)
     "stair_east": "STAIRWAY_FROM_WAITING_ROOM_TO_ARCADE_Pennsylvania_Station.jpg",
 }
 LOWER, PLAT, CHAMBERS = {}, {}, {}  # later areas add their pairs here
+DINING = {  # session 44: 1910 PRR booklet plates (archive.org pennsylvaniastat00penn)
+    "dining_in": "PRR1910_restaurant_and_dining_room.jpg",
+    "lunch_in": "PRR1910_lunch_room_and_buffet.jpg",
+    "loggia_doors": "PRR1910_loggia_restaurant_lunch_room.jpg",
+}
 d, W, H = sys.argv[1], 640, 400
 lower = sys.argv[2:3] and sys.argv[2]
 if lower:
-    PAIRS = {"lower": LOWER, "plat": PLAT, "chambers": CHAMBERS}[lower]
+    PAIRS = {"lower": LOWER, "plat": PLAT, "chambers": CHAMBERS, "dining": DINING}[lower]
 PAIRS = {k: v for k, v in PAIRS.items() if os.path.exists(f"{d}/{k}.jpg")}  # shots.sh CAMS= may shoot only some
 sheet = Image.new("RGB", (W * 2, (H + 18) * len(PAIRS)))
 draw = ImageDraw.Draw(sheet)

@@ -1,13 +1,13 @@
 # HANDOFF: gm_penn_station
 
 Status: in progress
-Updated: 2026-11-27 (session 43)
+Updated: 2026-11-27 (session 44)
 
 - Prompt: plans/2026-11-25-penn-gmod-60x-continue-prompt.md
-- Chain: session 43 of 60 (started 2026-11-26)
+- Chain: session 44 of 60 (started 2026-11-26)
 - Plan: plans/penn-gmod-plan.md. Era: 1910 station (decisions/2026-11-26-era-1910.md).
 - Garry's Mod: D:/SteamLibrary/steamapps/common/GarrysMod (vbsp, vvis, vrad, bspzip, gmad, gmpublish, studiomdl, vbspinfo in bin/).
-- Budget 2026-11-27 (session 43): 25,629/65,536 verts, 15,282 faces, BSP 45.2 MB. (0.5.0: gma 33.7 MB, 895-1,183 fps uncapped.)
+- Budget 2026-11-27 (session 44): 25,840/65,536 verts, 15,370 faces, BSP 48.4 MB. (0.5.0: gma 33.7 MB, 895-1,183 fps uncapped.)
 - Workshop ID: 3846546331 (public, 0.5.0). tools/package.sh defaults to it.
 - Driver: the user-level chain_loop (C:/Users/m4bwa/.chainwright/penn-prompt.md, stop check penn_stop.py, log penn-chain.log, 60 sessions / 24 h) runs this chain. Sessions it starts never start another driver.
 
@@ -69,9 +69,10 @@ Updated: 2026-11-27 (session 43)
 - Session 41: area 6 refs. Three plates from the 1910 PRR booklet "Pennsylvania station in New York city" (archive.org pennsylvaniastat00penn, not in copyright): restaurant and dining room, the Loggia between them, lunch room and buffet (refs/SOURCES.md). The booklet says both rooms open off the Loggia (our stair hall), kitchens above. Notes and small flagged rulings (dining north, lunch south, ~100 x 60 ft) in notes/2026-11-27-dining-lunch-refs.md. No map change.
 - Session 42: area 6 blockout. dining_lunch() in build_vmf.py: dining room north of the stair hall (100 x 56 ft, 35 ft ceiling) through a 6 ft doorway west of the Cassatt niche (the niche leaves no room for a wider one; flagged), lunch room south (same plan, 28 ft ceiling) through a 20 ft opening; flat coffered ceilings on cross beams every 20 ft, dado and cornice, five tall daylight windows on the far long wall, chandelier lights on the centre line. The 1910 waiting-room plan is too coarse to show the rooms, so the north/south ruling stands. Cameras loggia_doors, dining_in, lunch_in. shots/20261127-0550. Not released.
 - Session 43: area 6 detail 1. New MDLs in tools/penn_models.py: dining_set (4 ft clothed table, pedestal, vase, four bentwood chairs), chandelier (two rings of six globes, hangs 9 ft from the ceiling), pendant (bell globe on a 6 ft rod), lunch_counter (40 ft marble-topped panelled counter, foot rail, 16 stools, back service bar); VMTs linen, wood, marble. Dining room: two rows of six tables either side of the door aisle and a chandelier per bay. Lunch room: two counters (LU_COUNTERS, yaw 0 / 180), two pendants per bay with their lights, a mirror band on the north wall (ext_glass for now). Cameras dining_tables, lunch_counter. shots/20261127-0556. Not released.
+- Session 44: area 6 detail 2. New textures in tools/penn_textures.py: wood_panel (8 x 8 ft tile, two raised panels; FACEUV in build_vmf.py aligns its top rail to LAND + 8 ft), wood_plain, mirror (grey base, env_cubemap). Both rooms: 8 ft oak wainscot with a cap rail on the long walls and the outer end wall, oak pilasters at every beam line up to the cornice, windows raised to start above the wainscot; the lunch room's mirror band is now one mirror per bay in penn/mirror. compare.py has a "dining" pair set (compare_dining.jpg). shots/20261127-0602. Not released.
 
 ## Next
-1. Area 6 detail 2: panelled walls (wood wainscot, pilasters between the windows), a proper mirror material for the lunch room band (ext_glass shows a blue pane grid), compare.jpg against the PRR1910 plates. Then a nav mesh (tools/nav.sh), release 0.6.0, then Moynihan only if the budget allows.
+1. Area 6 detail 3, from compare_dining.jpg: the plates show round-headed windows and a deep, dense square-coffered ceiling with lighter walls; ours has flat-topped windows and the waiting-room round coffers. Mirrors read flat grey (no built cubemaps; buildcubemaps is never run). Then a nav mesh (tools/nav.sh), release 0.6.0, then Moynihan only if the budget allows.
 2. Exterior polish, optional: the clock group's reclining figures are blobs; the ext_glass windows still show the blue pane grid (a plain dark texture would read better).
 3. Flag: the avenue front is 780 ft, about 350 ft longer than the real 430 ft (side fronts about 680 ft match the real length). Shortening it means moving EX_FX in and checking nothing inside crosses the new line. A sourced track plan would still confirm the 21-track layout.
 4. Optional leftovers: attic storey above the waiting-room side arches, coffered soffits on the cross arches.
