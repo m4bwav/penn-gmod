@@ -1,0 +1,4 @@
+colonnade_street  139 fps
+front_south     146 fps
+front_north     146 fps
+front_centre    146 fps

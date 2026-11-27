@@ -36,6 +36,9 @@ local CAMS = {
   { "arcade_lamp", Vector(-60, 2280, 300), Angle(4, 160, 0) },
   { "cassatt_niche", Vector(-160, 1300, 320), Angle(6, 0, 0) },
   { "colonnade_street", Vector(700, 5950, 262), Angle(-14, 245, 0) },
+  { "front_south", Vector(-5500, 6000, 300), Angle(-6, -25, 0) },
+  { "front_north", Vector(5500, 6000, 300), Angle(-6, 205, 0) },
+  { "front_centre", Vector(0, 6150, 250), Angle(-12, 270, 0) },
   { "colonnade_portico", Vector(-900, 4990, 260), Angle(-4, 15, 0) },
   { "arcade_to_street", Vector(0, 3900, 290), Angle(0, 90, 0) },
 }
