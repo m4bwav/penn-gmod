@@ -6,7 +6,7 @@ Dimensions: ai-docs/notes/2026-11-26-dimensions.md.
 from pathlib import Path
 
 import vmf_lib
-from vmf_lib import box, prism, xprism, yprism, halfdisc, ngon, ent, groin, nid, _id
+from vmf_lib import axes_for as _ax, box, prism, xprism, yprism, halfdisc, ngon, ent, groin, nid, _id
 
 FT = 12
 OUT = Path(__file__).resolve().parent.parent / "src" / "gm_penn_station.vmf"
@@ -46,6 +46,11 @@ vmf_lib.SCALE.update({TEX_WALL: 0.375, TEX_TRIM: 0.375, TEX_VAULT: 0.6, TEX_FLOO
 TEX_GLASS = "penn/window_glass"
 TEX_DOOR = "penn/window_glow"
 NODRAW = "tools/toolsnodraw"
+TEX_SHOP = "penn/shopfront"
+# One shopfront tile per 45 ft bay along y (aligned to YA), 18 ft tall from the arcade floor.
+_su, _sv = ABAY / 512, 18 * FT / 512
+vmf_lib.FACEUV[TEX_SHOP] = lambda n: (("[0 1 0 %g] %g" % (-(YA / _su) % 512, _su), "[0 0 -1 %g] %g" % (((LAND + 18 * FT) / _sv) % 512, _sv))
+                                      if abs(n[0]) > 0.5 else _ax(n))
 
 
 def arcade(W, det, ents):
@@ -68,11 +73,21 @@ def arcade(W, det, ents):
             edges += [c - SW // 2, c + SW // 2]
             W(box(x0, c - SW // 2, z0 + SH, x1, c + SW // 2, ztop, TEX_WALL))
             g0, g1 = sorted((s * (AHX + T), s * (AHX + T + 16)))
-            W(box(g0, c - SW // 2, z0 - 64, g1, c + SW // 2, z0 + SH, TEX_DOOR))
+            W(box(g0, c - SW // 2, z0 - 64, g1, c + SW // 2, z0 + SH, TEX_SHOP))
             W(box(x0, c - SW // 2, z0 + SH - 16, x1, c + SW // 2, z0 + SH, TEX_TRIM))
         edges.append(YB)
         for i in range(0, len(edges), 2):
             W(box(x0, edges[i], z0 - 64, x1, edges[i + 1], ztop, TEX_WALL))
+    # Session 10 detail (Pennell's etching, refs/photos/The_arcade_...): a 3 ft pilaster at each
+    # bay line rising to a 2 ft impost cornice that runs the length of both walls at the springing.
+    PW, PD, CH, CD = 3 * FT, FT, 2 * FT, FT + 6
+    for s in (-1, 1):
+        f0, f1 = sorted((s * AHX, s * (AHX - PD)))
+        c0, c1 = sorted((s * AHX, s * (AHX - CD)))
+        sol = [box(f0, YA + i * ABAY - PW // 2 if i else YA, z0, f1, YA + i * ABAY + PW // 2 if i < 5 else YB, A_SPRING - CH, TEX_TRIM)
+               for i in range(6)]
+        sol.append(box(c0, YA, A_SPRING - CH, c1, YB, A_SPRING, TEX_TRIM))
+        det("".join(sol))
     for i in range(5):
         groin(W, -AHX, AHX, YA + i * ABAY, YA + (i + 1) * ABAY, A_SPRING, AHX, TEX_VAULT)
     # East end: a 40 ft x 30 ft opening into the entrance vestibule; the street doors glow for now.
