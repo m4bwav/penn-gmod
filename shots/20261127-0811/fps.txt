@@ -1,0 +1,3 @@
+from_sw         146 fps
+nave_north      146 fps
+wr_benches      146 fps
