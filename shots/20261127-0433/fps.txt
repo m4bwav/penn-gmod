@@ -1,0 +1,6 @@
+from_sw         146 fps
+plat_stairfoot  146 fps
+plat_long       146 fps
+plat_tracks     139 fps
+train_nose      146 fps
+train_side      146 fps

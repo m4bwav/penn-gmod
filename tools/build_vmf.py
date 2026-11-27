@@ -316,13 +316,27 @@ def platforms(W, det, ents, wells, sw):
     # Session 29: a train (three coaches and a DD1 electric) on the middle track, engine west.
     ents.append(ent("prop_static", (tracks[3], CY1 - 20 * FT, P_RAIL), angles="0 180 0",
                     model="models/penn/train.mdl", solid="6", disableshadows="1"))
+    # Session 30: a second train standing at the next platform west, its rear 120 ft further in.
+    ents.append(ent("prop_static", (tracks[1], CY1 - 140 * FT, P_RAIL), angles="0 180 0",
+                    model="models/penn/train.mdl", solid="6", disableshadows="1"))
     for c in wells:
         W(box(c - P_W // 2, PY0, P_BED, c + P_W // 2, CY1, P_TOP, TEX_FLOOR))
-        # Steel columns on the platform centre line every 40 ft, clear of the stair enclosure.
+        # Session 30: stone coping along both platform edges, 2 ft wide, 3 in proud, 4 in overhang.
+        for s in (-1, 1):
+            e = c + s * P_W // 2
+            det(box(min(e - s * 24, e + s * 4), PY0, P_TOP - 6, max(e - s * 24, e + s * 4), CY1, P_TOP + 3, TEX_TRIM))
+        # Steel columns on the platform centre line every 40 ft, clear of the stair enclosure,
+        # with a riveted base and a cap plate carrying the concourse floor beams.
         for y in range(PY0 + 30 * FT, CY1 - 10 * FT, 40 * FT):
             if CY0 - 2 * FT < y < CY0 + 640:
                 continue
             det(box(c - 9, y - 9, P_TOP, c + 9, y + 9, -64, TEX_STEEL))
+            det(box(c - 14, y - 14, P_TOP, c + 14, y + 14, P_TOP + 18, TEX_STEEL))
+            det(box(c - 20, y - 20, -80, c + 20, y + 20, -64, TEX_STEEL))
+        # Cross beams under the concourse floor over each column line.
+        for y in range(PY0 + 30 * FT, CY1 - 10 * FT, 40 * FT):
+            if not CY0 - 2 * FT < y < CY0 + 640:
+                det(box(c - P_W // 2 - 120, y - 8, -88, c + P_W // 2 + 120, y + 8, -64, TEX_STEEL))
         for y in range(PY0 + 50 * FT, CY1, 60 * FT):
             ents.append(ent("light", (c, y, -96), _light="255 214 160 90"))
     ents.append(ent("env_cubemap", (wells[2], CY0 - 100 * FT, P_TOP + 72)))
