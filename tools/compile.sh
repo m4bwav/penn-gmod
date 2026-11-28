@@ -20,4 +20,5 @@ for f in src/materials/penn/*; do printf 'materials/penn/%s\n%s\n' "$(basename "
 for f in src/materials/models/penn/* src/models/penn/*; do [ -e "$f" ] || continue; r="${f#src/}"; printf '%s\n%s\n' "$r" "$(cygpath -w "$PWD/$f" 2>/dev/null || echo "$PWD/$f")" >> src/packlist.txt; done
 "$G/bin/bspzip.exe" -addlist src/gm_penn_station.bsp src/packlist.txt src/gm_penn_station.bsp 2>&1 | tail -2
 cp src/gm_penn_station.bsp "$G/garrysmod/maps/"
+mkdir -p "$G/garrysmod/maps/thumb" && cp src/thumb/gm_penn_station.png "$G/garrysmod/maps/thumb/"   # spawn-menu icon
 ls -la src/gm_penn_station.bsp

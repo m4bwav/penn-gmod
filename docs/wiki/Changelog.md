@@ -1,5 +1,6 @@
 | Version | What changed |
 |---|---|
+| 0.7.4 | Concourse: glass vaults split at the column rows (3 x 3 groin cells), so every lattice column carries the truss ribs meeting at it; the fan arms that ended in mid-air or ran into the walls are gone. Floor under the Seventh Avenue doorway (was a hole to the void). Spawn-menu map icon |
 | 0.7.3 | Columns, benches, tables, counters, lamps, the Cassatt statue and the trains are solid (collision models); nav mesh rebuilt around them |
 | 0.7.2 | 16 oak benches in the waiting-room end bays, nav mesh rebuilt |
 | 0.7.1 | Attic storey over the waiting-room columns, coffered cross arches between the vault bays, the gap of sky in the vault crowns closed |

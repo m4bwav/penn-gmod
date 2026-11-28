@@ -11,6 +11,7 @@ NOTE="${1:-Update}"
 [ $# -gt 0 ] && shift
 rm -rf build/addon && mkdir -p build/addon/maps
 cp src/gm_penn_station.bsp build/addon/maps/
+mkdir -p build/addon/maps/thumb && cp src/thumb/gm_penn_station.png build/addon/maps/thumb/   # spawn-menu icon
 [ -f src/gm_penn_station.nav ] && cp src/gm_penn_station.nav build/addon/maps/   # from tools/nav.sh
 cat > build/addon/addon.json <<'EOF'
 {
