@@ -45,7 +45,9 @@ EX_PAVD = 90 * FT                                      # session 37: corner pavi
 # under three glass groin vaults on steel lattice columns (HABS photos, refs/SOURCES.md).
 CY1 = -HY - T - 10 * FT                                # -868: east edge, end of the west passages
 CY0 = CY1 - 200 * FT                                   # -3268: west edge
-C_SPRING, C_RISE = 45 * FT, 55 * FT                    # glass vaults spring at 45 ft, crown about 100 ft
+C_SPRING, C_RISE = 45 * FT, 55 * FT                    # C_RISE: height budget over the springing (walls, fill)
+C_CELL_RISE = 30 * FT                                  # each groin cell's rise (penn_models.CONC_RISE)
+C_GY = (CY0, CY0 + 70 * FT, CY1 - 70 * FT, CY1)        # column rows across the depth: 70 / 60 / 70 ft spans
 TEX_STEEL = "metal/metalwall001a"
 TEX_CGLASS = "penn/conc_glass"                         # session 19: gridded roof glass, 32 ft per tile
 
@@ -209,26 +211,35 @@ def concourse(W, det, ents, top):
     det(box(-HX, d0 - 18, atop, HX, d1, atop + 2 * FT, TEX_TRIM))
     # Session 24: clock (clock.mdl, 10 ft face) on the east wall above the middle passage and cornice.
     ents.append(ent("prop_static", (0, d0, atop + 8 * FT), model="models/penn/clock.mdl", solid="0", disableshadows="1"))
-    # Glass groin vaults: one per waiting-room bay, spanning the full 200 ft depth.
+    # Glass groin vaults: one per cell of the column grid (3 bays x 3 spans), so every column stands at
+    # a vault corner and carries the ribs that meet there.
     for i in range(3):
-        groin(W, BAYS[i], BAYS[i + 1], CY0, CY1, C_SPRING, C_RISE, TEX_CGLASS)
+        for j in range(3):
+            groin(W, BAYS[i], BAYS[i + 1], C_GY[j], C_GY[j + 1], C_SPRING, C_CELL_RISE, TEX_CGLASS)
     # Fill between the vault crowns and the waiting room's west wall top.
     W(box(-HX - T, CY0 - T, ctop, HX + T, -HY - T, ctop + 64, NODRAW))
     platforms(W, det, ents, wells, sw)
-    # Steel lattice columns (lattice.mdl since session 19): at every bay line
-    # on both long sides and two rows across the floor, each 3 ft square up to the springing.
+    # Steel lattice columns (lattice.mdl) at every node of the vault grid; those on the outer walls
+    # stand on the grid line, half set into the wall like pilasters, so their ribs land on them.
     for x in BAYS:
-        for y in (CY0 + 2 * FT, CY0 + 70 * FT, CY1 - 70 * FT, CY1 - 2 * FT):
-            xx = max(-HX + 2 * FT, min(HX - 2 * FT, x))
-            ents.append(ent("prop_static", (xx, y, 0), model="models/penn/lattice.mdl", solid="6", disableshadows="1"))
-    # Session 20: steel truss ribs on each vault's groins and a transverse arch at the inner bay lines.
-    # studiomdl turns SMD geometry 90 degrees about z, so both stand at yaw 90 (session 21: at yaw 0 the
-    # arches ran along the hall and showed as a line down its centre).
-    yc = (CY0 + CY1) // 2
+        for y in C_GY:
+            ents.append(ent("prop_static", (x, y, 0), model="models/penn/lattice.mdl", solid="6", disableshadows="1"))
+    # Truss ribs, cap to cap: an arch over every grid line and the two diagonals of every cell.
+    # studiomdl turns SMD geometry 90 degrees about z; at yaw 90 SMD x and y lie along world x and y
+    # (mirrored, which these symmetric ribs do not show).
+    span = lambda j: "o" if j != 1 else "m"   # noqa: E731
+    P = lambda o, mdl: ents.append(ent("prop_static", o, angles="0 90 0", model="models/penn/%s.mdl" % mdl,   # noqa: E731
+                                       solid="0", disableshadows="1"))
     for i in range(3):
-        ents.append(ent("prop_static", ((BAYS[i] + BAYS[i + 1]) // 2, yc, 0), angles="0 90 0", model="models/penn/conc_diag.mdl", solid="0", disableshadows="1"))
-    for x in BAYS[1:3]:
-        ents.append(ent("prop_static", (x, yc, 0), angles="0 90 0", model="models/penn/conc_arch.mdl", solid="0", disableshadows="1"))
+        cx = (BAYS[i] + BAYS[i + 1]) // 2
+        for y in C_GY:
+            P((cx, y, 0), "conc_rib_x")
+        for j in range(3):
+            cy = (C_GY[j] + C_GY[j + 1]) // 2
+            P((cx, cy, 0), "conc_diag_" + span(j))
+    for x in BAYS:
+        for j in range(3):
+            P((x, (C_GY[j] + C_GY[j + 1]) // 2, 0), "conc_rib_y" + span(j))
     for i in range(3):
         cx = (BAYS[i] + BAYS[i + 1]) // 2
         ents.append(ent("light", (cx, (CY0 + CY1) // 2, C_SPRING), _light="215 225 240 40"))
@@ -260,6 +271,7 @@ def colonnade(W, det, ents, f0):
     W(box(-FX, f0, z0 - 64, a, f1, FTOP, TEX_WALL))
     W(box(b, f0, z0 - 64, FX, f1, FTOP, TEX_WALL))
     W(box(a, f0, ARC_H + LAND, b, f1, FTOP, TEX_WALL))
+    W(box(a, f0, z0 - 64, b, f1, z0, TEX_FLOOR))          # threshold under the doorway (was a hole to the void)
     det(box(-PX, f0, FTOP, PX, f1, CTOP, TEX_WALL))
     # Ground: travertine portico, granite sidewalks, asphalt avenue a curb lower; the cross streets
     # (31st and 33rd) run off at both ends of the block past the corner pavilions.

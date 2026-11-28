@@ -239,22 +239,14 @@ def lattice():
             z += step
             k += 1
     m.lathe("steel", [(0, h - 24), (22, h - 24), (22, h - 12), (28, h - 8), (28, h), (0, h)], 0, 0, 0, 4)
-    # Flared arch ribs (session 25): the first 60 degrees of an elliptical curve, so each rib leaves
-    # the cap vertically and is still climbing (about 45 degrees) where it meets the vault, 12 ft out
-    # and 21 ft up, instead of ending flat.
-    for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
-        pts = []
-        for j in range(9):
-            t = j / 8 * math.pi / 3
-            r, z = 24 * FT * (1 - math.cos(t)), h - 12 + 24 * FT * math.sin(t)
-            pts.append((dx * (c + r), dy * (c + r), z))
-        for p, q in zip(pts, pts[1:]):
-            _bar(m, "steel", p, q, 8)
+    # The vault's own truss ribs (conc_rib_*, conc_diag_*) spring from this cap; the free-standing
+    # flared arms it once carried ended in mid-air on the inner rows and ran into the walls on the outer.
     return m
 
 
-CONC_HX, CONC_HY = 3772 // 6, 100 * FT   # concourse bay half-width (build_vmf.py BAYS) and half-depth
-CONC_SPRING, CONC_RISE = 45 * FT, 55 * FT  # build_vmf.py C_SPRING, C_RISE
+CONC_HX = 3772 // 6                          # concourse bay half-width along x (build_vmf.py BAYS)
+CONC_SPANS = {"o": 35 * FT, "m": 30 * FT}    # half-depths of the outer (70 ft) and middle (60 ft) spans
+CONC_SPRING, CONC_RISE = 45 * FT, 30 * FT     # build_vmf.py C_SPRING, C_CELL_RISE
 
 
 def _truss(m, curve, depth=20, n=24):
@@ -270,23 +262,47 @@ def _truss(m, curve, depth=20, n=24):
         _bar(m, "steel", a, b, 3)
 
 
-def conc_arch():
-    """Session 20: transverse arch across the concourse at an inner bay line, following the glass
-    vaults' profile across y (spring 45 ft, rise 55 ft over the 200 ft depth). Origin: floor, mid-depth."""
+def _rib(h, along_x):
     m = Mesh()
-    hy, zs, rise = CONC_HY, CONC_SPRING, CONC_RISE
-    _truss(m, lambda t, k: (0, (hy - k) * math.cos(t), zs + (rise - k) * math.sin(t)), depth=30)
+    zs, rise = CONC_SPRING, CONC_RISE
+    if along_x:
+        _truss(m, lambda t, k: ((h - k) * math.cos(t), 0, zs + (rise - k) * math.sin(t)), depth=24)
+    else:
+        _truss(m, lambda t, k: (0, (h - k) * math.cos(t), zs + (rise - k) * math.sin(t)), depth=24)
     return m
 
 
-def conc_diag():
-    """Session 20: the two diagonal ribs on one glass groin vault's groins (corner to corner over
-    the crown). Origin: floor at the bay centre."""
+def _diag(hy):
     m = Mesh()
-    hx, hy, zs, rise = CONC_HX, CONC_HY, CONC_SPRING, CONC_RISE
+    hx, zs, rise = CONC_HX, CONC_SPRING, CONC_RISE
     for sx in (1, -1):
         _truss(m, lambda t, k, sx=sx: (sx * hx * math.cos(t), hy * math.cos(t), zs + rise * math.sin(t) - k))
     return m
+
+
+def conc_rib_x():
+    """Truss arch over a grid line along x, one bay wide, column cap to column cap. Origin: floor, mid-span."""
+    return _rib(CONC_HX, True)
+
+
+def conc_rib_yo():
+    """Truss arch over a grid line along y across an outer (70 ft) span. Origin: floor, mid-span."""
+    return _rib(CONC_SPANS["o"], False)
+
+
+def conc_rib_ym():
+    """Truss arch along y across the middle (60 ft) span. Origin: floor, mid-span."""
+    return _rib(CONC_SPANS["m"], False)
+
+
+def conc_diag_o():
+    """The two diagonal ribs on the groins of an outer-span cell, column to column. Origin: floor, cell centre."""
+    return _diag(CONC_SPANS["o"])
+
+
+def conc_diag_m():
+    """Diagonal ribs of a middle-span cell. Origin: floor, cell centre."""
+    return _diag(CONC_SPANS["m"])
 
 
 CLOCK_R = 5 * FT
@@ -634,7 +650,7 @@ def collision(name, m):
     return c
 
 
-MODELS = {"train": train, "clock": clock, "conc_arch": conc_arch, "conc_diag": conc_diag, "lattice": lattice, "corinthian": corinthian, "lamp": lamp, "cassatt": cassatt, "doric": doric, "eagle": eagle, "clock_group": clock_group, "balustrade": balustrade, "dining_set": dining_set, "chandelier": chandelier, "pendant": pendant, "lunch_counter": lunch_counter, "bench": bench}
+MODELS = {"train": train, "clock": clock, "conc_rib_x": conc_rib_x, "conc_rib_yo": conc_rib_yo, "conc_rib_ym": conc_rib_ym, "conc_diag_o": conc_diag_o, "conc_diag_m": conc_diag_m, "lattice": lattice, "corinthian": corinthian, "lamp": lamp, "cassatt": cassatt, "doric": doric, "eagle": eagle, "clock_group": clock_group, "balustrade": balustrade, "dining_set": dining_set, "chandelier": chandelier, "pendant": pendant, "lunch_counter": lunch_counter, "bench": bench}
 
 
 def build():
